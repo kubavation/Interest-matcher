@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>io.duryskuba.interestmatcher</groupId>
-	<artifactId>UserService</artifactId>
+	<artifactId>UserCommandService</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>UserService</name>
+	<name>UserCommandService</name>
 	<description>Demo project for Spring Boot</description>
 
 	<properties>

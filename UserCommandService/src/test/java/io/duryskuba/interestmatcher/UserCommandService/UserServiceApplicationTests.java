@@ -1,4 +1,4 @@
-package io.duryskuba.interestmatcher.UserService;
+package io.duryskuba.interestmatcher.UserCommandService;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
