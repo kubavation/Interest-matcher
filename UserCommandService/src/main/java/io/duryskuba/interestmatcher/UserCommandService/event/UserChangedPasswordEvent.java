@@ -6,10 +6,9 @@ import org.axonframework.modelling.command.TargetAggregateIdentifier;
 
 @Data
 @AllArgsConstructor
-public class UserCreatedEvent {
+public class UserChangedPasswordEvent {
 
     @TargetAggregateIdentifier
     private String userId;
-    private String username;
     private String password;
 }
