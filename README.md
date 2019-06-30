@@ -1,4 +1,9 @@
 # Interest-matcher
-Project for connecting people with the same interests
+Project based on microservices for connecting people with the same intersts.
 
-Custom saga implementation, event sourcing and CQRS
+Is uses:
+spring cloud,
+hystrix,
+zuul,
+rabbitmq,
+axon framework.
