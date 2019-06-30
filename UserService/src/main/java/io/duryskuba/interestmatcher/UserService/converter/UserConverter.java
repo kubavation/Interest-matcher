@@ -1,4 +1,4 @@
-package io.duryskuba.interestmatcher.UserService.converters;
+package io.duryskuba.interestmatcher.UserService.converter;
 
 import io.duryskuba.interestmatcher.UserService.resource.User;
 import io.duryskuba.interestmatcher.UserService.resource.UserDto;
