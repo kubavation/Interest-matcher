@@ -1,0 +1,6 @@
+zuul:
+  prefix: /api
+  routes:
+    user-service:
+      path: /usr/**
+      serviceId: user-service
