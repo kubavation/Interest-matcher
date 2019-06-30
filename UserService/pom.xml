@@ -9,190 +9,27 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>io.duryskuba.interestmatcher</groupId>
-	<artifactId>UserCommandService</artifactId>
+	<artifactId>UserService</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>UserCommandService</name>
+	<name>UserService</name>
 	<description>Demo project for Spring Boot</description>
 
 	<properties>
 		<java.version>1.8</java.version>
-		<spring-cloud.version>Greenwich.SR1</spring-cloud.version>
 	</properties>
 
 	<dependencies>
-		<!--<dependency>-->
-			<!--<groupId>org.springframework.boot</groupId>-->
-			<!--<artifactId>spring-boot-starter-web</artifactId>-->
-		<!--</dependency>-->
-		<!--<dependency>-->
-			<!--<groupId>org.springframework.cloud</groupId>-->
-			<!--<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>-->
-		<!--</dependency>-->
-
-		<!--<dependency>-->
-			<!--<groupId>org.springframework.boot</groupId>-->
-			<!--<artifactId>spring-boot-starter-test</artifactId>-->
-			<!--<scope>test</scope>-->
-		<!--</dependency>-->
-
-
-		<!--&lt;!&ndash;<dependency>&ndash;&gt;-->
-			<!--&lt;!&ndash;<groupId>org.postgresql</groupId>&ndash;&gt;-->
-			<!--&lt;!&ndash;<artifactId>postgresql</artifactId>&ndash;&gt;-->
-		<!--&lt;!&ndash;</dependency>&ndash;&gt;-->
-
-		<!--&lt;!&ndash;&lt;!&ndash; https://mvnrepository.com/artifact/org.hibernate/hibernate-core &ndash;&gt;&ndash;&gt;-->
-		<!--&lt;!&ndash;<dependency>&ndash;&gt;-->
-			<!--&lt;!&ndash;<groupId>org.hibernate</groupId>&ndash;&gt;-->
-			<!--&lt;!&ndash;<artifactId>hibernate-core</artifactId>&ndash;&gt;-->
-			<!--&lt;!&ndash;<version>5.4.1.Final</version>&ndash;&gt;-->
-		<!--&lt;!&ndash;</dependency>&ndash;&gt;-->
-
-		<!--&lt;!&ndash;&lt;!&ndash; https://mvnrepository.com/artifact/postgresql/postgresql &ndash;&gt;&ndash;&gt;-->
-		<!--&lt;!&ndash;<dependency>&ndash;&gt;-->
-			<!--&lt;!&ndash;<groupId>postgresql</groupId>&ndash;&gt;-->
-			<!--&lt;!&ndash;<artifactId>postgresql</artifactId>&ndash;&gt;-->
-			<!--&lt;!&ndash;<version>9.1-901-1.jdbc4</version>&ndash;&gt;-->
-		<!--&lt;!&ndash;</dependency>&ndash;&gt;-->
-
-		<!--&lt;!&ndash;&lt;!&ndash; https://mvnrepository.com/artifact/org.springframework/spring-context &ndash;&gt;&ndash;&gt;-->
-		<!--&lt;!&ndash;<dependency>&ndash;&gt;-->
-			<!--&lt;!&ndash;<groupId>org.springframework</groupId>&ndash;&gt;-->
-			<!--&lt;!&ndash;<artifactId>spring-context</artifactId>&ndash;&gt;-->
-			<!--&lt;!&ndash;<version>5.1.5.RELEASE</version>&ndash;&gt;-->
-		<!--&lt;!&ndash;</dependency>&ndash;&gt;-->
-
-		<!--&lt;!&ndash;<dependency>&ndash;&gt;-->
-			<!--&lt;!&ndash;<groupId>org.apache.commons</groupId>&ndash;&gt;-->
-			<!--&lt;!&ndash;<artifactId>commons-dbcp2</artifactId>&ndash;&gt;-->
-			<!--&lt;!&ndash;<version>2.1.1</version>&ndash;&gt;-->
-		<!--&lt;!&ndash;</dependency>&ndash;&gt;-->
-
-		<!--&lt;!&ndash;&lt;!&ndash; https://mvnrepository.com/artifact/org.springframework/spring-orm &ndash;&gt;&ndash;&gt;-->
-		<!--&lt;!&ndash;<dependency>&ndash;&gt;-->
-			<!--&lt;!&ndash;<groupId>org.springframework</groupId>&ndash;&gt;-->
-			<!--&lt;!&ndash;<artifactId>spring-orm</artifactId>&ndash;&gt;-->
-			<!--&lt;!&ndash;<version>5.1.5.RELEASE</version>&ndash;&gt;-->
-		<!--&lt;!&ndash;</dependency>&ndash;&gt;-->
-
-		<!--&lt;!&ndash;&lt;!&ndash; https://mvnrepository.com/artifact/org.hibernate/hibernate-entitymanager &ndash;&gt;&ndash;&gt;-->
-		<!--&lt;!&ndash;<dependency>&ndash;&gt;-->
-			<!--&lt;!&ndash;<groupId>org.hibernate</groupId>&ndash;&gt;-->
-			<!--&lt;!&ndash;<artifactId>hibernate-entitymanager</artifactId>&ndash;&gt;-->
-			<!--&lt;!&ndash;<version>5.4.1.Final</version>&ndash;&gt;-->
-		<!--&lt;!&ndash;</dependency>&ndash;&gt;-->
-
-		<!--<dependency>-->
-			<!--<groupId>org.projectlombok</groupId>-->
-			<!--<artifactId>lombok</artifactId>-->
-			<!--<version>1.18.6</version>-->
-			<!--<scope>provided</scope>-->
-		<!--</dependency>-->
-
-
-		<!--&lt;!&ndash; https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-stream-rabbit &ndash;&gt;-->
-		<!--&lt;!&ndash;<dependency>&ndash;&gt;-->
-			<!--&lt;!&ndash;<groupId>org.springframework.cloud</groupId>&ndash;&gt;-->
-			<!--&lt;!&ndash;<artifactId>spring-cloud-starter-stream-rabbit</artifactId>&ndash;&gt;-->
-			<!--&lt;!&ndash;<version>2.1.2.RELEASE</version>&ndash;&gt;-->
-		<!--&lt;!&ndash;</dependency>&ndash;&gt;-->
-
-		<!--<dependency>-->
-			<!--<groupId>org.axonframework</groupId>-->
-			<!--<artifactId>axon-spring-boot-starter</artifactId>-->
-			<!--<version>3.4.3</version>-->
-		<!--</dependency>-->
-
-		<!--&lt;!&ndash;&lt;!&ndash; https://mvnrepository.com/artifact/org.axonframework/axon-amqp &ndash;&gt;&ndash;&gt;-->
-		<!--&lt;!&ndash;<dependency>&ndash;&gt;-->
-			<!--&lt;!&ndash;<groupId>org.axonframework</groupId>&ndash;&gt;-->
-			<!--&lt;!&ndash;<artifactId>axon-amqp</artifactId>&ndash;&gt;-->
-			<!--&lt;!&ndash;<version>3.4.3</version>&ndash;&gt;-->
-		<!--&lt;!&ndash;</dependency>&ndash;&gt;-->
-
-        <!--&lt;!&ndash;&lt;!&ndash; https://mvnrepository.com/artifact/org.axonframework/axon-distributed-commandbus-springcloud &ndash;&gt;&ndash;&gt;-->
-        <!--&lt;!&ndash;<dependency>&ndash;&gt;-->
-            <!--&lt;!&ndash;<groupId>org.axonframework</groupId>&ndash;&gt;-->
-            <!--&lt;!&ndash;<artifactId>axon-distributed-commandbus-springcloud</artifactId>&ndash;&gt;-->
-            <!--&lt;!&ndash;<version>3.4.3</version>&ndash;&gt;-->
-        <!--&lt;!&ndash;</dependency>&ndash;&gt;-->
-
-
-		<!--&lt;!&ndash;&lt;!&ndash; https://mvnrepository.com/artifact/org.springframework.data/spring-data-jpa &ndash;&gt;&ndash;&gt;-->
-		<!--&lt;!&ndash;<dependency>&ndash;&gt;-->
-			<!--&lt;!&ndash;<groupId>org.springframework.data</groupId>&ndash;&gt;-->
-			<!--&lt;!&ndash;<artifactId>spring-data-jpa</artifactId>&ndash;&gt;-->
-			<!--&lt;!&ndash;<version>2.1.4.RELEASE</version>&ndash;&gt;-->
-		<!--&lt;!&ndash;</dependency>&ndash;&gt;-->
-
-
-
-
-
-		<dependency>
-			<groupId>org.axonframework</groupId>
-			<artifactId>axon-spring-boot-starter</artifactId>
-			<version>3.4.3</version>
-		</dependency>
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
+			<artifactId>spring-boot-starter</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>io.projectreactor</groupId>
-			<artifactId>reactor-core</artifactId>
-			<version>3.1.7.RELEASE</version>
-		</dependency>
-		<!--<dependency>-->
-			<!--<groupId>org.springframework.boot</groupId>-->
-			<!--<artifactId>spring-boot-starter-data-jpa</artifactId>-->
-		<!--</dependency>-->
-		<!--<dependency>-->
-			<!--<groupId>com.h2database</groupId>-->
-			<!--<artifactId>h2</artifactId>-->
-		<!--</dependency>-->
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<!--<dependency>-->
-			<!--<groupId>org.axonframework</groupId>-->
-			<!--<artifactId>axon-test</artifactId>-->
-			<!--<version>4.0</version>-->
-			<!--<scope>test</scope>-->
-
-		<!--</dependency>-->
-
-
-
-		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-			<version>1.18.6</version>
-			<scope>provided</scope>
-		</dependency>
-
-
 	</dependencies>
-
-
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>org.springframework.cloud</groupId>
-				<artifactId>spring-cloud-dependencies</artifactId>
-				<version>${spring-cloud.version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-
-
-		</dependencies>
-	</dependencyManagement>
-
-
 
 	<build>
 		<plugins>
