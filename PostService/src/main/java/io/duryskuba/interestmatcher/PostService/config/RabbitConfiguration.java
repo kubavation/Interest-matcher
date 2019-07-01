@@ -13,24 +13,24 @@ import org.springframework.context.annotation.Configuration;
 public class RabbitConfiguration {
 
     //@Value("${queue.tag_notification}")
-    private String tagNotificationQueue = "test";
+    private String postCreationQueue = "postCreationQueue";
     //@Value("${fanout.tag_notification}")
-    private String tagNotificationExchange = "test";
+    private String postCreationExchange = "postCreationExchange";
 
 
     @Bean
-    Queue notificationQueue() {
-        return new Queue(tagNotificationQueue, true);
+    Queue postCreationQueue() {
+        return new Queue(postCreationQueue, true);
     }
 
     @Bean
-    FanoutExchange tagNotificationExchange() {
-        return new FanoutExchange(tagNotificationExchange);
+    FanoutExchange postCreationExchange() {
+        return new FanoutExchange(postCreationExchange);
     }
 
     @Bean
-    Binding tagNotificationBinding(@Qualifier("notificationQueue") Queue queue,
-                                   @Qualifier("tagNotificationExchange") FanoutExchange exchange) {
+    Binding tagNotificationBinding(@Qualifier("postCreationQueue") Queue queue,
+                                   @Qualifier("postCreationExchange") FanoutExchange exchange) {
         return BindingBuilder.bind(queue).to(exchange);
     }
 

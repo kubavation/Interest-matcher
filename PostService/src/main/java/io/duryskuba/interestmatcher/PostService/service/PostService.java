@@ -1,6 +1,7 @@
 package io.duryskuba.interestmatcher.PostService.service;
 
 import io.duryskuba.interestmatcher.PostService.repository.PostRepository;
+import io.duryskuba.interestmatcher.PostService.resource.Post;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -13,5 +14,7 @@ public class PostService {
     }
 
 
-    public 
+    public Post create(Post post) {
+        return postRepository.save(post);
+    }
 }
