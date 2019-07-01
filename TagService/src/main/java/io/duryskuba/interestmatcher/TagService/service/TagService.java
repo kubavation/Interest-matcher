@@ -7,9 +7,10 @@ import io.duryskuba.interestmatcher.TagService.resource.PostTag;
 import io.duryskuba.interestmatcher.TagService.resource.PostTagId;
 import io.duryskuba.interestmatcher.TagService.resource.Tag;
 import io.duryskuba.interestmatcher.TagService.utils.TagContentBuilder;
-import javafx.util.Pair;
 import lombok.extern.slf4j.Slf4j;
+import org.javatuples.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
@@ -29,18 +30,36 @@ public class TagService {
     @Autowired
     private TagContentBuilder tagContentBuilder;
 
-
-
+    
     public PostDTO createTagContentFromPost(PostDTO postDTO) {
-        return new PostDTO();
+
+        Pair<String, List<Tag>> result =  tagContentBuilder
+                .pullOutTags(postDTO.getContent());
+
+        prepareTagsAndNotify(postDTO, result.getValue1());
+
+        return new PostDTO(postDTO.getPostId(), result.getValue0());
+    }
+
+    @Async
+    public void prepareTagsAndNotify(PostDTO postDTO, List<Tag> tags) {
+            tags
+                .stream()
+                .map(this::createTagIfNotExists)
+                .map(t -> createPostTagEntry(postDTO, t))
+                .forEach(t -> log.debug("creating " + t)); //notify subscribers
+
+        log.debug("notified");
     }
 
 
-    public List<Tag> createTags(List<Tag> tags) {
+    public List<Tag> createTags(Collection<Tag> tags) {
         log.debug("creating tags if not exists already");
-
+        return
+                tags.stream()
+                    .map(this::createTagIfNotExists)
+                    .collect(Collectors.toList());
     }
-
 
 
     public List<PostTag> createPostTagEntries(PostDTO postDTO, Collection<Tag> tags) {
@@ -52,7 +71,10 @@ public class TagService {
                     .collect(Collectors.toList());
     }
 
-
+    public PostTag createPostTagEntry(PostDTO postDTO, Tag tag) {
+        log.debug("creating postTag entry");
+        return createPostTagIfNotExists(new PostTag(new PostTagId(tag.getName(), postDTO.getPostId())));
+    }
 
     private PostTag createPostTagIfNotExists(PostTag postTag) {
         return
