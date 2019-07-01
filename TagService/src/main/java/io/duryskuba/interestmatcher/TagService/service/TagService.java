@@ -30,13 +30,19 @@ public class TagService {
     @Autowired
     private TagContentBuilder tagContentBuilder;
 
-    
+
     public PostDTO createTagContentFromPost(PostDTO postDTO) {
 
+        log.error(postDTO.toString());
+        log.error("creatign");
         Pair<String, List<Tag>> result =  tagContentBuilder
                 .pullOutTags(postDTO.getContent());
 
+        log.error(result.getValue0());
+
         prepareTagsAndNotify(postDTO, result.getValue1());
+
+        log.error("after");
 
         return new PostDTO(postDTO.getPostId(), result.getValue0());
     }

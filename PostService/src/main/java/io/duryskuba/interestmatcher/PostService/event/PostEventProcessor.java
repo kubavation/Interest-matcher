@@ -21,6 +21,6 @@ public class PostEventProcessor {
 
     public void emitPostCreation(@NotNull PostDto postDto) {
         log.debug("EMITINT POST CREATION EVENT");
-        rabbitTemplate.convertAndSend(new PostCreationEvent(UUID.randomUUID(), PostDto.builder().postId(1L).build()));
+       // rabbitTemplate.convertAndSend(new PostCreationEvent(UUID.randomUUID(), PostDto.builder().postId(1L).build()));
     }
 }

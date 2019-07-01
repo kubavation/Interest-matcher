@@ -12,7 +12,6 @@ import java.time.LocalDateTime;
 @Table(name = "TAG_STATISTICS")
 @Data
 @NoArgsConstructor
-@RequiredArgsConstructor
 public class TagStatistics {
 
     @Id

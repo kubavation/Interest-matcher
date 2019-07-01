@@ -50,7 +50,7 @@ public class TagContentBuilder {
             content = newContent;
         }
 
-        return new Pair<>(content, result);
+        return new Pair<>(resultContent.toString(), result);
     }
 
 
