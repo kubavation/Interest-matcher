@@ -57,6 +57,8 @@ public class TagContentBuilder {
     private String buildTagLink(String tagStr) {
         return String
                 .format("<a href='localhost:%1$s/posts/tags/%2$s'>#%2$s</a>", port, tagStr);
+//        return String
+//                .format("<a href='localhost/posts/tags/%2$s'>#%2$s</a>", port, tagStr);
     }
 
     private int calculateEndIndex(int spaceIndex, int hashIndex) {

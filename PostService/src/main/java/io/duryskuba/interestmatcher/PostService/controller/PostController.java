@@ -4,6 +4,7 @@ import io.duryskuba.interestmatcher.PostService.resource.PostDto;
 import io.duryskuba.interestmatcher.PostService.service.PostService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,7 +37,8 @@ public class PostController {
         //todo do serwisu
         PostDto result = webClient
                 .post()
-                .uri("http://localhost:8085/tags/create-content")
+                //.uri("http://localhost:8085/tags/create-content")
+                .uri("http://tag-service/tags/create-content")
                 .body(BodyInserters.fromObject(test))
                 .exchange()
                     .block()
