@@ -22,7 +22,6 @@ public class TagController {
 
     @PostMapping("/tags/create-content")
     public ResponseEntity<PostDTO> createTagContent(@RequestBody PostDTO postDTO) {
-        log.error("???");
         return
             new ResponseEntity<>(tagService.createTagContentFromPost(postDTO), HttpStatus.CREATED);
     }

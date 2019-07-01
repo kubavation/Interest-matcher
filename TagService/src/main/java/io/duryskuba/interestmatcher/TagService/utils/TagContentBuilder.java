@@ -3,6 +3,7 @@ package io.duryskuba.interestmatcher.TagService.utils;
 import io.duryskuba.interestmatcher.TagService.resource.Tag;
 import org.javatuples.Pair;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -11,17 +12,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
+@RefreshScope
 public class TagContentBuilder {
-
-    //todo po nazwie serwisu
-//    @Value("${server.port}")
-       private int port;
 
     @Value("${edge-service.prefix}")
     private String prefix;
-
-//    @Value("${spring.application.name]")
-//    private String serviceName;
+    @Value("${spring.application.name}")
+    private String appName;
 
 
     public Pair<String, List<Tag>> pullOutTags(String content) {
@@ -40,7 +37,6 @@ public class TagContentBuilder {
 
             resultContent.append(content.substring(0,index));
             String restOfContent = content.substring(index + 1);
-
 
             int endIndex = calculateEndIndex(restOfContent.indexOf(" "),restOfContent.indexOf("#"));
             if(endIndex == -1) break;
@@ -66,7 +62,7 @@ public class TagContentBuilder {
 //        return String
 //                .format("<a href='localhost:%1$s/posts/tags/%2$s'>#%2$s</a>", port, tagStr);
         return String
-                .format("<a href='localhost/posts/tags/%2$s'>#%2$s</a>", port, tagStr);
+                .format("<a href='http://%1$s/posts/tags/%2$s'>#%2$s</a>", appName, tagStr);
     }
 
     private int calculateEndIndex(int spaceIndex, int hashIndex) {

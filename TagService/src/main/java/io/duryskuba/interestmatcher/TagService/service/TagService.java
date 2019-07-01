@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,29 +22,31 @@ import java.util.stream.Collectors;
 @Service
 public class TagService {
 
-    @Autowired
     private TagRepository tagRepository;
-
-    @Autowired
     private PostTagRepository postTagRepository;
-
-    @Autowired
     private TagContentBuilder tagContentBuilder;
 
+    public TagService(TagRepository tagRepository, PostTagRepository postTagRepository,
+                      TagContentBuilder tagContentBuilder) {
+        this.tagRepository = tagRepository;
+        this.postTagRepository = postTagRepository;
+        this.tagContentBuilder = tagContentBuilder;
+    }
+
+    public Collection<PostDTO> findAllPostsByTag(String tagName) {
+        return postTagRepository
+                .findAllByTagName(tagName)
+                .stream()
+                    .map(t -> new PostDTO(t.getId().getPostId()))
+                    .collect(Collectors.toList());
+    }
 
     public PostDTO createTagContentFromPost(PostDTO postDTO) {
 
-        log.error(postDTO.toString());
-        log.error("creatign");
         Pair<String, List<Tag>> result =  tagContentBuilder
                 .pullOutTags(postDTO.getContent());
 
-        log.error(result.getValue0());
-
         prepareTagsAndNotify(postDTO, result.getValue1());
-
-        log.error("after");
-
         return new PostDTO(postDTO.getPostId(), result.getValue0());
     }
 
@@ -54,12 +57,10 @@ public class TagService {
                 .map(this::createTagIfNotExists)
                 .map(t -> createPostTagEntry(postDTO, t))
                 .forEach(t -> log.debug("creating " + t)); //notify subscribers
-
-        log.debug("notified");
     }
 
 
-    public List<Tag> createTags(Collection<Tag> tags) {
+    public Collection<Tag> createTags(Collection<Tag> tags) {
         log.debug("creating tags if not exists already");
         return
                 tags.stream()
@@ -68,7 +69,7 @@ public class TagService {
     }
 
 
-    public List<PostTag> createPostTagEntries(PostDTO postDTO, Collection<Tag> tags) {
+    public Collection<PostTag> createPostTagEntries(PostDTO postDTO, Collection<Tag> tags) {
         log.debug("creating postTag entries");
         return
                 tags.stream()
