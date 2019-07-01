@@ -5,6 +5,7 @@ import org.javatuples.Pair;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -13,8 +14,15 @@ import java.util.stream.Collectors;
 public class TagContentBuilder {
 
     //todo po nazwie serwisu
-    @Value("${server.port}")
-    private int port;
+//    @Value("${server.port}")
+       private int port;
+
+    @Value("${edge-service.prefix}")
+    private String prefix;
+
+//    @Value("${spring.application.name]")
+//    private String serviceName;
+
 
     public Pair<String, List<Tag>> pullOutTags(String content) {
         StringBuilder resultContent = new StringBuilder();
@@ -55,10 +63,10 @@ public class TagContentBuilder {
 
 
     private String buildTagLink(String tagStr) {
-        return String
-                .format("<a href='localhost:%1$s/posts/tags/%2$s'>#%2$s</a>", port, tagStr);
 //        return String
-//                .format("<a href='localhost/posts/tags/%2$s'>#%2$s</a>", port, tagStr);
+//                .format("<a href='localhost:%1$s/posts/tags/%2$s'>#%2$s</a>", port, tagStr);
+        return String
+                .format("<a href='localhost/posts/tags/%2$s'>#%2$s</a>", port, tagStr);
     }
 
     private int calculateEndIndex(int spaceIndex, int hashIndex) {
