@@ -12,10 +12,10 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class RabbitConfiguration {
 
-    @Value("${queue.tag_notification}")
-    private String tagNotificationQueue;
-    @Value("${fanout.tag_notification}")
-    private String tagNotificationExchange;
+    //@Value("${queue.tag_notification}")
+    private String tagNotificationQueue = "test";
+    //@Value("${fanout.tag_notification}")
+    private String tagNotificationExchange = "test";
 
 
     @Bean
