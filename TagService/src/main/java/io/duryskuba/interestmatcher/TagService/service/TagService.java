@@ -1,5 +1,6 @@
 package io.duryskuba.interestmatcher.TagService.service;
 
+import io.duryskuba.interestmatcher.TagService.event.EventProcessor;
 import io.duryskuba.interestmatcher.TagService.repository.PostTagRepository;
 import io.duryskuba.interestmatcher.TagService.repository.TagRepository;
 import io.duryskuba.interestmatcher.TagService.resource.PostDTO;
@@ -25,12 +26,14 @@ public class TagService {
     private TagRepository tagRepository;
     private PostTagRepository postTagRepository;
     private TagContentBuilder tagContentBuilder;
+    private EventProcessor eventProcessor;
 
     public TagService(TagRepository tagRepository, PostTagRepository postTagRepository,
-                      TagContentBuilder tagContentBuilder) {
+                      TagContentBuilder tagContentBuilder, EventProcessor eventProcessor) {
         this.tagRepository = tagRepository;
         this.postTagRepository = postTagRepository;
         this.tagContentBuilder = tagContentBuilder;
+        this.eventProcessor = eventProcessor;
     }
 
     public Collection<PostDTO> findAllPostsByTag(String tagName) {
