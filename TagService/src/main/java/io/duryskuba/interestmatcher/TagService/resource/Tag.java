@@ -4,10 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -21,6 +18,6 @@ public class Tag {
     private String name;
 
     @CreationTimestamp
-    @Column(name = "CREATED_AT")
+    //@Column(name = "CREATED_AT")
     private LocalDateTime createdAt;
 }
