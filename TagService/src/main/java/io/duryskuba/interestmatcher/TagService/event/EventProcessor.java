@@ -7,11 +7,14 @@ import io.duryskuba.interestmatcher.TagService.resource.Tag;
 import io.duryskuba.interestmatcher.TagService.resource.TagSubscriber;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.MessageBuilder;
+import org.springframework.amqp.core.MessageProperties;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
+
+import static io.duryskuba.interestmatcher.TagService.resource.NotificationDTO.of;
 
 @Slf4j
 @Component
@@ -48,17 +51,19 @@ public class EventProcessor {
         notified
                 .entrySet()
                 .forEach(e -> {
-                    final NotificationDTO notification
-                          = NotificationDTO.builder()
-                            .post(post)
-                            .tags(e.getValue())
-                            .subscriber(e.getKey())
-                            .build();
+//                    final NotificationDTO notification
+//                          = NotificationDTO.builder()
+//                            .post(post)
+//                            .tags(e.getValue())
+//                            .subscriber(e.getKey())
+//                            .build();
 
-                    log.error("SENDING " + notification.toString());
+                    log.error("SENDING ");
                     rabbitTemplate
                             .convertAndSend(MessageBuilder
-                            .withBody(notification.toString().getBytes()));
+                            .withBody(of(post,e.getKey(),e.getValue()).toString().getBytes())
+                            .setContentType(MessageProperties.CONTENT_TYPE_JSON)
+                            .build());
                 });
 
     }
