@@ -14,7 +14,7 @@ import java.util.*;
 public class EventProcessor {
 
     private TagSubscriberRepository tagSubscriberRepository;
-    private RabbitTemplate rabbitTemplate
+    private RabbitTemplate rabbitTemplate;
 
     public EventProcessor(TagSubscriberRepository tagSubscriberRepository,
                           RabbitTemplate rabbitTemplate) {
@@ -40,14 +40,9 @@ public class EventProcessor {
                             });
                 });
 
-        /**
-         * jakbym chcial przesylac jakie tagi zostaly przeslane to musze uzyc mapy
-         */
         notified.entrySet()
                 .forEach(e -> {
-                    rabbitTemplate.convertAndSend(messagingUtils
-                            .createMessage(prepareNotification(post, e.getKey(), e.getValue())));
-
+                    //rabbitTemplate
                 });
     }
 
