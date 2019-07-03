@@ -10,13 +10,14 @@ import org.springframework.stereotype.Service
 @Component
 class NotificationEventProcessor(
         val rabbitTemplate: RabbitTemplate,
-        val notifcationService: NotificationService) {
+        val notificationService: NotificationService) {
 
 
     @RabbitListener(queues = arrayOf("notificationQueue"))
     fun listenAndNotify(notificationDTO: NotificationDTO) {
         print("here")
-        print(notificationDTO.toString())
+        println(notificationDTO.toString())
+        println(notificationService.createPostNotification(notificationDTO.type, notificationDTO))
     }
 
 }
