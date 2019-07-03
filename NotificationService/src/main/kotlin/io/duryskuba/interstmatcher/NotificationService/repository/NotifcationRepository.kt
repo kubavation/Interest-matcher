@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository
 @Repository
 interface NotifcationRepository : JpaRepository<Notification, Long> {
 
-    fun findByUserId(userId: Long): List<Notification>
+    fun findAllByNotificatedId(notificatedId: Long): List<Notification>
 //
 //    @Query("from Notification n where n.userId = :userId and n.status = :status")
 //    fun findByUserIdWhereStatus(@Param("userId") userId: Long, @Param("status") status: String): List<Notification>

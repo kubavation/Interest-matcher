@@ -69,11 +69,11 @@ public class EventProcessor {
 
 
 
-    @RabbitListener(queues = "notificationQueue")
-    public void test(NotificationDTO notificationDTO) {
-        System.out.println("RECEIVED " + notificationDTO.toString());
-    }
-
+//    @RabbitListener(queues = "notificationQueue")
+//    public void test(NotificationDTO notificationDTO) {
+//        System.out.println("RECEIVED " + notificationDTO.toString());
+//    }
+//
 
 
 

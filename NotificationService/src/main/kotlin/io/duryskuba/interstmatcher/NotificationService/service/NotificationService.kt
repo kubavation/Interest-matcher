@@ -6,4 +6,5 @@ import org.springframework.stereotype.Service
 @Service
 class NotificationService(val notificationRepository: NotifcationRepository) {
 
+
 }
