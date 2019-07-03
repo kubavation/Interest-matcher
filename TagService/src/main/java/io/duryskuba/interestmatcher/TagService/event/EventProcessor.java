@@ -8,6 +8,7 @@ import io.duryskuba.interestmatcher.TagService.resource.TagSubscriber;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.MessageBuilder;
 import org.springframework.amqp.core.MessageProperties;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
@@ -51,13 +52,6 @@ public class EventProcessor {
         notified
                 .entrySet()
                 .forEach(e -> {
-//                    final NotificationDTO notification
-//                          = NotificationDTO.builder()
-//                            .post(post)
-//                            .tags(e.getValue())
-//                            .subscriber(e.getKey())
-//                            .build();
-
                     log.error("SENDING ");
                     rabbitTemplate
                             .convertAndSend(MessageBuilder
@@ -66,6 +60,13 @@ public class EventProcessor {
                             .build());
                 });
 
+    }
+
+
+
+    @RabbitListener
+    public void test(NotificationDTO notificationDTO) {
+        System.out.println("RECEIVED " + notificationDTO.toString());
     }
 
 
