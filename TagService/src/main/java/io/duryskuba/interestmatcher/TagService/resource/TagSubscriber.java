@@ -1,5 +1,6 @@
 package io.duryskuba.interestmatcher.TagService.resource;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
@@ -22,4 +23,8 @@ public class TagSubscriber {
     @CreationTimestamp
     @Column(name = "CREATED_AT")
     private LocalDateTime createdAt;
+
+    public TagSubscriber(TagSubscriberId id) {
+        this.id = id;
+    }
 }

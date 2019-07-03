@@ -52,19 +52,15 @@ public class EventProcessor {
         notified
                 .entrySet()
                 .forEach(e -> {
-                    log.error("SENDING ");
-                    rabbitTemplate
-                            .convertAndSend(MessageBuilder
-                            .withBody(of(post,e.getKey(),e.getValue()).toString().getBytes())
-                            .setContentType(MessageProperties.CONTENT_TYPE_JSON)
-                            .build());
+                      log.error("SENDING ");
+                      rabbitTemplate.convertAndSend("notificationExchange","",of(post,e.getKey(),e.getValue()));
                 });
 
     }
 
 
 
-    @RabbitListener
+    @RabbitListener(queues = "notificationQueue")
     public void test(NotificationDTO notificationDTO) {
         System.out.println("RECEIVED " + notificationDTO.toString());
     }
