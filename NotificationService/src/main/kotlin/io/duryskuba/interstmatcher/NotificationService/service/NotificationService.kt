@@ -11,12 +11,12 @@ class NotificationService(val notificationRepository: NotifcationRepository) {
 
 
 
-    fun createNotification(type: NotificationType, notificationDTO: NotificationDTO) =
-        type.al.apply(this, notificationDTO)
+    fun createNotification(notificationDTO: NotificationDTO) =
+        notificationDTO.type?.al?.apply(this, notificationDTO)
 
 
 
-    fun createPostNotification(notificationDTO: NotificationDTO?): String {
+    fun createPostNotification(notificationDTO: NotificationDTO?): String { //todo change to notificationDTO
 
         var resultContent = ""
         notificationDTO?.tags?.forEach{ resultContent += "#" + it.name }
@@ -27,6 +27,11 @@ class NotificationService(val notificationRepository: NotifcationRepository) {
             resultContent = resultContent.substring(0,60)
 
         return buildContent(notificationDTO?.author,"$resultContent...")
+    }
+
+    fun createInvitationNotification(notificationDTO: NotificationDTO): String { //todo change to notificationDTO
+        //todo
+        return "Użytkownik ${notificationDTO.author} zaprosił Cię do grupy ";
     }
 
     private fun buildContent(author: String?, content: String?)

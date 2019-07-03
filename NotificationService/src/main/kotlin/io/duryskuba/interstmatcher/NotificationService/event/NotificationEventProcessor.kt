@@ -17,7 +17,8 @@ class NotificationEventProcessor(
     fun listenAndNotify(notificationDTO: NotificationDTO) {
         print("here")
         println(notificationDTO.toString())
-        println(notificationService.createPostNotification(notificationDTO.type, notificationDTO))
+        //remove type?
+        println(notificationService.createNotification(notificationDTO))
     }
 
 }

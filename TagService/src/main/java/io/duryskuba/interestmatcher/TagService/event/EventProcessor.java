@@ -11,6 +11,8 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
+
+import static io.duryskuba.interestmatcher.TagService.resource.NotificationType.INVITATION;
 import static io.duryskuba.interestmatcher.TagService.resource.NotificationType.POST;
 
 @Slf4j
@@ -62,18 +64,21 @@ public class EventProcessor {
                       log.error("SENDING ");
                       rabbitTemplate.convertAndSend("notificationExchange","",
                               notificationDTO);
-                              //of(post,e.getKey(),e.getValue()));
+
+                    //todo remove ( for tests )
+                    try {
+                        System.out.println("sleeping");
+                        Thread.sleep(1000);
+                        rabbitTemplate.convertAndSend("notificationExchange", "",
+                                NotificationDTO.builder().objectId(2L).author("author2").type(INVITATION).build());
+
+                    } catch (InterruptedException e1) {
+                        e1.printStackTrace();
+                    }
                 });
 
     }
 
-
-
-//    @RabbitListener(queues = "notificationQueue")
-//    public void test(NotificationDTO notificationDTO) {
-//        System.out.println("RECEIVED " + notificationDTO.toString());
-//    }
-//
 
 
 

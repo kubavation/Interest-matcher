@@ -9,7 +9,7 @@ enum class NotificationType(val al: BiFunction<NotificationService, Notification
     POST(BiFunction<NotificationService, NotificationDTO, String> { service, dto
             -> service.createPostNotification(dto) }),
     INVITATION(BiFunction<NotificationService, NotificationDTO, String> { service, dto
-        -> service.createPostNotification(dto) });
+        -> service.createInvitationNotification(dto) });
 
 
 }
