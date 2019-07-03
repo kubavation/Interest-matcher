@@ -15,12 +15,18 @@ import java.util.Set;
 @Builder
 public class NotificationDTO {
 
-    private PostDTO post;
+    //private PostDTO post;
+
+    private Long objectId;
+    private NotificationType type;
+    private String content;
+    private String author;
+
     private Long subscriber;
     private Collection<Tag> tags;
 
-    public static NotificationDTO of(PostDTO postDTO, Long subscriber, Collection<Tag> tags) {
-        return new NotificationDTO(postDTO, subscriber, tags);
-    }
+//    public static NotificationDTO of(PostDTO postDTO, Long subscriber, Collection<Tag> tags) {
+//        return new NotificationDTO(postDTO, subscriber, tags);
+//    }
 
 }

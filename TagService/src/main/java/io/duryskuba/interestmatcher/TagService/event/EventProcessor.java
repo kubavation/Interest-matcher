@@ -1,10 +1,7 @@
 package io.duryskuba.interestmatcher.TagService.event;
 
 import io.duryskuba.interestmatcher.TagService.repository.TagSubscriberRepository;
-import io.duryskuba.interestmatcher.TagService.resource.NotificationDTO;
-import io.duryskuba.interestmatcher.TagService.resource.PostDTO;
-import io.duryskuba.interestmatcher.TagService.resource.Tag;
-import io.duryskuba.interestmatcher.TagService.resource.TagSubscriber;
+import io.duryskuba.interestmatcher.TagService.resource.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.MessageBuilder;
 import org.springframework.amqp.core.MessageProperties;
@@ -14,8 +11,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
-
-import static io.duryskuba.interestmatcher.TagService.resource.NotificationDTO.of;
+import static io.duryskuba.interestmatcher.TagService.resource.NotificationType.POST;
 
 @Slf4j
 @Component
@@ -52,9 +48,21 @@ public class EventProcessor {
         notified
                 .entrySet()
                 .forEach(e -> {
+
+                      final NotificationDTO notificationDTO =
+                              NotificationDTO.builder()
+                                .subscriber(e.getKey())
+                                .tags(e.getValue())
+                                .content(post.getContent())
+                                .author(post.getAuthor())
+                                .type(POST)
+                                .objectId(post.getPostId())
+                                .build();
+
                       log.error("SENDING ");
                       rabbitTemplate.convertAndSend("notificationExchange","",
-                              of(post,e.getKey(),e.getValue()));
+                              notificationDTO);
+                              //of(post,e.getKey(),e.getValue()));
                 });
 
     }
