@@ -11,6 +11,7 @@ public class PostDto {
 
     private Long postId;
     private Long authorId;
+    private String author;
     private String content;
 
     public PostDto() {}

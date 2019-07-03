@@ -12,6 +12,7 @@ import java.util.Set;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class NotificationDTO {
 
     private PostDTO post;

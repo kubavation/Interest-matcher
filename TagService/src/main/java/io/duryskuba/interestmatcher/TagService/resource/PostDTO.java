@@ -1,9 +1,6 @@
 package io.duryskuba.interestmatcher.TagService.resource;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 @Data
 @AllArgsConstructor
@@ -12,6 +9,7 @@ public class PostDTO {
 
     private Long postId;
     private String content;
+    private String author;
 
     public PostDTO(Long postId) {
         this.postId = postId;

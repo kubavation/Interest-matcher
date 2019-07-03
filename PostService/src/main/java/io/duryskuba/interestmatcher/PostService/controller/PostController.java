@@ -31,6 +31,7 @@ public class PostController {
 
         PostDto test = new PostDto();
         test.setPostId(1L);
+        test.setAuthor("author");
         test.setContent("siema to #ala co #dsa da#a");
 
         log.error("before call");

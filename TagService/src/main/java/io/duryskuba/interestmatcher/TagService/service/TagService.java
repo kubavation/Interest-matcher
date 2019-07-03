@@ -50,7 +50,7 @@ public class TagService {
                 .pullOutTags(postDTO.getContent());
 
         prepareTagsAndNotify(postDTO, result.getValue1());
-        return new PostDTO(postDTO.getPostId(), result.getValue0());
+        return new PostDTO(postDTO.getPostId(), result.getValue0(), postDTO.getAuthor());
     }
 
     @Async
@@ -97,6 +97,8 @@ public class TagService {
     }
 
     private Tag createTagIfNotExists(Tag tag) {
+        System.out.println(tag);
+        System.out.println(tagRepository.findById(tag.getName()).isPresent());
         return
             tagRepository
                 .findById(tag.getName())

@@ -53,7 +53,8 @@ public class EventProcessor {
                 .entrySet()
                 .forEach(e -> {
                       log.error("SENDING ");
-                      rabbitTemplate.convertAndSend("notificationExchange","",of(post,e.getKey(),e.getValue()));
+                      rabbitTemplate.convertAndSend("notificationExchange","",
+                              of(post,e.getKey(),e.getValue()));
                 });
 
     }
