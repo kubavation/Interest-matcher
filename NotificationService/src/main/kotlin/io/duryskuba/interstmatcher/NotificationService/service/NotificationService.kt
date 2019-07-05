@@ -16,8 +16,8 @@ class NotificationService(val notificationRepository: NotifcationRepository) {
 
 
 
-    fun createNotification(notificationDTO: NotificationDTO) =
-        notificationDTO.type?.al?.apply(this, notificationDTO)
+    fun createNotification(notificationDTO: NotificationDTO)
+            = notificationDTO.type?.al?.apply(this, notificationDTO)
 
 
 

@@ -10,4 +10,5 @@ class NotificationController(val notificationService: NotificationService) {
 
     @GetMapping("/notifications/users/{id}")
     fun findAllByUser(@PathVariable id: Long) = notificationService.findAllByUser(id)
+
 }

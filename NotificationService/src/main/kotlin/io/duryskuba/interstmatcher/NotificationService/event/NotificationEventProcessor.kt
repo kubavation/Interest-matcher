@@ -15,9 +15,7 @@ class NotificationEventProcessor(
 
     @RabbitListener(queues = arrayOf("notificationQueue"))
     fun listenAndNotify(notificationDTO: NotificationDTO) {
-        print("here")
         println(notificationDTO.toString())
-        //remove type?
         println(notificationService.createNotification(notificationDTO))
     }
 
