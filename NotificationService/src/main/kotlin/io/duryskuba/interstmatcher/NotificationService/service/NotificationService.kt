@@ -10,6 +10,11 @@ import org.springframework.stereotype.Service
 class NotificationService(val notificationRepository: NotifcationRepository) {
 
 
+    fun findAllByUser(id: Long) = notificationRepository.findAllByNotificatedId(id)
+
+
+
+
 
     fun createNotification(notificationDTO: NotificationDTO) =
         notificationDTO.type?.al?.apply(this, notificationDTO)
@@ -36,5 +41,6 @@ class NotificationService(val notificationRepository: NotifcationRepository) {
 
     private fun buildContent(author: String?, content: String?)
                 = "Użytkownik $author uzył tagów: $content"
+
 
 }

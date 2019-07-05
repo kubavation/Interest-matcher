@@ -9,5 +9,5 @@ import org.springframework.web.bind.annotation.RestController
 class NotificationController(val notificationService: NotificationService) {
 
     @GetMapping("/notifications/users/{id}")
-    fun findByUser(@PathVariable Long id) = notificationService.findByUser(id);
+    fun findAllByUser(@PathVariable id: Long) = notificationService.findAllByUser(id)
 }
