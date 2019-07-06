@@ -18,15 +18,6 @@ import javax.annotation.PostConstruct
 @Service
 class LocationService(val locationRepository: LocationRepository) {
 
-    fun findById(id: UUID) = locationRepository.findById(id)
-
-    fun createLocation(location: Location) = locationRepository.save(location)
-
-    fun findCoordsOfPlace(location: LocationDTO) {
-
-    }
-
-
     lateinit var client: WebClient
     lateinit var page: HtmlPage
 
@@ -42,9 +33,14 @@ class LocationService(val locationRepository: LocationRepository) {
         }
     }
 
+    fun findById(id: UUID) = locationRepository.findById(id)
 
-    //todo return new location ??
-    fun setCoordsFromApi(location: Location) {
+    fun createLocation(location: Location) = locationRepository.save(location)
+
+    //todo function to construct
+
+
+    fun findCoordsOfPlace(location: LocationDTO): Pair<Double, Double> {
 
         val form = page.getHtmlElementById<HtmlForm>("gpx")
         val cityField = form.getInputByName<HtmlTextInput>("city")
@@ -64,21 +60,20 @@ class LocationService(val locationRepository: LocationRepository) {
             throw IllegalArgumentException("coords failed")
         }
 
-
         val lngField = form.getInputByName<HtmlTextInput>("lng")
         val latField = form.getInputByName<HtmlTextInput>("lat")
 
         println(lngField.text)
         println(latField.text)
 
-        location.lat = latField.text.toDouble()
-        location.lan = lngField.text.toDouble()
 
-        //return location
+        return Pair(latField.text.toDouble(),
+                    lngField.text.toDouble())
     }
 
+    //todo
     fun validateLocation(location: Location) {
-        if(location.country == "" || location.city == "")
+        if(location.country.isNullOrEmpty() || location.city.isNullOrEmpty())
             throw UnsupportedOperationException("Bad init values")
     }
 
