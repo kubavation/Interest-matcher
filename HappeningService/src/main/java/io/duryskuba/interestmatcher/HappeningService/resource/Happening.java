@@ -6,6 +6,10 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.UUID;
+
 @Document(collection = "happenings")
 @Data
 @NoArgsConstructor
@@ -13,9 +17,16 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Happening {
 
     @Id
-    private String id;
+    private UUID id;
     private String name;
     private String description;
 
-    public Happening(String id, String name ) { this.id = id; this.name = name; } //todo remove
+    private Long maxNumberOfParticipants;
+    private Long minNumberOfParticipants;
+
+    private LocalDateTime when;
+    private Long locationId;
+
+
+    public Happening(UUID id, String name ) { this.id = id; this.name = name; } //todo remove
 }
