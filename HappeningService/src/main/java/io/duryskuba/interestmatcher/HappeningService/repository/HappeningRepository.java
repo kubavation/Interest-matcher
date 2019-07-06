@@ -1,4 +1,4 @@
-package io.duryskuba.interestmatcher.HappeningService;
+package io.duryskuba.interestmatcher.HappeningService.repository;
 
 import io.duryskuba.interestmatcher.HappeningService.resource.Happening;
 import org.springframework.data.mongodb.repository.MongoRepository;

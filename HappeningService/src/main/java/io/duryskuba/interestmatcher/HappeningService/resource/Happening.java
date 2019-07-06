@@ -15,4 +15,7 @@ public class Happening {
     @Id
     private String id;
     private String name;
+    private String description;
+
+    public Happening(String id, String name ) { this.id = id; this.name = name; } //todo remove
 }
