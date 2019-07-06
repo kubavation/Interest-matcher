@@ -13,11 +13,13 @@ import io.duryskuba.interestmatcher.LocationService.resource.LocationDTO
 import io.duryskuba.interestmatcher.LocationService.util.LocationConverter
 import org.springframework.stereotype.Service
 import java.io.IOException
+import java.lang.RuntimeException
 import java.util.*
 import javax.annotation.PostConstruct
 
 @Service
-class LocationService(val locationRepository: LocationRepository) {
+class LocationService(val locationRepository: LocationRepository,
+                      val locationConverter: LocationConverter) {
 
     lateinit var client: WebClient
     lateinit var page: HtmlPage
@@ -34,17 +36,20 @@ class LocationService(val locationRepository: LocationRepository) {
         }
     }
 
-    fun findById(id: UUID) = locationRepository.findById(id)
+    fun findById(id: UUID): LocationDTO {
+        val location = locationRepository.findById(id)
+                .orElseThrow { RuntimeException("todo resourcenotfound") }
+        return locationConverter.toDto(location)
+    }
 
     fun saveLocation(location: Location) = locationRepository.save(location)
 
 
-    //todo function to construct
-
-    fun createLocation(location: LocationDTO) {
-        LocationConverter.toEntity(location)
+    fun createLocation(location: LocationDTO): LocationDTO {
+       val locWithCoords = setCoordsOfPlace(location)
+       saveLocation(locationConverter.toEntity(locWithCoords))
+       return locWithCoords
     }
-
 
     fun findCoordsOfPlace(location: LocationDTO): Pair<Double, Double> {
 
@@ -76,7 +81,20 @@ class LocationService(val locationRepository: LocationRepository) {
     }
 
 
-    fun validateLocation(location: Location) {
+    fun setCoordsOfPlace(locationDTO: LocationDTO): LocationDTO {
+        validateLocation(locationDTO)
+
+        val (lat, lan) = findCoordsOfPlace(locationDTO)
+        val loc = LocationDTO(locationDTO)
+        loc.lan = lan
+        loc.lat = lat
+
+        return loc
+    }
+
+
+
+    fun validateLocation(location: LocationDTO) {
         if(location.country.isNullOrEmpty() || location.city.isNullOrEmpty())
             throw UnsupportedOperationException("Bad init values")
     }
