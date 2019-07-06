@@ -1,10 +1,19 @@
 package io.duryskuba.interestmatcher.LocationService.service
 
+import com.gargoylesoftware.htmlunit.BrowserVersion
+import com.gargoylesoftware.htmlunit.Page
+import com.gargoylesoftware.htmlunit.WebClient
+import com.gargoylesoftware.htmlunit.html.HtmlButtonInput
+import com.gargoylesoftware.htmlunit.html.HtmlForm
+import com.gargoylesoftware.htmlunit.html.HtmlPage
+import com.gargoylesoftware.htmlunit.html.HtmlTextInput
 import io.duryskuba.interestmatcher.LocationService.repository.LocationRepository
 import io.duryskuba.interestmatcher.LocationService.resource.Location
 import io.duryskuba.interestmatcher.LocationService.resource.LocationDTO
 import org.springframework.stereotype.Service
+import java.io.IOException
 import java.util.*
+import javax.annotation.PostConstruct
 
 @Service
 class LocationService(val locationRepository: LocationRepository) {
@@ -16,4 +25,61 @@ class LocationService(val locationRepository: LocationRepository) {
     fun findCoordsOfPlace(location: LocationDTO) {
 
     }
+
+
+    lateinit var client: WebClient
+    lateinit var page: HtmlPage
+
+    @PostConstruct
+    fun init() {
+        client = WebClient(BrowserVersion.CHROME)
+        client.options.isCssEnabled = false
+
+        try {
+            page = client.getPage("http://gpx-poi.com")
+        } catch (e: IOException) {
+            throw IllegalArgumentException("Wrong url")
+        }
+    }
+
+
+    //todo return new location ??
+    fun setCoordsFromApi(location: Location) {
+
+        val form = page.getHtmlElementById<HtmlForm>("gpx")
+        val cityField = form.getInputByName<HtmlTextInput>("city")
+        val countryField = form.getInputByName<HtmlTextInput>("country")
+        val straddrField = form.getInputByName<HtmlTextInput>("staddr")
+
+        cityField.text = location.city
+        countryField.text = location.country
+        straddrField.text = location.street
+
+        val input = form.getInputByValue<HtmlButtonInput>("Go!")
+
+        try {
+            input.click<Page>()
+            client.waitForBackgroundJavaScript(900)
+        } catch (e: IOException) {
+            throw IllegalArgumentException("coords failed")
+        }
+
+
+        val lngField = form.getInputByName<HtmlTextInput>("lng")
+        val latField = form.getInputByName<HtmlTextInput>("lat")
+
+        println(lngField.text)
+        println(latField.text)
+
+        location.lat = latField.text.toDouble()
+        location.lan = lngField.text.toDouble()
+
+        //return location
+    }
+
+    fun validateLocation(location: Location) {
+        if(location.country == "" || location.city == "")
+            throw UnsupportedOperationException("Bad init values")
+    }
+
 }
