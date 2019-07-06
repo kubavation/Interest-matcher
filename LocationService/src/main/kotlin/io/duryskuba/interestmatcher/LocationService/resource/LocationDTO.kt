@@ -9,5 +9,6 @@ data class LocationDTO (
         var city: String? = null,
         var street: String? = null,
         var lat: Double? = null,
-        var lan: Double? = null
+        var lan: Double? = null,
+        var locationStr: String? = null //+ valid address?
 )

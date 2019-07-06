@@ -10,6 +10,7 @@ import com.gargoylesoftware.htmlunit.html.HtmlTextInput
 import io.duryskuba.interestmatcher.LocationService.repository.LocationRepository
 import io.duryskuba.interestmatcher.LocationService.resource.Location
 import io.duryskuba.interestmatcher.LocationService.resource.LocationDTO
+import io.duryskuba.interestmatcher.LocationService.util.LocationConverter
 import org.springframework.stereotype.Service
 import java.io.IOException
 import java.util.*
@@ -35,9 +36,14 @@ class LocationService(val locationRepository: LocationRepository) {
 
     fun findById(id: UUID) = locationRepository.findById(id)
 
-    fun createLocation(location: Location) = locationRepository.save(location)
+    fun saveLocation(location: Location) = locationRepository.save(location)
+
 
     //todo function to construct
+
+    fun createLocation(location: LocationDTO) {
+        LocationConverter.toEntity(location)
+    }
 
 
     fun findCoordsOfPlace(location: LocationDTO): Pair<Double, Double> {
@@ -66,12 +72,10 @@ class LocationService(val locationRepository: LocationRepository) {
         println(lngField.text)
         println(latField.text)
 
-
-        return Pair(latField.text.toDouble(),
-                    lngField.text.toDouble())
+        return Pair(latField.text.toDouble(), lngField.text.toDouble())
     }
 
-    //todo
+
     fun validateLocation(location: Location) {
         if(location.country.isNullOrEmpty() || location.city.isNullOrEmpty())
             throw UnsupportedOperationException("Bad init values")
