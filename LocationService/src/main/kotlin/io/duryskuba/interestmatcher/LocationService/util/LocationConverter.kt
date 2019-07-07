@@ -9,16 +9,19 @@ class LocationConverter {
 
     fun toEntity(locationDTO: LocationDTO): Location {
         var location: Location = Location()
+        location.id = locationDTO.id
         location.city = locationDTO.city
         location.country = locationDTO.country
         location.street = locationDTO.street
         location.lat = locationDTO.lat
         location.lan = locationDTO.lan
+
         return location
     }
 
     fun toDto(location: Location): LocationDTO {
         var dto: LocationDTO = LocationDTO()
+        dto.id = location.id
         dto.city = location.city
         dto.country = location.country
         dto.street = location.street
