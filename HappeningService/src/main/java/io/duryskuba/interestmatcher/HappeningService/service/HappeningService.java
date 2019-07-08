@@ -60,6 +60,16 @@ public class HappeningService {
         return result;
     }
 
+    public void removeParticipantFromHappening(String happeningId, String participantId) {
+
+        HappeningParticipant participant = happeningParticipantRepository
+                .findFirstByHappeningIdAndParticipantId(happeningId, participantId)
+                .orElseThrow(ResourceNotFoundException::new);
+
+        //todo ( zle, participant id a happening id ??? czy rozroznialne?
+        happeningParticipantRepository.deleteById(participant.getParticipantId());
+    }
+
     @Transactional
     public HappeningParticipantDTO addParticipantToHappening(HappeningParticipantDTO participant) {
 
@@ -91,7 +101,7 @@ public class HappeningService {
     public boolean inHappeningParticipantRange(Happening happening, Long present) {
         return present < happening.getMaxNumberOfParticipants();
     }
-    
+
 
 }
 

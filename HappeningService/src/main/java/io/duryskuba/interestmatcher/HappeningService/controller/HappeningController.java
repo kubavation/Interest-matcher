@@ -42,4 +42,12 @@ public class HappeningController {
         return new ResponseEntity<>(happeningService.addParticipantToHappening(participant), HttpStatus.CREATED);
     }
 
+    @DeleteMapping("/happenings/{happeningId}/participants/{participantId}")
+    public ResponseEntity<Void> removeParticipant(@PathVariable String happeningId,
+                                                  @PathVariable String participantId) {
+        return
+                new ResponseEntity<>(happeningService.removeParticipantFromHappening(happeningId,participantId),
+                        HttpStatus.OK);
+    }
+
 }
