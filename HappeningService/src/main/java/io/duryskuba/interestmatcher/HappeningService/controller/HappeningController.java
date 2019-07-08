@@ -1,12 +1,13 @@
 package io.duryskuba.interestmatcher.HappeningService.controller;
 
 import io.duryskuba.interestmatcher.HappeningService.resource.Happening;
+import io.duryskuba.interestmatcher.HappeningService.resource.HappeningDTO;
 import io.duryskuba.interestmatcher.HappeningService.service.HappeningService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 @RestController
 public class HappeningController {
@@ -24,8 +25,13 @@ public class HappeningController {
     }
 
     @GetMapping("/happenings/{id}")
-    public ResponseEntity<Happening> findById(@PathVariable String id) {
+    public ResponseEntity<Happening> findById(@PathVariable UUID id) {
+        return new ResponseEntity<>(happeningService.findById(id), HttpStatus.OK);
+    }
 
+    @PostMapping("/happenings")
+    public ResponseEntity<Happening> create(@RequestBody HappeningDTO happening) {
+        return
     }
 
 }

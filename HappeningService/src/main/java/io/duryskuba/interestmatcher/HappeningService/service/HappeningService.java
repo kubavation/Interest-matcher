@@ -16,13 +16,15 @@ public class HappeningService {
         this.happeningRepository = happeningRepository;
     }
 
+
+
     public Collection<Happening> findAll() {
         return happeningRepository.findAll();
     }
 
     public Happening findById(UUID id) {
         return happeningRepository.findById(id)
-                    .orElseThrow(RuntimeException::new);
+                    .orElseThrow(RuntimeException::new); //resourcenotfound
     }
 
 
