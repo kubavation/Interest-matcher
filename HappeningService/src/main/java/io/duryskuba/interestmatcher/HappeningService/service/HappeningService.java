@@ -1,6 +1,7 @@
 package io.duryskuba.interestmatcher.HappeningService.service;
 
 import io.duryskuba.interestmatcher.HappeningService.exception.ResourceNotFoundException;
+import io.duryskuba.interestmatcher.HappeningService.repository.HappeningParticipantRepository;
 import io.duryskuba.interestmatcher.HappeningService.repository.HappeningRepository;
 import io.duryskuba.interestmatcher.HappeningService.resource.Happening;
 import io.duryskuba.interestmatcher.HappeningService.resource.HappeningDTO;
@@ -19,10 +20,13 @@ public class HappeningService {
 
     private HappeningRepository happeningRepository;
     private WebClient webClient;
+    private HappeningParticipantRepository happeningParticipantRepository;
 
-    public HappeningService(HappeningRepository happeningRepository, WebClient webClient) {
+    public HappeningService(HappeningRepository happeningRepository, WebClient webClient,
+                            HappeningParticipantRepository happeningParticipantRepository) {
         this.happeningRepository = happeningRepository;
         this.webClient = webClient;
+        this.happeningParticipantRepository = happeningParticipantRepository;
     }
 
     public Collection<Happening> findAll() {
@@ -49,7 +53,7 @@ public class HappeningService {
                     .block()
                     .toEntity(LocationDTO.class)
                     .block().getBody();
-        
+
         HappeningDTO result = new HappeningDTO(dto);
         result.setLocation(location);
         return result;
