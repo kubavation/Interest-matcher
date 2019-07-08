@@ -49,12 +49,9 @@ public class HappeningService {
                     .block()
                     .toEntity(LocationDTO.class)
                     .block().getBody();
-
-        //todo + exception
+        
         HappeningDTO result = new HappeningDTO(dto);
         result.setLocation(location);
-
-        System.out.println(result);
         return result;
     }
 
