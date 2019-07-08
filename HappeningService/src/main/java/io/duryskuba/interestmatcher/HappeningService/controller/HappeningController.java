@@ -31,7 +31,7 @@ public class HappeningController {
 
     @PostMapping("/happenings")
     public ResponseEntity<Happening> create(@RequestBody HappeningDTO happening) {
-        return
+        return new ResponseEntity<>(happeningService.create(happening), HttpStatus.CREATED);
     }
 
 }
