@@ -27,4 +27,15 @@ public class HappeningDTO {
     private LocationDTO location;
 
 
+    public HappeningDTO(HappeningDTO dto) {
+        this.happeningId = dto.happeningId;
+        this.name = dto.name;
+        this.description = dto.description;
+        this.numOfParticipants = dto.numOfParticipants;
+        this.maxNumOfParticipants = dto.maxNumOfParticipants;
+        this.minNumOfParticipants = dto.minNumOfParticipants;
+        this.when = dto.when;
+        this.location = dto.location;
+    }
+
 }
