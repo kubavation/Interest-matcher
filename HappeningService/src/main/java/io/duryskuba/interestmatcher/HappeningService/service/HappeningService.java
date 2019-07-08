@@ -69,7 +69,7 @@ public class HappeningService {
         HappeningParticipant created = happeningParticipantRepository
                 .save(HappeningParticipantConverter.toEntity(participant));
 
-
+        System.out.println("COUNT: " +  x);
 
         return HappeningParticipantDTO.builder().build();
     }
@@ -77,6 +77,14 @@ public class HappeningService {
 
     public void incrementHappeningParticipants(Happening happening) {
 
+        Long x = happeningParticipantRepository.countAllByHappeningId(happening.getId());
+        //AtomicLong actual =
+    }
+
+
+
+    public Long getNumOfActualParticipant(String happeningId) {
+        return happeningParticipantRepository.countAllByHappeningId(happeningId);
     }
 
 

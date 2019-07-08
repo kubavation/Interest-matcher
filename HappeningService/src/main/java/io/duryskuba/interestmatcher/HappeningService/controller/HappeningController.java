@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.file.Path;
+
 @RestController
 public class HappeningController {
 
@@ -34,8 +36,9 @@ public class HappeningController {
         return new ResponseEntity<>(happeningService.create(happening), HttpStatus.CREATED);
     }
 
-    @PutMapping("/happenings/participants")
-    public ResponseEntity<HappeningParticipantDTO> addParticipant(HappeningParticipantDTO participant) {
+    @PutMapping("/happenings/{happeningId}/participants")
+    public ResponseEntity<HappeningParticipantDTO> addParticipant(@RequestBody HappeningParticipantDTO participant,
+                                                                  @PathVariable String happeningId) {
         return new ResponseEntity<>(happeningService.addParticipantToHappening(participant), HttpStatus.CREATED);
     }
 
