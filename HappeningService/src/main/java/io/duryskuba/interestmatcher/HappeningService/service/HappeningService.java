@@ -1,12 +1,11 @@
 package io.duryskuba.interestmatcher.HappeningService.service;
 
+import io.duryskuba.interestmatcher.HappeningService.exception.ResourceNotFoundException;
 import io.duryskuba.interestmatcher.HappeningService.repository.HappeningRepository;
 import io.duryskuba.interestmatcher.HappeningService.resource.Happening;
 import io.duryskuba.interestmatcher.HappeningService.resource.HappeningDTO;
 import io.duryskuba.interestmatcher.HappeningService.resource.LocationDTO;
-import io.duryskuba.interestmatcher.HappeningService.util.HappeningConverter;
 import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.Collection;
@@ -30,14 +29,13 @@ public class HappeningService {
         return happeningRepository.findAll();
     }
 
-    public Happening findById(UUID id) {
+    public Happening findById(String id) {
         return happeningRepository.findById(id)
-                    .orElseThrow(RuntimeException::new); //resourcenotfound
+                    .orElseThrow(() -> new ResourceNotFoundException(id));
     }
 
     public Happening create(HappeningDTO happeningDTO) {
         happeningDTO = setLocationOfHappening(happeningDTO);
-
         return happeningRepository.save(toEntity(happeningDTO));
     }
 
@@ -53,7 +51,6 @@ public class HappeningService {
                     .block().getBody();
 
         //todo + exception
-        System.out.println(location);
         HappeningDTO result = new HappeningDTO(dto);
         result.setLocation(location);
 

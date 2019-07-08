@@ -47,7 +47,7 @@ class LocationService(val locationRepository: LocationRepository,
 
     fun createLocation(location: LocationDTO): LocationDTO {
        val locWithCoords = setCoordsOfPlace(location)
-       locWithCoords.locationId = UUID.randomUUID()
+       locWithCoords.locationId = UUID.randomUUID().toString()
 
        val result = saveLocation(locationConverter.toEntity(locWithCoords))
        val _test_ =  locationConverter.toDto(result)

@@ -4,7 +4,7 @@ import java.util.*
 
 data class LocationDTO (
 
-        var locationId: UUID? = null,
+        var locationId: String? = null,
         var country: String? = null,
         var city: String? = null,
         var street: String? = null,

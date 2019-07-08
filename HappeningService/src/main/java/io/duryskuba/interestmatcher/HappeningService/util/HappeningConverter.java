@@ -11,16 +11,16 @@ public class HappeningConverter {
 
 
     public static Happening toEntity(HappeningDTO dto) {
+
         return
                 Happening.builder()
-                    .id(UUID.randomUUID()) //????
+                    .id(UUID.randomUUID().toString()) //????
                     .description(dto.getDescription())
                     .locationId(dto.getLocation() != null ? dto.getLocation().getLocationId() : null)
                     .maxNumberOfParticipants(dto.getMaxNumOfParticipants())
                     .minNumberOfParticipants(dto.getMinNumOfParticipants())
                     .name(dto.getName())
                     .when(dto.getWhen())
-                    .locationId(dto.getLocationId())
                     .build();
     }
 

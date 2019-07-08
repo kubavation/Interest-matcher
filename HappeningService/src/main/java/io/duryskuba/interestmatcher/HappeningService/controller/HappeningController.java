@@ -7,8 +7,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.UUID;
-
 @RestController
 public class HappeningController {
 
@@ -25,7 +23,7 @@ public class HappeningController {
     }
 
     @GetMapping("/happenings/{id}")
-    public ResponseEntity<Happening> findById(@PathVariable UUID id) {
+    public ResponseEntity<Happening> findById(@PathVariable String id) {
         return new ResponseEntity<>(happeningService.findById(id), HttpStatus.OK);
     }
 

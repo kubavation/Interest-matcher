@@ -8,7 +8,7 @@ import java.util.*
 data class Location(
 
         @Id
-        var id: UUID? = null,
+        var id: String? = null,
         var country: String? = null,
         var city: String? = null,
         var street: String? = null,

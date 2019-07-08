@@ -14,7 +14,7 @@ import java.util.UUID;
 @Data
 public class HappeningDTO {
 
-    private UUID happeningId;
+    private String happeningId;
     private String name;
     private String description;
 
@@ -25,7 +25,7 @@ public class HappeningDTO {
     private LocalDateTime when;
 
     private LocationDTO location;
-    private UUID locationId;
+    private String locationId;
 
 
     public HappeningDTO(HappeningDTO dto) {

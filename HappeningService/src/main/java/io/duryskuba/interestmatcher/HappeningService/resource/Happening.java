@@ -19,7 +19,7 @@ import java.util.UUID;
 public class Happening {
 
     @Id
-    private UUID id;
+    private String id;
     private String name;
     private String description;
 
@@ -27,8 +27,8 @@ public class Happening {
     private Long minNumberOfParticipants;
 
     private LocalDateTime when;
-    private UUID locationId;
+    private String locationId;
 
 
-    public Happening(UUID id, String name ) { this.id = id; this.name = name; } //todo remove
+    public Happening(String id, String name ) { this.id = id; this.name = name; } //todo remove
 }

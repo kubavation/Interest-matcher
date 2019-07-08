@@ -13,7 +13,7 @@ import java.util.UUID;
 @Data
 public class LocationDTO {
 
-    private UUID locationId;
+    private String locationId;
     private String country;
     private String city;
     private String street;
