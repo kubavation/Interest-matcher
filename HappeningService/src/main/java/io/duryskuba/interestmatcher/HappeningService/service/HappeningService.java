@@ -69,16 +69,17 @@ public class HappeningService {
         HappeningParticipant created = happeningParticipantRepository
                 .save(HappeningParticipantConverter.toEntity(participant));
 
-        System.out.println("COUNT: " +  x);
+        assertIfHappeningAvailable(happening);
 
-        return HappeningParticipantDTO.builder().build();
+        return HappeningParticipantConverter.toDTO(created);
     }
 
 
-    public void incrementHappeningParticipants(Happening happening) {
+    public void assertIfHappeningAvailable(Happening happening) {
 
-        Long x = happeningParticipantRepository.countAllByHappeningId(happening.getId());
-        //AtomicLong actual =
+        if(!inHappeningParticipantRange(happening,
+                 happeningParticipantRepository.countAllByHappeningId(happening.getId())))
+            throw new RuntimeException(); //todo
     }
 
 
@@ -87,7 +88,9 @@ public class HappeningService {
         return happeningParticipantRepository.countAllByHappeningId(happeningId);
     }
 
-
+    public boolean inHappeningParticipantRange(Happening happening, Long present) {
+        return present < happening.getMaxNumberOfParticipants();
+    }
 
 }
 
