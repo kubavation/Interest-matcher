@@ -66,10 +66,10 @@ public class HappeningService {
         Happening happening = happeningRepository.findById(participant.getHappeningId())
             .orElseThrow(() -> new ResourceNotFoundException(participant.getHappeningId()));
 
+        assertIfHappeningAvailable(happening);
+
         HappeningParticipant created = happeningParticipantRepository
                 .save(HappeningParticipantConverter.toEntity(participant));
-
-        assertIfHappeningAvailable(happening);
 
         return HappeningParticipantConverter.toDTO(created);
     }
@@ -78,7 +78,7 @@ public class HappeningService {
     public void assertIfHappeningAvailable(Happening happening) {
 
         if(!inHappeningParticipantRange(happening,
-                 happeningParticipantRepository.countAllByHappeningId(happening.getId())))
+                 getNumOfActualParticipant(happening.getId())))
             throw new RuntimeException(); //todo
     }
 
@@ -91,6 +91,7 @@ public class HappeningService {
     public boolean inHappeningParticipantRange(Happening happening, Long present) {
         return present < happening.getMaxNumberOfParticipants();
     }
+    
 
 }
 
