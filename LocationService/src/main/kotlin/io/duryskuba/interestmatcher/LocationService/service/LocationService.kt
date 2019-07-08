@@ -47,10 +47,12 @@ class LocationService(val locationRepository: LocationRepository,
 
     fun createLocation(location: LocationDTO): LocationDTO {
        val locWithCoords = setCoordsOfPlace(location)
-        locWithCoords.id = UUID.randomUUID()
+       locWithCoords.locationId = UUID.randomUUID()
 
-       saveLocation(locationConverter.toEntity(locWithCoords))
-       return locWithCoords
+       val result = saveLocation(locationConverter.toEntity(locWithCoords))
+       val _test_ =  locationConverter.toDto(result)
+        println(_test_)
+        return _test_
     }
 
     fun findCoordsOfPlace(location: LocationDTO): Pair<Double, Double> {

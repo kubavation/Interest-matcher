@@ -4,7 +4,7 @@ import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.Document
 import java.util.*
 
-@Document(collection = "im-location-db")
+@Document(collection = "locations")
 data class Location(
 
         @Id

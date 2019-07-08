@@ -27,7 +27,7 @@ public class Happening {
     private Long minNumberOfParticipants;
 
     private LocalDateTime when;
-    private Long locationId;
+    private UUID locationId;
 
 
     public Happening(UUID id, String name ) { this.id = id; this.name = name; } //todo remove

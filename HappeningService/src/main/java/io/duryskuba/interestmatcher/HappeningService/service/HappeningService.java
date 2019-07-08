@@ -37,6 +37,7 @@ public class HappeningService {
 
     public Happening create(HappeningDTO happeningDTO) {
         happeningDTO = setLocationOfHappening(happeningDTO);
+
         return happeningRepository.save(toEntity(happeningDTO));
     }
 
@@ -55,6 +56,7 @@ public class HappeningService {
         System.out.println(location);
         HappeningDTO result = new HappeningDTO(dto);
         result.setLocation(location);
+
         System.out.println(result);
         return result;
     }

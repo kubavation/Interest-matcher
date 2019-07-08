@@ -5,13 +5,15 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.UUID;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Data
 public class LocationDTO {
 
-    private Long locationId;
+    private UUID locationId;
     private String country;
     private String city;
     private String street;

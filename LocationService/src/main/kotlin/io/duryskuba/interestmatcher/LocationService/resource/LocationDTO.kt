@@ -4,7 +4,7 @@ import java.util.*
 
 data class LocationDTO (
 
-        var id: UUID? = null,
+        var locationId: UUID? = null,
         var country: String? = null,
         var city: String? = null,
         var street: String? = null,
@@ -15,7 +15,7 @@ data class LocationDTO (
 
 
     constructor(dto: LocationDTO) : this() {
-        this.id = dto.id
+        this.locationId = dto.locationId
         this.country = dto.country
         this.street = dto.street
         this.city = dto.city

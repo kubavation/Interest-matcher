@@ -25,6 +25,7 @@ public class HappeningDTO {
     private LocalDateTime when;
 
     private LocationDTO location;
+    private UUID locationId;
 
 
     public HappeningDTO(HappeningDTO dto) {
@@ -36,6 +37,7 @@ public class HappeningDTO {
         this.minNumOfParticipants = dto.minNumOfParticipants;
         this.when = dto.when;
         this.location = dto.location;
+        this.locationId = dto.locationId;
     }
 
 }
