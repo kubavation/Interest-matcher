@@ -73,6 +73,10 @@ public class UserService {
         return toDto(userRepository.save(toEntity(userDto)));
     }
 
+
+
+
+
     public void assertIfUserIsAvailable(UserDto userDto) {
 
         findByUsername(userDto.getUsername())

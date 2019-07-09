@@ -1,5 +1,6 @@
 package io.duryskuba.interestmatcher.UserService.controller;
 
+import io.duryskuba.interestmatcher.UserService.resource.UserDto;
 import io.duryskuba.interestmatcher.UserService.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
@@ -9,9 +10,7 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
@@ -25,13 +24,30 @@ public class UserController {
 
     @GetMapping("/users")
     public ResponseEntity<?> findAll() {
+        return new ResponseEntity<>(userService.findAll(), HttpStatus.OK);
+    }
+
+    @GetMapping("/users/from/{from}/offset/{offset}")
+    public ResponseEntity<?> findAllWithPagination(@PathVariable("from") int from,
+                                                   @PathVariable("offset") int offset) {
+        return new ResponseEntity<>(userService.findAll(from, offset), HttpStatus.OK);
+    }
+
+    @PostMapping("/users")
+    public ResponseEntity<UserDto> create(@RequestBody UserDto userDto) {
+        return new ResponseEntity<>(userService.create(userDto), HttpStatus.CREATED);
+    }
+
+    @PutMapping("/users")
+    public ResponseEntity<UserDto> update(@RequestBody UserDto userDto) {
+        return new ResponseEntity<>(UserDto.builder().build(), HttpStatus.OK); //todo
+    }
+
+    @DeleteMapping("/users/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
 
-    @GetMapping("/user/{id}/posts")
-    public ResponseEntity<?> findUserPosts(@PathVariable Long id) {
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
 
 }
