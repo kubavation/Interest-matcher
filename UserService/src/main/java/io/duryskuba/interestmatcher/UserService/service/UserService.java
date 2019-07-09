@@ -56,6 +56,17 @@ public class UserService {
                     .orElseThrow(RuntimeException::new); //resourcenotfound
     }
 
+    public Optional<UserDto> findByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .map(UserConverter::toDto);
+    }
+
+    public UserDto findByEmailOrThrow(String email) {
+        return userRepository.findByEmail(email)
+                .map(UserConverter::toDto)
+                .orElseThrow(RuntimeException::new); //resourcenotfound
+    }
+
     @Transactional
     public UserDto create(UserDto userDto) {
         assertIfUserIsAvailable(userDto);
@@ -63,10 +74,17 @@ public class UserService {
     }
 
     public void assertIfUserIsAvailable(UserDto userDto) {
+
         findByUsername(userDto.getUsername())
                 .ifPresent(u -> {
                     throw new RuntimeException("todo usernametakenexception");
                 });
+
+        findByEmail(userDto.getEmail())
+                .ifPresent(u -> {
+                    throw new RuntimeException("todo emailtakenexception");
+                });
+
     }
 
 }
