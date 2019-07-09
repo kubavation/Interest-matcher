@@ -2,6 +2,8 @@ package io.duryskuba.interestmatcher.UserService.converter;
 
 import io.duryskuba.interestmatcher.UserService.resource.User;
 import io.duryskuba.interestmatcher.UserService.resource.UserDto;
+import org.springframework.data.domain.Pageable;
+import sun.jvm.hotspot.debugger.Page;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -23,4 +25,5 @@ public class UserConverter {
     public static Collection<UserDto> toDtoCollection() {
         return new ArrayList<>();
     }
+
 }

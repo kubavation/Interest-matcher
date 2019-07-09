@@ -1,11 +1,11 @@
 package io.duryskuba.interestmatcher.UserService.resource;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserDto {
 
     private Long userId;
