@@ -66,7 +66,6 @@ public class HappeningService {
                 .findFirstByHappeningIdAndParticipantId(happeningId, participantId)
                 .orElseThrow(ResourceNotFoundException::new);
 
-        //todo ( zle, participant id a happening id ??? czy rozroznialne?
         happeningParticipantRepository.deleteById(participant.getParticipantId());
     }
 
@@ -88,13 +87,13 @@ public class HappeningService {
     public void assertIfHappeningAvailable(Happening happening) {
 
         if(!inHappeningParticipantRange(happening,
-                 getNumOfActualParticipant(happening.getId())))
+                 getNumOfActualParticipants(happening.getId())))
             throw new RuntimeException(); //todo
     }
 
 
 
-    public Long getNumOfActualParticipant(String happeningId) {
+    public Long getNumOfActualParticipants(String happeningId) {
         return happeningParticipantRepository.countAllByHappeningId(happeningId);
     }
 
