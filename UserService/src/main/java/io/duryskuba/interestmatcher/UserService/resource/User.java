@@ -1,10 +1,9 @@
 package io.duryskuba.interestmatcher.UserService.resource;
 
+import io.duryskuba.interestmatcher.UserService.enums.AccountStatus;
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Data
 @NoArgsConstructor
@@ -18,6 +17,9 @@ public class User {
     private String username;
     private String password;
     private String email;
+
+    @Enumerated(EnumType.STRING)
+    private AccountStatus status;
 
     @Column(name = "FIRST_NAME")
     private String firstName;

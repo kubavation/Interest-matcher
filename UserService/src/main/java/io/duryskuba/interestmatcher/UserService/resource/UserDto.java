@@ -1,5 +1,6 @@
 package io.duryskuba.interestmatcher.UserService.resource;
 
+import io.duryskuba.interestmatcher.UserService.enums.AccountStatus;
 import lombok.*;
 
 @Data
@@ -14,4 +15,5 @@ public class UserDto {
     private String firstName;
     private String lastName;
     private String email;
+    private AccountStatus accountStatus;
 }

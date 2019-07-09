@@ -22,6 +22,7 @@ public class UserConverter {
                     .username(user.getUsername())
                     .password(user.getPassword())
                     .email(user.getEmail())
+                    .accountStatus(user.getStatus())
                     .build();
     }
 
@@ -34,6 +35,7 @@ public class UserConverter {
                     .username(dto.getUsername())
                     .password(dto.getPassword())
                     .email(dto.getEmail())
+                    .status(dto.getAccountStatus())
                     .build();
     }
 
