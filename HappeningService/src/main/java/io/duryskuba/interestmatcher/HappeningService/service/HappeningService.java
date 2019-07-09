@@ -1,9 +1,11 @@
 package io.duryskuba.interestmatcher.HappeningService.service;
 
+import io.duryskuba.interestmatcher.HappeningService.exception.HappeningNotAvailableException;
 import io.duryskuba.interestmatcher.HappeningService.exception.ResourceNotFoundException;
 import io.duryskuba.interestmatcher.HappeningService.repository.HappeningParticipantRepository;
 import io.duryskuba.interestmatcher.HappeningService.repository.HappeningRepository;
 import io.duryskuba.interestmatcher.HappeningService.resource.*;
+import io.duryskuba.interestmatcher.HappeningService.util.HappeningConverter;
 import io.duryskuba.interestmatcher.HappeningService.util.HappeningParticipantConverter;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,6 +14,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import java.util.Collection;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.function.Predicate;
 
 import static io.duryskuba.interestmatcher.HappeningService.util.HappeningConverter.toEntity;
 import static org.springframework.web.reactive.function.BodyInserters.fromObject;
@@ -71,26 +74,26 @@ public class HappeningService {
 
     @Transactional
     public HappeningParticipantDTO addParticipantToHappening(HappeningParticipantDTO participant) {
-
-        Happening happening = happeningRepository.findById(participant.getHappeningId())
-            .orElseThrow(() -> new ResourceNotFoundException(participant.getHappeningId()));
-
-        assertIfHappeningAvailable(happening);
-
-        HappeningParticipant created = happeningParticipantRepository
-                .save(HappeningParticipantConverter.toEntity(participant));
-
-        return HappeningParticipantConverter.toDTO(created);
+        return HappeningParticipantConverter.toDTO( saveParticipantIfHappeningAvailable(participant) );
     }
 
 
-    public void assertIfHappeningAvailable(Happening happening) {
-
-        if(!inHappeningParticipantRange(happening,
-                 getNumOfActualParticipants(happening.getId())))
-            throw new RuntimeException(); //todo
+    public HappeningParticipant saveParticipantIfHappeningAvailable(HappeningParticipantDTO participant) {
+        return happeningRepository.findById(participant.getHappeningId())
+                .filter(this::isHappeningAvailable)
+                .map(h -> happeningParticipantRepository
+                            .save(HappeningParticipantConverter.toEntity(participant)))
+                .orElseThrow(() -> new ResourceNotFoundException(participant.getHappeningId()));
     }
 
+
+    public boolean isHappeningAvailable(Happening happening) {
+
+        if(!inHappeningParticipantRange(happening,getNumOfActualParticipants(happening.getId())))
+            throw new HappeningNotAvailableException(happening.getId());
+
+        return true;
+    }
 
 
     public Long getNumOfActualParticipants(String happeningId) {
