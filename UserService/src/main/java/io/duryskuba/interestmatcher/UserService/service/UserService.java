@@ -1,6 +1,7 @@
 package io.duryskuba.interestmatcher.UserService.service;
 
 import io.duryskuba.interestmatcher.UserService.converter.UserConverter;
+import io.duryskuba.interestmatcher.UserService.enums.AccountStatus;
 import io.duryskuba.interestmatcher.UserService.repository.UserRepository;
 import io.duryskuba.interestmatcher.UserService.resource.User;
 import io.duryskuba.interestmatcher.UserService.resource.UserDto;
@@ -56,6 +57,11 @@ public class UserService {
                     .orElseThrow(RuntimeException::new); //resourcenotfound
     }
 
+    public User findById(Long id) {
+        return userRepository.findById(id)
+                    .orElseThrow(RuntimeException::new);
+    }
+
     public Optional<UserDto> findByEmail(String email) {
         return userRepository.findByEmail(email)
                 .map(UserConverter::toDto);
@@ -73,8 +79,19 @@ public class UserService {
         return toDto(userRepository.save(toEntity(userDto)));
     }
 
+    @Transactional
+    public UserDto update(UserDto userDto, Long userId) {
+        userDto.setUserId(findById(userId).getId());
+        return toDto (
+                userRepository
+                    .save(toEntity(userDto)) );
+    }
 
-
+    public void delete(Long userId) {
+        User existing = findById(userId);
+        existing.setStatus(AccountStatus.DELETED);
+        userRepository.save(existing);
+    }
 
 
     public void assertIfUserIsAvailable(UserDto userDto) {

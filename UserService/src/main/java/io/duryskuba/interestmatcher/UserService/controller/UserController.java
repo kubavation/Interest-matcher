@@ -38,13 +38,14 @@ public class UserController {
         return new ResponseEntity<>(userService.create(userDto), HttpStatus.CREATED);
     }
 
-    @PutMapping("/users")
-    public ResponseEntity<UserDto> update(@RequestBody UserDto userDto) {
-        return new ResponseEntity<>(UserDto.builder().build(), HttpStatus.OK); //todo
+    @PutMapping("/users/{id}")
+    public ResponseEntity<UserDto> update(@RequestBody UserDto userDto, @PathVariable Long id) {
+        return new ResponseEntity<>(userService.update(userDto, id), HttpStatus.OK);
     }
 
     @DeleteMapping("/users/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
+        userService.delete(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
