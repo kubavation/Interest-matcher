@@ -10,5 +10,4 @@ public class UserDto {
 
     private Long userId;
     private String username;
-    //list of posts
 }
