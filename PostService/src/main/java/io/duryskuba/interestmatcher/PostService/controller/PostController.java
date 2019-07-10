@@ -8,8 +8,7 @@ import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -18,38 +17,55 @@ import org.springframework.web.reactive.function.client.WebClient;
 public class PostController {
 
     private PostService postService;
-
-    @Autowired
     private WebClient webClient;
 
-    public PostController(PostService postService) {
+    public PostController(PostService postService, WebClient webClient) {
         this.postService = postService;
+        this.webClient = webClient;
+    }
+
+    @GetMapping("/posts")
+    public ResponseEntity<?> findAll() {
+
+    }
+
+
+    @GetMapping("/posts/users/{id}")
+    public ResponseEntity<?> findAllByUser(@PathVariable Long id) {
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping("/posts")
-    public ResponseEntity<PostDto> create() {
+    public ResponseEntity<PostDto> create(@RequestBody PostDto postDto) {
 
-        PostDto test = new PostDto();
-        test.setPostId(1L);
-        test.setAuthor("author");
-        test.setContent("siema to #ala co #dsa da#a");
-
-        log.error("before call");
-        //todo do serwisu
-        PostDto result = webClient
-                .post()
-                //.uri("http://localhost:8085/tags/create-content")
-                .uri("http://tag-service/tags/create-content")
-                .body(BodyInserters.fromObject(test))
-                .exchange()
-                    .block()
-                    .toEntity(PostDto.class)
-                    .block()
-                        .getBody();
-
-        log.error("after call");
-        log.error(result.toString());
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+
+
+
+
+    //        PostDto test = new PostDto();
+//        test.setPostId(1L);
+//        test.setAuthor("author");
+//        test.setContent("siema to #ala co #dsa da#a");
+//
+//        log.error("before call");
+//        //todo do serwisu
+//        PostDto result = webClient
+//                .post()
+//                //.uri("http://localhost:8085/tags/create-content")
+//                .uri("http://tag-service/tags/create-content")
+//                .body(BodyInserters.fromObject(test))
+//                .exchange()
+//                    .block()
+//                    .toEntity(PostDto.class)
+//                    .block()
+//                        .getBody();
+//
+//        log.error("after call");
+//        log.error(result.toString());
+
+
 }
