@@ -13,3 +13,5 @@ zuul:
     happening-service:
       path: /happenings/**
       serviceId: happening-service
+
+  sensitiveHeaders: Cookie,Set-Cookie

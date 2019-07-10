@@ -22,8 +22,12 @@ public class UserController {
         this.userService = userService;
     }
 
+
+    //@RequestHeader(name = "test") String test
     @GetMapping("/users")
     public ResponseEntity<?> findAll() {
+
+
         return new ResponseEntity<>(userService.findAll(), HttpStatus.OK);
     }
 
