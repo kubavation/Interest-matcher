@@ -2,5 +2,14 @@ zuul:
   prefix: /api
   routes:
     user-service:
-      path: /usr/**
+      path: /users/**
       serviceId: user-service
+    post-service:
+      path: /posts/**
+      serviceId: post-service
+    notification-service:
+      path: /notifications/**
+      serviceId: notification-service
+    happening-service:
+      path: /happenings/**
+      serviceId: happening-service
