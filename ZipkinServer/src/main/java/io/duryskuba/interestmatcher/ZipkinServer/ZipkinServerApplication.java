@@ -2,7 +2,9 @@ package io.duryskuba.interestmatcher.ZipkinServer;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import zipkin2.server.internal.EnableZipkinServer;
 
+@EnableZipkinServer
 @SpringBootApplication
 public class ZipkinServerApplication {
 

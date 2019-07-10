@@ -22,6 +22,13 @@ public class UserController {
         this.userService = userService;
     }
 
+    /**
+     * for testing sleuth purposes
+     */
+    @GetMapping("/")
+    public void test() {
+        log.info("HELLO SLEUTH");
+    }
 
     //@RequestHeader(name = "test") String test
     @GetMapping("/users")
