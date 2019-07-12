@@ -1,5 +1,6 @@
 package io.duryskuba.interestmatcher.UserService.controller;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import io.duryskuba.interestmatcher.UserService.resource.UserDto;
 import io.duryskuba.interestmatcher.UserService.service.UserService;
 import lombok.AllArgsConstructor;
@@ -26,9 +27,15 @@ public class UserController {
      * for testing sleuth purposes
      */
     @GetMapping("/")
+    @HystrixCommand(fallbackMethod = "testHystrix")
     public void test() {
         log.info("HELLO SLEUTH");
     }
+
+    public void testHystrix() {
+        log.info("HYSTRIX TEST");
+    }
+
 
     //@RequestHeader(name = "test") String test
     @GetMapping("/users")
