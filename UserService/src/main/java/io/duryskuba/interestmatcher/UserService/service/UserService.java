@@ -28,19 +28,12 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    /**
-     * @return list of all users
-     */
+
+
     public Collection<UserDto> findAll() {
         return new ArrayList<>();
     }
 
-    /**
-     * @param from
-     * @param offset
-     *
-     * @return page of users
-     */
     public Page<UserDto> findAll(int from, int offset) {
         return userRepository.findAll(PageRequest.of(from, offset))
                     .map(UserConverter::toDto);
