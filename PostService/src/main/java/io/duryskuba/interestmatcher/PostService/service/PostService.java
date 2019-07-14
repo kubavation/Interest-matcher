@@ -36,19 +36,42 @@ public class PostService {
                         .orElseThrow(RuntimeException::new) );
     }
 
+    public Collection<PostDto> findAllByUser(Long id) {
+        return toDTOCollection( postRepository.findAllByAuthorId(id) );
+    }
+
     @Transactional
     public PostDto create(PostDto dto) {
 
-        PostDto result = webClient
-            .post()
-            .uri("http://tag-service/tags/create-content")
-            .body(BodyInserters.fromObject(dto))
-            .exchange()
+        PostDto result = createContent(dto);
+        return toDTO( postRepository.save(toEntity(result)) );
+    }
+
+
+    public void delete(Long postId) {
+
+        //check if author == user
+        //+ delete all tags 
+
+        postRepository.delete(
+            postRepository.findById(postId)
+                .orElseThrow(RuntimeException::new)
+        );
+    }
+
+
+    public PostDto createContent(PostDto dto) {
+
+        return webClient
+                .post()
+                .uri("http://tag-service/tags/create-content")
+                .body(BodyInserters.fromObject(dto))
+                .exchange()
                 .block()
                 .toEntity(PostDto.class)
                 .block()
-                    .getBody();
-
-        return toDTO( postRepository.save(toEntity(result)) );
+                .getBody();
     }
+
+
 }

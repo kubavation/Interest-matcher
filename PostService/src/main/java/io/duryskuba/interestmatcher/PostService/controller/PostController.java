@@ -18,53 +18,25 @@ public class PostController {
 
     private PostService postService;
 
-    public PostController(PostService postService, WebClient webClient) {
+    public PostController(PostService postService) {
         this.postService = postService;
     }
 
 
-
     @GetMapping("/posts")
     public ResponseEntity<?> findAll() {
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(postService.findAll(), HttpStatus.OK);
     }
-
 
     @GetMapping("/posts/users/{id}")
     public ResponseEntity<?> findAllByUser(@PathVariable Long id) {
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(postService.findAllByUser(id), HttpStatus.OK);
     }
 
     @PostMapping("/posts")
     public ResponseEntity<PostDto> create(@RequestBody PostDto postDto) {
-
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(postService.create(postDto), HttpStatus.CREATED);
     }
-
-
-
-
-
-    //        PostDto test = new PostDto();
-//        test.setPostId(1L);
-//        test.setAuthor("author");
-//        test.setContent("siema to #ala co #dsa da#a");
-//
-//        log.error("before call");
-//        //todo do serwisu
-//        PostDto result = webClient
-//                .post()
-//                //.uri("http://localhost:8085/tags/create-content")
-//                .uri("http://tag-service/tags/create-content")
-//                .body(BodyInserters.fromObject(test))
-//                .exchange()
-//                    .block()
-//                    .toEntity(PostDto.class)
-//                    .block()
-//                        .getBody();
-//
-//        log.error("after call");
-//        log.error(result.toString());
 
 
 }
