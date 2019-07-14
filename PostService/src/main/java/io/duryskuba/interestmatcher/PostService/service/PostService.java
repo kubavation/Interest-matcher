@@ -1,6 +1,7 @@
 package io.duryskuba.interestmatcher.PostService.service;
 
 import io.duryskuba.interestmatcher.PostService.enums.PostStatus;
+import io.duryskuba.interestmatcher.PostService.event.PostEventProcessor;
 import io.duryskuba.interestmatcher.PostService.exception.ResourceNotFoundException;
 import io.duryskuba.interestmatcher.PostService.repository.PostRepository;
 import io.duryskuba.interestmatcher.PostService.resource.Post;
@@ -22,10 +23,13 @@ public class PostService {
 
     private PostRepository postRepository;
     private WebClient webClient;
+    private PostEventProcessor postEventProcessor;
 
     public PostService(PostRepository postRepository,
+                       PostEventProcessor postEventProcessor,
                        WebClient webClient) {
         this.postRepository = postRepository;
+        this.postEventProcessor = postEventProcessor;
         this.webClient = webClient;
     }
 
@@ -54,10 +58,12 @@ public class PostService {
     public void delete(Long postId) {
 
         //check if author == user
-        //+ delete all tags
 
         postRepository.findById(postId)
-            .ifPresent(p -> p.setPostStatus(DELETED));
+            .ifPresent(p -> {
+                p.setPostStatus(DELETED);
+                postEventProcessor.emitPostDeletionEvent(postId);
+            });
     }
 
 

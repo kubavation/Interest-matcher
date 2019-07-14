@@ -18,7 +18,6 @@ public class PostEventProcessor {
     @Value("${fanouts.post-creation}")
     private String postCreationExchange;
 
-
     private RabbitTemplate rabbitTemplate;
 
     public PostEventProcessor(RabbitTemplate rabbitTemplate) {
