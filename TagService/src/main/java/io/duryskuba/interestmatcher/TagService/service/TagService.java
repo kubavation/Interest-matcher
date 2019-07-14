@@ -36,6 +36,21 @@ public class TagService {
         this.eventProcessor = eventProcessor;
     }
 
+
+    public Collection<Tag> findAll() {
+        return tagRepository.findAll();
+    }
+
+    public Tag create(Tag tag) {
+
+        tagRepository.findById(tag.getName())
+            .ifPresent(t -> {
+                throw new RuntimeException("This tag already exists");
+            });
+
+        return tagRepository.save(tag);
+    }
+
     public Collection<PostDTO> findAllPostsByTag(String tagName) {
         return postTagRepository
                 .findAllByTagName(tagName)

@@ -18,6 +18,6 @@ public class Tag {
     private String name;
 
     @CreationTimestamp
-    //@Column(name = "CREATED_AT")
+    @Column(name = "CREATED_AT")
     private LocalDateTime createdAt;
 }
