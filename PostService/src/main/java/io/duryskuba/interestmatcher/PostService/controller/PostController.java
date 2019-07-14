@@ -17,11 +17,9 @@ import org.springframework.web.reactive.function.client.WebClient;
 public class PostController {
 
     private PostService postService;
-    private WebClient webClient;
 
     public PostController(PostService postService, WebClient webClient) {
         this.postService = postService;
-        this.webClient = webClient;
     }
 
 
