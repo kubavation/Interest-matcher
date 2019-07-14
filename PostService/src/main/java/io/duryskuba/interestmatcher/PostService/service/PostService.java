@@ -1,5 +1,6 @@
 package io.duryskuba.interestmatcher.PostService.service;
 
+import io.duryskuba.interestmatcher.PostService.enums.PostStatus;
 import io.duryskuba.interestmatcher.PostService.exception.ResourceNotFoundException;
 import io.duryskuba.interestmatcher.PostService.repository.PostRepository;
 import io.duryskuba.interestmatcher.PostService.resource.Post;
@@ -13,6 +14,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import java.util.Collection;
 import java.util.List;
 
+import static io.duryskuba.interestmatcher.PostService.enums.PostStatus.DELETED;
 import static io.duryskuba.interestmatcher.PostService.util.PostConverter.*;
 
 @Service
@@ -54,10 +56,8 @@ public class PostService {
         //check if author == user
         //+ delete all tags
 
-        postRepository.delete(
-            postRepository.findById(postId)
-                .orElseThrow(() -> new ResourceNotFoundException(postId))
-        );
+        postRepository.findById(postId)
+            .ifPresent(p -> p.setPostStatus(DELETED));
     }
 
 
