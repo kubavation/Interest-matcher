@@ -1,3 +1,9 @@
 spring:
   application:
     name: post-service
+  cloud:
+    config:
+      uri: http://localhost:8081
+      username: configUser
+      password: configPassword
+      name: post-service
