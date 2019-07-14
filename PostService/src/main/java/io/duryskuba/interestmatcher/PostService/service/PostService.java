@@ -1,5 +1,6 @@
 package io.duryskuba.interestmatcher.PostService.service;
 
+import io.duryskuba.interestmatcher.PostService.exception.ResourceNotFoundException;
 import io.duryskuba.interestmatcher.PostService.repository.PostRepository;
 import io.duryskuba.interestmatcher.PostService.resource.Post;
 import io.duryskuba.interestmatcher.PostService.resource.PostDto;
@@ -33,7 +34,7 @@ public class PostService {
 
     public PostDto findById(Long id) {
         return toDTO( postRepository.findById(id)
-                        .orElseThrow(RuntimeException::new) );
+                        .orElseThrow(() -> new ResourceNotFoundException(id)) );
     }
 
     public Collection<PostDto> findAllByUser(Long id) {
@@ -51,11 +52,11 @@ public class PostService {
     public void delete(Long postId) {
 
         //check if author == user
-        //+ delete all tags 
+        //+ delete all tags
 
         postRepository.delete(
             postRepository.findById(postId)
-                .orElseThrow(RuntimeException::new)
+                .orElseThrow(() -> new ResourceNotFoundException(postId))
         );
     }
 
