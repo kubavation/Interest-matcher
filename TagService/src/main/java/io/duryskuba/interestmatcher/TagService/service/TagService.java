@@ -10,7 +10,10 @@ import io.duryskuba.interestmatcher.TagService.resource.Tag;
 import io.duryskuba.interestmatcher.TagService.utils.TagContentBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.javatuples.Pair;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -76,13 +79,13 @@ public class TagService {
                 .map(t -> createPostTagEntry(postDTO, t))
                 .forEach(t -> log.error("creating " + t)); //notify subscribers
 
-            log.error("calling emitNorificationEvent");
+            log.info("calling emitNotificationEvent");
             eventProcessor.emitNotificationEvent(tags, postDTO);
     }
 
 
     public Collection<Tag> createTags(Collection<Tag> tags) {
-        log.debug("creating tags if not exists already");
+        log.info("creating tags if not exists already");
         return
                 tags.stream()
                     .map(this::createTagIfNotExists)
@@ -119,5 +122,13 @@ public class TagService {
                 .findById(tag.getName())
                 .orElse(tagRepository.save(tag));
     }
+
+
+    @RabbitListener(queues = )
+    public void onPostDeletion() {
+        //todo
+    }
+
+
 
 }

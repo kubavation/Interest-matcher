@@ -36,7 +36,7 @@ public class EventProcessor {
         toEmit
                 .stream()
                 .forEach(t -> {
-                    System.out.println(t);
+                    log.info(t.toString());
                     tagSubscriberRepository
                             .findAllById_TagName(t.getName()).stream()
                             .forEach(u -> {
