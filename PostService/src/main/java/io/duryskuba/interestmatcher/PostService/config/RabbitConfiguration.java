@@ -17,6 +17,13 @@ public class RabbitConfiguration {
     @Value("${fanouts.post-creation}")
     private String postCreationExchange;
 
+    @Value("${queues.post-deletion}")
+    private String postDeletionQueue;
+    @Value("${fanouts.post-deletion}")
+    private String postDeletionExchange;
+
+
+
 
     @Bean
     Queue postCreationQueue() {
@@ -29,10 +36,28 @@ public class RabbitConfiguration {
     }
 
     @Bean
-    Binding tagNotificationBinding(@Qualifier("postCreationQueue") Queue queue,
+    Binding postCreationBinding(@Qualifier("postCreationQueue") Queue queue,
                                    @Qualifier("postCreationExchange") FanoutExchange exchange) {
         return BindingBuilder.bind(queue).to(exchange);
     }
+
+
+    @Bean
+    Queue postDeletionQueue() {
+        return new Queue(postDeletionQueue, true);
+    }
+
+    @Bean
+    FanoutExchange postDeletionExchange() {
+        return new FanoutExchange(postDeletionExchange);
+    }
+
+    @Bean
+    Binding postDeletionBinding(@Qualifier("postDeletionQueue") Queue queue,
+                                   @Qualifier("postDeletionExchange") FanoutExchange exchange) {
+        return BindingBuilder.bind(queue).to(exchange);
+    }
+
 
 
     @Bean
