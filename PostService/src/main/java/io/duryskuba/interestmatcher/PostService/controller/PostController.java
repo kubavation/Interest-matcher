@@ -28,6 +28,11 @@ public class PostController {
         return new ResponseEntity<>(postService.findAll(), HttpStatus.OK);
     }
 
+    @GetMapping("/posts/{id}")
+    public ResponseEntity<PostDto> findById(Long id) {
+        return new ResponseEntity<>(postService.findById(id), HttpStatus.OK);
+    }
+
     @GetMapping("/posts/users/{id}")
     public ResponseEntity<?> findAllByUser(@PathVariable Long id) {
         return new ResponseEntity<>(postService.findAllByUser(id), HttpStatus.OK);
