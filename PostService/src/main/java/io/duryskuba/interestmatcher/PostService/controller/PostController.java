@@ -38,5 +38,9 @@ public class PostController {
         return new ResponseEntity<>(postService.create(postDto), HttpStatus.CREATED);
     }
 
-
+    @DeleteMapping("/posts/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        postService.delete(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }
