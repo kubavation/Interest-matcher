@@ -1,10 +1,13 @@
 package io.duryskuba.interestmatcher.PostService.resource;
 
+import lombok.Data;
+
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import java.time.LocalDateTime;
 
 @MappedSuperclass
+@Data
 abstract class BaseEntity {
 
     @Column(name = "CREATED_AT")

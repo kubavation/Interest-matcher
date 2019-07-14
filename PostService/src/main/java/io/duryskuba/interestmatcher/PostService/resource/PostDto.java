@@ -1,5 +1,6 @@
 package io.duryskuba.interestmatcher.PostService.resource;
 
+import io.duryskuba.interestmatcher.PostService.enums.PostType;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -17,5 +18,8 @@ public class PostDto {
 
     private Long groupId;
     private LocalDateTime createdAt;
+    private PostType postType;
+
+    //todo moze oddzielne dto dla global/group?
 
 }
