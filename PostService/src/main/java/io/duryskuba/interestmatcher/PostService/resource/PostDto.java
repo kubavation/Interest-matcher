@@ -1,12 +1,13 @@
 package io.duryskuba.interestmatcher.PostService.resource;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
+import java.time.LocalDateTime;
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Data
-//@Builder
 public class PostDto {
 
     private Long postId;
@@ -14,5 +15,7 @@ public class PostDto {
     private String author;
     private String content;
 
-    public PostDto() {}
+    private Long groupId;
+    private LocalDateTime createdAt;
+
 }

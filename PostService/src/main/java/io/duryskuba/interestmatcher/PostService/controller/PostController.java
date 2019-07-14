@@ -24,6 +24,8 @@ public class PostController {
         this.webClient = webClient;
     }
 
+
+
     @GetMapping("/posts")
     public ResponseEntity<?> findAll() {
         return new ResponseEntity<>(HttpStatus.OK);
@@ -37,7 +39,6 @@ public class PostController {
 
     @PostMapping("/posts")
     public ResponseEntity<PostDto> create(@RequestBody PostDto postDto) {
-
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
