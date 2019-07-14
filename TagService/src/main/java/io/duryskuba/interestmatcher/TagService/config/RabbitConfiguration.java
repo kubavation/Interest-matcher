@@ -8,15 +8,19 @@ import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class RabbitConfiguration {
 
-    //@Value("${queue.tag_notification}")
+    @Value("${queues.post-deletion}")
+    private String postDeletionQueue;
+    @Value("${fanouts.post-deletion}")
+    private String postDeletionExchange;
+
     private String notificationQueue = "notificationQueue";
-    //@Value("${fanout.tag_notification}")
     private String notificationExchange = "notificationExchange";
 
 
@@ -35,6 +39,24 @@ public class RabbitConfiguration {
                                    @Qualifier("notificationExchange") FanoutExchange exchange) {
         return BindingBuilder.bind(queue).to(exchange);
     }
+
+
+    @Bean
+    Queue postDeletionQueue() {
+        return new Queue(postDeletionQueue, true);
+    }
+
+    @Bean
+    FanoutExchange postDeletionExchange() {
+        return new FanoutExchange(postDeletionExchange);
+    }
+
+    @Bean
+    Binding postDeletionBinding(@Qualifier("postDeletionQueue") Queue queue,
+                                @Qualifier("postDeletionExchange") FanoutExchange exchange) {
+        return BindingBuilder.bind(queue).to(exchange);
+    }
+
 
 
     @Bean
