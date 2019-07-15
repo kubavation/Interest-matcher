@@ -36,9 +36,9 @@ class NotificationService(val notificationRepository: NotifcationRepository) {
 
     }
 
-    fun createInvitationNotification(notificationDTO: NotificationDTO): String { //todo change to notificationDTO
+    private fun createInvitationNotification(notificationDTO: NotificationDTO): String { //todo change to notificationDTO
         //todo
-        return "Użytkownik ${notificationDTO.author} zaprosił Cię do grupy ";
+        return "Użytkownik ${notificationDTO.author} zaprosił Cię do grupy "
     }
 
     private fun buildTagNotificationContent(author: String?, content: String?)
