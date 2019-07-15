@@ -20,8 +20,7 @@ class NotificationService(val notificationRepository: NotifcationRepository) {
             = notificationDTO.type?.al?.apply(this, notificationDTO)
 
 
-
-    fun createPostNotification(notificationDTO: NotificationDTO?): String { //todo change to notificationDTO
+    fun createTagNotification(notificationDTO: NotificationDTO?): String { //todo change to notificationDTO
 
         var resultContent = ""
         notificationDTO?.tags?.forEach{ resultContent += "#" + it.name }
@@ -31,7 +30,10 @@ class NotificationService(val notificationRepository: NotifcationRepository) {
         if(resultContent.length > 60)
             resultContent = resultContent.substring(0,60)
 
-        return buildContent(notificationDTO?.author,"$resultContent...")
+
+        //todo build notificationDTO
+       return buildTagNotificationContent(notificationDTO?.author,"$resultContent...")
+
     }
 
     fun createInvitationNotification(notificationDTO: NotificationDTO): String { //todo change to notificationDTO
@@ -39,7 +41,7 @@ class NotificationService(val notificationRepository: NotifcationRepository) {
         return "Użytkownik ${notificationDTO.author} zaprosił Cię do grupy ";
     }
 
-    private fun buildContent(author: String?, content: String?)
+    private fun buildTagNotificationContent(author: String?, content: String?)
                 = "Użytkownik $author uzył tagów: $content"
 
 
