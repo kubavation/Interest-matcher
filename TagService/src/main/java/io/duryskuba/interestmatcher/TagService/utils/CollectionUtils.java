@@ -7,12 +7,14 @@ import java.util.stream.Stream;
 
 public class CollectionUtils {
 
+    @SafeVarargs
     public static <T> HashSet<T> of(T... items) {
        return Stream.of(items)
                 .collect(Collectors.toCollection(HashSet::new));
     }
 
-    public static <T> HashSet<T> of(HashSet<T>... sets) {
+    @SafeVarargs
+    public static <T> HashSet<T> merge(HashSet<T>... sets) {
         HashSet<T> result = new HashSet<>();
         for(HashSet<T> set : sets) {
             result.addAll(set);

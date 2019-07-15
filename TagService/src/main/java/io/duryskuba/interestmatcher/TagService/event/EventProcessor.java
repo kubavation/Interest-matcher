@@ -43,24 +43,10 @@ public class EventProcessor {
                     log.info(t.toString());
 
                     tagSubscriberRepository
-                            .findAllById_TagName(t.getName()).stream()
-                            .forEach(u -> {
-
-                                notified.merge(u.getId().getUserId(),
-                                        CollectionUtils.of(t),
-                                        (s1,s2) -> {
-                                            s2.addAll(s1);
-                                            return s2;
-                                        });
-
-
-                                                //Stream.of(s1,s2).collect(Collectors.toSet()));
-
-                                if (!notified.containsKey(u.getId().getUserId()))
-                                    notified.put(u.getId().getUserId(), new HashSet<>(Arrays.asList(t)));
-                                else
-                                    notified.get(u.getId().getUserId()).add(t);
-                            });
+                            .findAllById_TagName(t.getName())
+                            .forEach(u ->
+                                notified.merge(u.getId().getUserId(), CollectionUtils.of(t),
+                                        CollectionUtils::merge));
                 });
 
         notified
@@ -75,6 +61,14 @@ public class EventProcessor {
 
 
 
+
+    /*
+
+        if (!notified.containsKey(u.getId().getUserId()))
+            notified.put(u.getId().getUserId(), new HashSet<>(Arrays.asList(t)));
+        else
+            notified.get(u.getId().getUserId()).add(t);
+     */
 
 
 }
