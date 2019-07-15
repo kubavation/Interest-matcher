@@ -20,12 +20,14 @@ public class RabbitConfiguration {
     @Value("${fanouts.post-deletion}")
     private String postDeletionExchange;
 
-    private String notificationQueue = "notificationQueue";
-    private String notificationExchange = "notificationExchange";
+    @Value("${queues.tag-notification}")
+    private String notificationQueue;
+    @Value("${fanouts.tag-notification}")
+    private String notificationExchange;
 
 
     @Bean
-    Queue notficationQueue() {
+    Queue notificationQueue() {
         return new Queue(notificationQueue, true);
     }
 
@@ -35,7 +37,7 @@ public class RabbitConfiguration {
     }
 
     @Bean
-    Binding notificationBinding(@Qualifier("notficationQueue") Queue queue,
+    Binding notificationBinding(@Qualifier("notificationQueue") Queue queue,
                                    @Qualifier("notificationExchange") FanoutExchange exchange) {
         return BindingBuilder.bind(queue).to(exchange);
     }

@@ -19,6 +19,8 @@ public class CollectionUtils {
         for(HashSet<T> set : sets) {
             result.addAll(set);
         }
+
+        System.out.println(result);
         return result;
     }
 

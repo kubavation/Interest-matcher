@@ -10,17 +10,17 @@ import static io.duryskuba.interestmatcher.TagService.resource.NotificationType.
 
 public class NotificationConverter {
 
-    public static NotificationDTO toTagNotification(Long subscriberId, Collection<Tag> tags, PostDTO post) {
 
+    public static NotificationDTO toTagNotification(Long subscriberId, Collection<Tag> tags, PostDTO post) {
         return
                 NotificationDTO.builder()
-                        .subscriber(subscriberId)
-                        .tags(tags)
-                        .content(post.getContent())
-                        .author(post.getAuthor())
-                        .type(POST) //POST_TAG? //todo other: POST, GROUP_POST ...
-                        .objectId(post.getPostId())
-                        .build();
+                    .subscriber(subscriberId)
+                    .tags(tags)
+                    .content(post.getContent())
+                    .author(post.getAuthor())
+                    .type(POST) //POST_TAG? //todo other: POST, GROUP_POST ...
+                    .objectId(post.getPostId())
+                    .build();
     }
 
 

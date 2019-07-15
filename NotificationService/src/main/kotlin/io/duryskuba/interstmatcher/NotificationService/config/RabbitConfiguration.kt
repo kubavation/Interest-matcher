@@ -7,16 +7,17 @@ import org.springframework.amqp.core.Queue
 import org.springframework.amqp.rabbit.connection.ConnectionFactory
 import org.springframework.amqp.rabbit.core.RabbitTemplate
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
 @Configuration
 class RabbitConfiguration {
 
-    //@Value("\${queue.notification}")
-    private val notificationQueue: String? = "notificationQueue"
-    //@Value("\${fanout.notification}")
-    private val notificationExchange: String? = "notificationExchange"
+    @Value("\${queues.tag-notification}")
+    private val notificationQueue: String? = ""
+    @Value("\${fanouts.tag-notification}")
+    private val notificationExchange: String? = ""
 
     @Bean
     fun notificationQueue(): Queue = Queue(notificationQueue,true)
