@@ -1,6 +1,7 @@
 package io.duryskuba.interestmatcher.TagService.service;
 
 import io.duryskuba.interestmatcher.TagService.event.EventProcessor;
+import io.duryskuba.interestmatcher.TagService.event.PostDeletionEvent;
 import io.duryskuba.interestmatcher.TagService.repository.PostTagRepository;
 import io.duryskuba.interestmatcher.TagService.repository.TagRepository;
 import io.duryskuba.interestmatcher.TagService.resource.PostDTO;
@@ -30,6 +31,7 @@ public class TagService {
     private PostTagRepository postTagRepository;
     private TagContentBuilder tagContentBuilder;
     private EventProcessor eventProcessor;
+
 
     public TagService(TagRepository tagRepository, PostTagRepository postTagRepository,
                       TagContentBuilder tagContentBuilder, EventProcessor eventProcessor) {
@@ -64,7 +66,7 @@ public class TagService {
 
     public PostDTO createTagContentFromPost(PostDTO postDTO) {
 
-        Pair<String, List<Tag>> result =  tagContentBuilder
+        Pair<String, List<Tag>> result = tagContentBuilder
                 .pullOutTags(postDTO.getContent());
 
         prepareTagsAndNotify(postDTO, result.getValue1());
@@ -115,8 +117,6 @@ public class TagService {
     }
 
     private Tag createTagIfNotExists(Tag tag) {
-        System.out.println(tag);
-        System.out.println(tagRepository.findById(tag.getName()).isPresent());
         return
             tagRepository
                 .findById(tag.getName())
@@ -124,9 +124,12 @@ public class TagService {
     }
 
 
-    @RabbitListener(queues = )
-    public void onPostDeletion() {
-        //todo
+    @RabbitListener(queues = "postDeletionQueue")
+    public void onPostDeletion(PostDeletionEvent event) {
+        postTagRepository
+            .findAllById_PostId(event.getPostId())
+            .stream()
+                .forEach(postTagRepository::delete);
     }
 
 
