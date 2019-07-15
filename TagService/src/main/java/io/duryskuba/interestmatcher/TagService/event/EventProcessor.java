@@ -2,6 +2,8 @@ package io.duryskuba.interestmatcher.TagService.event;
 
 import io.duryskuba.interestmatcher.TagService.repository.TagSubscriberRepository;
 import io.duryskuba.interestmatcher.TagService.resource.*;
+import io.duryskuba.interestmatcher.TagService.utils.CollectionUtils;
+import io.duryskuba.interestmatcher.TagService.utils.NotificationConverter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.MessageBuilder;
 import org.springframework.amqp.core.MessageProperties;
@@ -11,9 +13,12 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static io.duryskuba.interestmatcher.TagService.resource.NotificationType.INVITATION;
 import static io.duryskuba.interestmatcher.TagService.resource.NotificationType.POST;
+import static io.duryskuba.interestmatcher.TagService.utils.NotificationConverter.toTagNotification;
 
 @Slf4j
 @Component
@@ -29,17 +34,28 @@ public class EventProcessor {
     }
 
     @Async
-    public void emitNotificationEvent(Collection<Tag> toEmit, final PostDTO post) {
+    public void emitTagNotificationEvent(List<Tag> toEmit, final PostDTO post) {
 
         Map<Long, HashSet<Tag>> notified = new HashMap<>();
 
         toEmit
-                .stream()
-                .forEach(t -> {
+            .forEach(t -> {
                     log.info(t.toString());
+
                     tagSubscriberRepository
                             .findAllById_TagName(t.getName()).stream()
                             .forEach(u -> {
+
+                                notified.merge(u.getId().getUserId(),
+                                        CollectionUtils.of(t),
+                                        (s1,s2) -> {
+                                            s2.addAll(s1);
+                                            return s2;
+                                        });
+
+
+                                                //Stream.of(s1,s2).collect(Collectors.toSet()));
+
                                 if (!notified.containsKey(u.getId().getUserId()))
                                     notified.put(u.getId().getUserId(), new HashSet<>(Arrays.asList(t)));
                                 else
@@ -50,34 +66,13 @@ public class EventProcessor {
         notified
                 .entrySet()
                 .forEach(e -> {
-
-                      final NotificationDTO notificationDTO =
-                              NotificationDTO.builder()
-                                .subscriber(e.getKey())
-                                .tags(e.getValue())
-                                .content(post.getContent())
-                                .author(post.getAuthor())
-                                .type(POST)
-                                .objectId(post.getPostId())
-                                .build();
-
-                      log.error("SENDING ");
+                      log.info("SENDING ");
                       rabbitTemplate.convertAndSend("notificationExchange","",
-                              notificationDTO);
+                              toTagNotification(e.getKey(), e.getValue(), post));
 
-                    //todo remove ( for tests )
-                    try {
-                        System.out.println("sleeping");
-                        Thread.sleep(1000);
-                        rabbitTemplate.convertAndSend("notificationExchange", "",
-                                NotificationDTO.builder().objectId(2L).author("author2").type(INVITATION).build());
-
-                    } catch (InterruptedException e1) {
-                        e1.printStackTrace();
-                    }
                 });
-
     }
+
 
 
 

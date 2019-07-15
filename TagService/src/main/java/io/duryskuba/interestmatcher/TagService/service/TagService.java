@@ -79,10 +79,10 @@ public class TagService {
                 .stream()
                 .map(this::createTagIfNotExists)
                 .map(t -> createPostTagEntry(postDTO, t))
-                .forEach(t -> log.error("creating " + t)); //notify subscribers
+                .forEach(t -> log.error("creating " + t));
 
             log.info("calling emitNotificationEvent");
-            eventProcessor.emitNotificationEvent(tags, postDTO);
+            eventProcessor.emitTagNotificationEvent(tags, postDTO);
     }
 
 
