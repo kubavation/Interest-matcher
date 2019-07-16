@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service
 class NotificationService(val notificationRepository: NotifcationRepository) {
 
 
+    fun findAll() = notificationRepository.findAll()
+
     fun findAllByUser(id: Long) = notificationRepository.findAllByNotificatedId(id)
 
 
@@ -17,7 +19,7 @@ class NotificationService(val notificationRepository: NotifcationRepository) {
 
 
     fun createNotification(notificationDTO: NotificationDTO)
-            = notificationDTO.type?.al?.apply(this, notificationDTO)
+            = notificationDTO.type?.func?.apply(this, notificationDTO)
 
 
     fun createTagNotification(notificationDTO: NotificationDTO?): String { //todo change to notificationDTO
@@ -36,13 +38,20 @@ class NotificationService(val notificationRepository: NotifcationRepository) {
 
     }
 
-    private fun createInvitationNotification(notificationDTO: NotificationDTO): String { //todo change to notificationDTO
+    fun createInvitationNotification(notificationDTO: NotificationDTO): String { //todo change to notificationDTO
         //todo
         return "Użytkownik ${notificationDTO.author} zaprosił Cię do grupy "
     }
 
+
+
     private fun buildTagNotificationContent(author: String?, content: String?)
                 = "Użytkownik $author uzył tagów: $content"
 
+
+
+    //private fun
+
+    //todo url builder
 
 }

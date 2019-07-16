@@ -4,7 +4,7 @@ import io.duryskuba.interstmatcher.NotificationService.service.NotificationServi
 import java.util.function.BiFunction
 
 
-enum class NotificationType(val al: BiFunction<NotificationService, NotificationDTO, String>) {
+enum class NotificationType(val func: BiFunction<NotificationService, NotificationDTO, String>) {
 
     POST(BiFunction<NotificationService, NotificationDTO, String> { service, dto
             -> service.createTagNotification(dto) }),
