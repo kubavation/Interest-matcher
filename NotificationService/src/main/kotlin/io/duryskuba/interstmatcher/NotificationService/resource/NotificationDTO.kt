@@ -8,5 +8,6 @@ data class NotificationDTO (
     val content: String? = "",
     val author: String? = "",
     val subscriber: Long = 0,
-    val tags: Collection<Tag>? = ArrayList()
+    val tags: Collection<Tag>? = ArrayList(),
+    val status: NotificationStatus? = null
 )
