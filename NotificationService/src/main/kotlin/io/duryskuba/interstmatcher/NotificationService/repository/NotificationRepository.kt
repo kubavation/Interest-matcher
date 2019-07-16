@@ -7,7 +7,7 @@ import org.springframework.data.repository.query.Param
 import org.springframework.stereotype.Repository
 
 @Repository
-interface NotifcationRepository : JpaRepository<Notification, Long> {
+interface NotificationRepository : JpaRepository<Notification, Long> {
 
     fun findAllByNotificatedId(notificatedId: Long): List<Notification>
 //
