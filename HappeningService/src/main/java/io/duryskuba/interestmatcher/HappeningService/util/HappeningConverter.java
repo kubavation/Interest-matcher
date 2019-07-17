@@ -14,18 +14,30 @@ public class HappeningConverter {
 
         return
                 Happening.builder()
-                    .id(UUID.randomUUID().toString()) //????
+                    .id(UUID.randomUUID().toString())
                     .description(dto.getDescription())
                     .locationId(dto.getLocation() != null ? dto.getLocation().getLocationId() : null)
                     .maxNumberOfParticipants(dto.getMaxNumOfParticipants())
                     .minNumberOfParticipants(dto.getMinNumOfParticipants())
                     .name(dto.getName())
                     .when(dto.getWhen())
+                    .locationStr(dto.getLocation() != null ? dto.getLocation().getLocationStr() : null )
                     .build();
     }
 
     public static HappeningDTO toDTO(Happening happening) {
-        return HappeningDTO.builder().build();
+
+        return
+                HappeningDTO.builder()
+                    .happeningId(happening.getId())
+                    .description(happening.getDescription())
+                    .locationId(happening.getLocationId())
+                    .locationStr(happening.getLocationStr())
+                    .maxNumOfParticipants(happening.getMaxNumberOfParticipants())
+                    .minNumOfParticipants(happening.getMinNumberOfParticipants())
+                    //.numOfParticipants(happening.get)
+                    //todo number of participants
+                .build();
     }
 
 }

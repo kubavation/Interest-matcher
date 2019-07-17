@@ -25,12 +25,9 @@ public class HappeningServiceApplication {
 	@Bean
 	CommandLineRunner commandLineRunner(HappeningRepository happeningRepository) {
 		return (args) -> {
-			happeningRepository.save(new Happening(UUID.randomUUID().toString(), "testowe"));
-			log.error("::SAVED::");
+			//happeningRepository.save(new Happening(UUID.randomUUID().toString(), "testowe"));
 
-
-
-			List<Happening> happ  = happeningRepository.findAll();
+			List<Happening> happ = happeningRepository.findAll();
 			happ.forEach(System.out::println);
 		};
 	}

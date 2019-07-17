@@ -50,9 +50,8 @@ class LocationService(val locationRepository: LocationRepository,
        locWithCoords.locationId = UUID.randomUUID().toString()
 
        val result = saveLocation(locationConverter.toEntity(locWithCoords))
-       val _test_ =  locationConverter.toDto(result)
-        println(_test_)
-        return _test_
+       println(locationConverter.toDto(result))
+       return locationConverter.toDto(result)
     }
 
     fun findCoordsOfPlace(location: LocationDTO): Pair<Double, Double> {

@@ -26,6 +26,7 @@ public class HappeningDTO {
 
     private LocationDTO location;
     private String locationId;
+    private String locationStr;
 
 
     public HappeningDTO(HappeningDTO dto) {

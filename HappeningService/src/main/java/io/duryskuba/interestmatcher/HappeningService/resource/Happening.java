@@ -28,6 +28,7 @@ public class Happening {
 
     private LocalDateTime when;
     private String locationId;
+    private String locationStr;
 
 
     public Happening(String id, String name ) { this.id = id; this.name = name; } //todo remove

@@ -65,7 +65,8 @@ public class HappeningService {
 
     public void removeParticipantFromHappening(String happeningId, String participantId) {
 
-        HappeningParticipant participant = happeningParticipantRepository
+        HappeningParticipant participant =
+                happeningParticipantRepository
                 .findFirstByHappeningIdAndParticipantId(happeningId, participantId)
                 .orElseThrow(ResourceNotFoundException::new);
 

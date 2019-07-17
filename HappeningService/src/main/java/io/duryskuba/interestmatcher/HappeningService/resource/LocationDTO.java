@@ -18,6 +18,8 @@ public class LocationDTO {
     private String city;
     private String street;
 
+    private String locationStr;
+
     private double lat;
     private double lan;
 }

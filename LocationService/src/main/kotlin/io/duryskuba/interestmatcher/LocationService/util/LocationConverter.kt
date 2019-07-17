@@ -27,7 +27,7 @@ class LocationConverter {
         dto.street = location.street
         dto.lan = location.lan
         dto.lat = location.lat
-        dto.locationStr = "${dto.country}, ${dto.city}, ${dto.street}"
+        dto.locationStr = "${location.country}, ${location.city}, ${location.street}"
 
         return dto
     }

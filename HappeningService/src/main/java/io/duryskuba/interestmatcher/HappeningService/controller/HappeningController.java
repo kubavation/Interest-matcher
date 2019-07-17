@@ -45,9 +45,8 @@ public class HappeningController {
     @DeleteMapping("/happenings/{happeningId}/participants/{participantId}")
     public ResponseEntity<Void> removeParticipant(@PathVariable String happeningId,
                                                   @PathVariable String participantId) {
-        return
-                new ResponseEntity<>(happeningService.removeParticipantFromHappening(happeningId,participantId),
-                        HttpStatus.OK);
+        happeningService.removeParticipantFromHappening(happeningId,participantId);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }
