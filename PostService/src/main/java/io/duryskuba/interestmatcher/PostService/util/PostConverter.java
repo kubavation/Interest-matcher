@@ -16,6 +16,7 @@ public class PostConverter {
         return initializePost(dto)
                 .authorId(dto.getAuthorId())
                 .content(dto.getContent())
+                .author(dto.getAuthor())
                 .postStatus(ACTIVE)
                 .build();
     }
@@ -24,6 +25,7 @@ public class PostConverter {
         return PostDto.builder()
                     .postId(post.getPostId())
                     .authorId(post.getAuthorId())
+                    .author(post.getAuthor())
                     .content(post.getContent())
                     .createdAt(post.getCreatedAt())
                     .groupId(post.getGroupId())

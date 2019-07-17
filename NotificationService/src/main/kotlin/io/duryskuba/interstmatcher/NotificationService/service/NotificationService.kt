@@ -13,7 +13,7 @@ class NotificationService(val notificationRepository: NotificationRepository,
                           val notificationConverter: NotificationConverter) {
 
     @Value("\${urls.services.post-service}")
-    private val postUrl: String = ""
+    private var postUrl: String = ""
 
     fun findAll() = notificationRepository.findAll()
 
@@ -54,7 +54,7 @@ class NotificationService(val notificationRepository: NotificationRepository,
             subscriber = notificationDTO?.subscriber,
             content = "Użytkownik ${notificationDTO?.author} uzył tagów: $resultContent...",
             status = notificationDTO?.status,
-            url = notificationDTO?.url,
+            url = postUrl + notificationDTO?.objectId,
             author = notificationDTO?.author,
             tags = notificationDTO?.tags
         )

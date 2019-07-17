@@ -14,8 +14,9 @@ class NotificationConverter {
                     notificatedId = dto?.subscriber,
                     objectId = dto?.objectId,
                     content = dto?.content,
+                    author = dto?.author,
                     status = NotificationStatus.ACTIVE,
-                    url = dto?.url + dto?.objectId)
+                    url = dto?.url)
 
 
     fun toDTO(notification: Notification)
@@ -24,6 +25,7 @@ class NotificationConverter {
             objectId = notification.objectId,
             url = notification.url,
             content = notification.content,
+            author = notification.author,
             status = notification.status,
             subscriber = notification.notificatedId)
 }

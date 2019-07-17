@@ -28,6 +28,8 @@ public class Post extends BaseEntity {
     @Column(name = "AUTHOR_ID")
     private Long authorId;
 
+    private String author;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "STATUS")
     private PostStatus postStatus;

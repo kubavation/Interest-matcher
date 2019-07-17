@@ -18,7 +18,8 @@ class NotificationEventProcessor(
 
     @RabbitListener(queues = ["tagNotificationQueue"])
     fun listenForTagNotification(notificationDTO: NotificationDTO) {
-        println(notificationService.createNotification(notificationDTO))
+        println(notificationDTO)
+        notificationService.createNotification(notificationDTO)
     }
 
 }

@@ -9,6 +9,7 @@ import org.springframework.amqp.core.MessageBuilder;
 import org.springframework.amqp.core.MessageProperties;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
@@ -27,6 +28,9 @@ public class EventProcessor {
     private TagSubscriberRepository tagSubscriberRepository;
     private RabbitTemplate rabbitTemplate;
 
+    @Value("${fanouts.tag-notification}")
+    private String tagNotificationExchange;
+
     public EventProcessor(TagSubscriberRepository tagSubscriberRepository,
                           RabbitTemplate rabbitTemplate) {
         this.tagSubscriberRepository = tagSubscriberRepository;
@@ -41,7 +45,6 @@ public class EventProcessor {
         toEmit
             .forEach(t -> {
                     log.info(t.toString());
-                    System.out.println(t);
                     tagSubscriberRepository
                             .findAllById_TagName(t.getName())
                             .forEach(u -> {
@@ -54,9 +57,8 @@ public class EventProcessor {
         notified
                 .entrySet()
                 .forEach(e -> {
-                    System.out.println("sending");
                       log.info("SENDING");
-                      rabbitTemplate.convertAndSend("notificationExchange","",
+                      rabbitTemplate.convertAndSend(tagNotificationExchange,"",
                               toTagNotification(e.getKey(), e.getValue(), post));
 
                 });
