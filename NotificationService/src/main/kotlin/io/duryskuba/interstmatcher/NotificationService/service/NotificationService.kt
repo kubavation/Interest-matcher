@@ -4,11 +4,13 @@ import io.duryskuba.interstmatcher.NotificationService.repository.NotificationRe
 import io.duryskuba.interstmatcher.NotificationService.resource.Notification
 import io.duryskuba.interstmatcher.NotificationService.resource.NotificationDTO
 import io.duryskuba.interstmatcher.NotificationService.resource.NotificationStatus
+import io.duryskuba.interstmatcher.NotificationService.util.NotificationConverter
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 
 @Service
-class NotificationService(val notificationRepository: NotificationRepository) {
+class NotificationService(val notificationRepository: NotificationRepository,
+                          val notificationConverter: NotificationConverter) {
 
     @Value("\${urls.services.post-service}")
     private val postUrl: String = ""
@@ -20,10 +22,23 @@ class NotificationService(val notificationRepository: NotificationRepository) {
 
 
     fun createNotification(notificationDTO: NotificationDTO)
-            = notificationDTO.type?.func?.apply(this, notificationDTO)
+            = notificationDTO.type?.func?.apply(this, notificationDTO )
 
 
     fun createTagNotification(notificationDTO: NotificationDTO?): NotificationDTO {
+        val notification
+                = notificationConverter.toEntity( buildTagNotificationContent(notificationDTO) )
+        val result = notificationRepository.save(notification)
+        return notificationConverter.toDTO(result)
+    }
+
+    fun createInvitationNotification(notificationDTO: NotificationDTO): NotificationDTO {
+        val content = "Użytkownik ${notificationDTO.author} zaprosił Cię do grupy "
+        return NotificationDTO()
+    }
+
+
+    private fun buildTagNotificationContent(notificationDTO: NotificationDTO?): NotificationDTO {
 
         var resultContent = ""
         notificationDTO?.tags?.forEach{ resultContent += "#" + it.name }
@@ -33,43 +48,18 @@ class NotificationService(val notificationRepository: NotificationRepository) {
         if(resultContent.length > 60)
             resultContent = resultContent.substring(0,60)
 
-
-        //todo build notificationDTO
-        val content =  buildTagNotificationContent(notificationDTO?.author,"$resultContent...")
-        println(content)
-
-
-        val notification = Notification(
-            notificatedId = notificationDTO?.subscriber,
-            objectId = notificationDTO?.objectId,
-            content = content,
-            status = NotificationStatus.ACTIVE,
-            url = postUrl + notificationDTO?.objectId)
-
-        val result = notificationRepository.save(notification)
-
         return NotificationDTO (
-                id = result.id,
-                objectId = result.objectId,
-                url = result.url,
-                content = result.content,
-                status = result.status,
-                subscriber = result.notificatedId
+            objectId = notificationDTO?.objectId,
+            type =  notificationDTO?.type,
+            subscriber = notificationDTO?.subscriber,
+            content = "Użytkownik ${notificationDTO?.author} uzył tagów: $resultContent...",
+            status = notificationDTO?.status,
+            url = notificationDTO?.url,
+            author = notificationDTO?.author,
+            tags = notificationDTO?.tags
         )
     }
 
-    fun createInvitationNotification(notificationDTO: NotificationDTO): NotificationDTO {
-        //todo
-        val content = "Użytkownik ${notificationDTO.author} zaprosił Cię do grupy "
-        return NotificationDTO()
-    }
-
-
-
-    private fun buildTagNotificationContent(author: String?, content: String?)
-                = "Użytkownik $author uzył tagów: $content"
-
-    //private fun
-
+    
 
 }
