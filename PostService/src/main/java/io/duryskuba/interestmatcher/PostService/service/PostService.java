@@ -50,8 +50,11 @@ public class PostService {
     @Transactional
     public PostDto create(PostDto dto) {
 
-        PostDto result = createContent(dto);
-        return toDTO( postRepository.save(toEntity(result)) );
+        Post post = postRepository.save(toEntity(dto));
+        post.setContent( createContent(toDTO(post)).getContent() );
+
+        return toDTO(post);
+        //return toDTO( postRepository.save(toEntity(result)) );
     }
 
 

@@ -75,14 +75,14 @@ public class TagService {
 
     @Async
     public void prepareTagsAndNotify(PostDTO postDTO, List<Tag> tags) {
-            tags
-                .stream()
-                .map(this::createTagIfNotExists)
-                .map(t -> createPostTagEntry(postDTO, t))
-                .forEach(t -> log.error("creating " + t));
+        tags
+            .stream()
+            .map(this::createTagIfNotExists)
+            .map(t -> createPostTagEntry(postDTO, t))
+            .forEach(t -> log.error("creating " + t));
 
-            log.info("calling emitNotificationEvent");
-            eventProcessor.emitTagNotificationEvent(tags, postDTO);
+        log.info("calling emitNotificationEvent");
+        eventProcessor.emitTagNotificationEvent(tags, postDTO);
     }
 
 
