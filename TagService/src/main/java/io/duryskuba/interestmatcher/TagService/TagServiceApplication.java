@@ -19,8 +19,10 @@ public class TagServiceApplication {
 	@Bean
 	public CommandLineRunner loadData(TagSubscriberRepository tagSubscriberRepository) {
 
-		return (args) ->
-			tagSubscriberRepository.save(new TagSubscriber(new TagSubscriberId("ala",1L)));
+		return (args) -> {
+			tagSubscriberRepository.save(new TagSubscriber(new TagSubscriberId("elo", 1L)));
+			tagSubscriberRepository.save(new TagSubscriber(new TagSubscriberId("dsa", 2L)));
+		};
 	}
 
 }

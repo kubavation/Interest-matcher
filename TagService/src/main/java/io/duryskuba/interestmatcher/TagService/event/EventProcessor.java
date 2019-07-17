@@ -41,16 +41,20 @@ public class EventProcessor {
         toEmit
             .forEach(t -> {
                     log.info(t.toString());
+                    System.out.println(t);
                     tagSubscriberRepository
                             .findAllById_TagName(t.getName())
-                            .forEach(u ->
+                            .forEach(u -> {
+                                log.info(u.toString());
                                 notified.merge(u.getId().getUserId(), CollectionUtils.of(t),
-                                        CollectionUtils::merge));
-                    });
+                                        CollectionUtils::merge);
+                            }
+                    );});
 
         notified
                 .entrySet()
                 .forEach(e -> {
+                    System.out.println("sending");
                       log.info("SENDING");
                       rabbitTemplate.convertAndSend("notificationExchange","",
                               toTagNotification(e.getKey(), e.getValue(), post));
