@@ -1,5 +1,6 @@
 package io.duryskuba.interestmatcher.HappeningService.service;
 
+import io.duryskuba.interestmatcher.HappeningService.event.ParticipantManipulationEvent;
 import io.duryskuba.interestmatcher.HappeningService.exception.HappeningNotAvailableException;
 import io.duryskuba.interestmatcher.HappeningService.exception.ResourceNotFoundException;
 import io.duryskuba.interestmatcher.HappeningService.repository.HappeningParticipantRepository;
@@ -7,6 +8,7 @@ import io.duryskuba.interestmatcher.HappeningService.repository.HappeningReposit
 import io.duryskuba.interestmatcher.HappeningService.resource.*;
 import io.duryskuba.interestmatcher.HappeningService.util.HappeningConverter;
 import io.duryskuba.interestmatcher.HappeningService.util.HappeningParticipantConverter;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -71,6 +73,12 @@ public class HappeningService {
                 .orElseThrow(ResourceNotFoundException::new);
 
         happeningParticipantRepository.deleteById(participant.getParticipantId());
+    }
+
+
+    @EventListener
+    public void manipulateHappeningParticipants(ParticipantManipulationEvent event) {
+
     }
 
     @Transactional

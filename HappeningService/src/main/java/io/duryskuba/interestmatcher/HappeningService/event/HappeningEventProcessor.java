@@ -17,7 +17,7 @@ public class HappeningEventProcessor {
     }
 
 
-    public void manipulateParticipants(ParticipantManipulationEvent event) {
+    public void publishParticipantManipulationEvent(ParticipantManipulationEvent event) {
         applicationEventPublisher.publishEvent(event);
     }
 }
