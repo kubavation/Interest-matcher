@@ -78,7 +78,7 @@ public class HappeningService {
 
     @EventListener
     public void manipulateHappeningParticipants(ParticipantManipulationEvent event) {
-
+        event.getAction().getFunc().apply(this, )
     }
 
     @Transactional
@@ -112,6 +112,26 @@ public class HappeningService {
     public boolean inHappeningParticipantRange(Happening happening, Long present) {
         return present < happening.getMaxNumberOfParticipants();
     }
+
+
+    /**
+    *   Consumer methods for enum ParticipantAction
+     **/
+
+    public void addParticipantToHappeningv2(HappeningParticipantDTO participant) {
+        saveParticipantIfHappeningAvailable(participant);
+    }
+
+    public void removeParticipantFromHappening(HappeningParticipantDTO dto) {
+
+        HappeningParticipant participant =
+                happeningParticipantRepository
+                        .findFirstByHappeningIdAndParticipantId(dto.getHappeningId(), dto.getParticipantId())
+                        .orElseThrow(ResourceNotFoundException::new);
+
+        happeningParticipantRepository.deleteById(participant.getParticipantId());
+    }
+
 
 
 }
