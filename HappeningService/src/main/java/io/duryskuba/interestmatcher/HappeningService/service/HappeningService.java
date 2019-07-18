@@ -1,5 +1,7 @@
 package io.duryskuba.interestmatcher.HappeningService.service;
 
+import io.duryskuba.interestmatcher.HappeningService.enums.ParticipantAction;
+import io.duryskuba.interestmatcher.HappeningService.event.HappeningEventProcessor;
 import io.duryskuba.interestmatcher.HappeningService.event.ParticipantManipulationEvent;
 import io.duryskuba.interestmatcher.HappeningService.exception.HappeningNotAvailableException;
 import io.duryskuba.interestmatcher.HappeningService.exception.ResourceNotFoundException;
@@ -19,6 +21,9 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Predicate;
 
+import static io.duryskuba.interestmatcher.HappeningService.enums.ParticipantAction.ADD;
+import static io.duryskuba.interestmatcher.HappeningService.enums.ParticipantAction.REMOVE;
+import static io.duryskuba.interestmatcher.HappeningService.event.ParticipantManipulationEvent.of;
 import static io.duryskuba.interestmatcher.HappeningService.util.HappeningConverter.toEntity;
 import static org.springframework.web.reactive.function.BodyInserters.fromObject;
 
@@ -29,12 +34,15 @@ public class HappeningService {
     private HappeningRepository happeningRepository;
     private WebClient webClient;
     private HappeningParticipantRepository happeningParticipantRepository;
+    private HappeningEventProcessor eventProcessor;
 
     public HappeningService(HappeningRepository happeningRepository, WebClient webClient,
-                            HappeningParticipantRepository happeningParticipantRepository) {
+                            HappeningParticipantRepository happeningParticipantRepository,
+                            HappeningEventProcessor eventProcessor) {
         this.happeningRepository = happeningRepository;
         this.webClient = webClient;
         this.happeningParticipantRepository = happeningParticipantRepository;
+        this.eventProcessor = eventProcessor;
     }
 
     public Collection<Happening> findAll() {
@@ -72,16 +80,18 @@ public class HappeningService {
         HappeningParticipant participant =
                 happeningParticipantRepository
                 .findFirstByHappeningIdAndParticipantId(happeningId, participantId)
+                //.map() todo delete
                 .orElseThrow(ResourceNotFoundException::new);
 
-        happeningParticipantRepository.deleteById(participant.getParticipantId());
+        happeningParticipantRepository.deleteById(participant.getParticipantId()); //todo move to stream
+        eventProcessor.publishParticipantManipulationEvent( of(REMOVE, happeningId, this) );
     }
 
 
     @EventListener
     public void manipulateHappeningParticipants(ParticipantManipulationEvent event) {
         log.info(event.toString());
-        event.getAction().getFunc().accept(this, );
+        event.getAction().getFunc().accept(this, event.getHappeningId());
     }
 
     @Transactional
@@ -93,9 +103,13 @@ public class HappeningService {
     public HappeningParticipant saveParticipantIfHappeningAvailable(HappeningParticipantDTO participant) {
         return happeningRepository.findById(participant.getHappeningId())
                 .filter(this::isHappeningAvailable)
-                .map(h -> happeningParticipantRepository
-                            .save(HappeningParticipantConverter.toEntity(participant)))
-                .orElseThrow(() -> new ResourceNotFoundException(participant.getHappeningId()));
+                .map(h -> {
+                   eventProcessor
+                           .publishParticipantManipulationEvent( of(ADD, h.getId(), this) );
+                   return happeningParticipantRepository
+                            .save(HappeningParticipantConverter.toEntity(participant));
+                })
+                    .orElseThrow(() -> new ResourceNotFoundException(participant.getHappeningId()));
     }
 
 

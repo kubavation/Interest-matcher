@@ -14,13 +14,13 @@ public enum ParticipantAction {
     ADD(HappeningService::incrementNumOfParticipants),
     REMOVE(HappeningService::decrementNumOfParticipants);
 
-    private final BiConsumer<HappeningService, UUID> func;
+    private final BiConsumer<HappeningService, String> func;
 
-    ParticipantAction(BiConsumer<HappeningService, UUID> func) {
+    ParticipantAction(BiConsumer<HappeningService, String> func) {
         this.func = func;
     }
 
-    public BiConsumer<HappeningService, UUID> getFunc() {
+    public BiConsumer<HappeningService, String> getFunc() {
         return func;
     }
 }

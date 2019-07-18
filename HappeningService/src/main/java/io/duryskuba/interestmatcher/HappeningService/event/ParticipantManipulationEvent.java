@@ -20,4 +20,9 @@ public class ParticipantManipulationEvent extends ApplicationEvent {
         this.happeningId = happeningId;
         this.action = action;
     }
+
+    public static ParticipantManipulationEvent of(ParticipantAction action,
+              String happeningId, Object source) {
+        return new ParticipantManipulationEvent(action, happeningId, source);
+    }
 }
