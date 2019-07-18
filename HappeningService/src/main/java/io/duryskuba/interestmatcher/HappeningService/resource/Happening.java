@@ -26,6 +26,8 @@ public class Happening {
     private Long maxNumberOfParticipants;
     private Long minNumberOfParticipants;
 
+    private Long actualNumOfParticipants;
+
     private LocalDateTime when;
     private String locationId;
     private String locationStr;

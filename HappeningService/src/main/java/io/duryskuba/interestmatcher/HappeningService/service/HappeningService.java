@@ -119,20 +119,16 @@ public class HappeningService {
 
     /**
     *   Consumer methods for enum ParticipantAction
-     **/
+    **/
 
-    public void addParticipantToHappeningv2(HappeningParticipantDTO participant) {
-        saveParticipantIfHappeningAvailable(participant);
+    public void incrementNumOfParticipants(String happeningId) {
+        happeningRepository.findById(happeningId)
+                .ifPresent(t -> t.setActualNumOfParticipants(t.getActualNumOfParticipants() + 1));
     }
 
-    public void removeParticipantFromHappening(HappeningParticipantDTO dto) {
-
-        HappeningParticipant participant =
-                happeningParticipantRepository
-                        .findFirstByHappeningIdAndParticipantId(dto.getHappeningId(), dto.getParticipantId())
-                        .orElseThrow(ResourceNotFoundException::new);
-
-        happeningParticipantRepository.deleteById(participant.getParticipantId());
+    public void decrementNumOfParticipants(String happeningId) {
+        happeningRepository.findById(happeningId)
+                .ifPresent(t -> t.setActualNumOfParticipants(t.getActualNumOfParticipants() - 1));
     }
 
 

@@ -11,13 +11,13 @@ import org.springframework.context.ApplicationEvent;
 public class ParticipantManipulationEvent extends ApplicationEvent {
 
     private final ParticipantAction action;
-    private final HappeningParticipantDTO dto;
+    private final String happeningId;
 
     public ParticipantManipulationEvent(ParticipantAction action,
-                                        HappeningParticipantDTO dto,
+                                        String happeningId,
                                         Object source) {
         super(source);
-        this.dto = dto;
+        this.happeningId = happeningId;
         this.action = action;
     }
 }

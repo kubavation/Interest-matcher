@@ -4,22 +4,23 @@ import io.duryskuba.interestmatcher.HappeningService.resource.HappeningDTO;
 import io.duryskuba.interestmatcher.HappeningService.resource.HappeningParticipantDTO;
 import io.duryskuba.interestmatcher.HappeningService.service.HappeningService;
 
+import java.util.UUID;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 
 public enum ParticipantAction {
 
-    ADD(HappeningService::addParticipantToHappeningv2),
-    REMOVE(HappeningService::removeParticipantFromHappening);
+    ADD(HappeningService::incrementNumOfParticipants),
+    REMOVE(HappeningService::decrementNumOfParticipants);
 
-    private final BiConsumer<HappeningService, HappeningParticipantDTO> func;
+    private final BiConsumer<HappeningService, UUID> func;
 
-    ParticipantAction(BiConsumer<HappeningService, HappeningParticipantDTO> func) {
+    ParticipantAction(BiConsumer<HappeningService, UUID> func) {
         this.func = func;
     }
 
-    public BiConsumer<HappeningService, HappeningParticipantDTO> getFunc() {
+    public BiConsumer<HappeningService, UUID> getFunc() {
         return func;
     }
 }
