@@ -35,9 +35,8 @@ public class HappeningConverter {
                     .locationStr(happening.getLocationStr())
                     .maxNumOfParticipants(happening.getMaxNumberOfParticipants())
                     .minNumOfParticipants(happening.getMinNumberOfParticipants())
-                    //.numOfParticipants(happening.get)
-                    //todo number of participants
-                .build();
+                    .numOfParticipants(happening.getActualNumOfParticipants())
+                    .build();
     }
 
 }
