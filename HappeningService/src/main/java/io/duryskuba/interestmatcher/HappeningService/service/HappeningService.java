@@ -8,6 +8,7 @@ import io.duryskuba.interestmatcher.HappeningService.repository.HappeningReposit
 import io.duryskuba.interestmatcher.HappeningService.resource.*;
 import io.duryskuba.interestmatcher.HappeningService.util.HappeningConverter;
 import io.duryskuba.interestmatcher.HappeningService.util.HappeningParticipantConverter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +23,7 @@ import static io.duryskuba.interestmatcher.HappeningService.util.HappeningConver
 import static org.springframework.web.reactive.function.BodyInserters.fromObject;
 
 @Service
+@Slf4j
 public class HappeningService {
 
     private HappeningRepository happeningRepository;
@@ -78,7 +80,8 @@ public class HappeningService {
 
     @EventListener
     public void manipulateHappeningParticipants(ParticipantManipulationEvent event) {
-        event.getAction().getFunc().apply(this, )
+        log.info(event.toString());
+        event.getAction().getFunc().accept(this, );
     }
 
     @Transactional
