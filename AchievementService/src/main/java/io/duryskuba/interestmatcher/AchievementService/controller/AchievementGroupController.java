@@ -15,22 +15,22 @@ public class AchievementGroupController {
         this.achievementService = achievementService;
     }
 
-    @GetMapping("/achievement-group")
+    @GetMapping("/achievement-groups")
     public ResponseEntity<?> findAll() {
         return new ResponseEntity<>(achievementService.findAllAchievementGroups(), HttpStatus.OK);
     }
 
-    @GetMapping("/achievement-group/{id}")
+    @GetMapping("/achievement-groups/{id}")
     public ResponseEntity<AchievementGroup> findById(@PathVariable Long id) {
         return new ResponseEntity<>(achievementService.findAchievementGroupById(id), HttpStatus.OK);
     }
 
-    @PostMapping("/achievement-group")
+    @PostMapping("/achievement-groups")
     public ResponseEntity<AchievementGroup> create(@RequestBody AchievementGroup group) {
         return new ResponseEntity<>(achievementService.createAchivementGroup(group), HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/achievement-group/{id}")
+    @DeleteMapping("/achievement-groups/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         achievementService.deleteAchievementGroup(id);
         return new ResponseEntity<>(HttpStatus.OK);

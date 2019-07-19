@@ -1,5 +1,6 @@
 package io.duryskuba.interestmatcher.AchievementService.controller;
 
+import io.duryskuba.interestmatcher.AchievementService.resource.Achievement;
 import io.duryskuba.interestmatcher.AchievementService.resource.AchievementGroup;
 import io.duryskuba.interestmatcher.AchievementService.service.AchievementService;
 import org.springframework.http.HttpStatus;
@@ -15,24 +16,27 @@ public class AchievementController {
         this.achievementService = achievementService;
     }
 
-    @GetMapping
+    @GetMapping("/achievements")
     public ResponseEntity<?> findAll() {
-        return new ResponseEntity<>(achievementService.findAll(), HttpStatus.OK);
+        return new ResponseEntity<>(achievementService.findAllAchievements(), HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<AchievementGroup> findById(@PathVariable Long id) {
-        return new ResponseEntity<>(achievementService.findById(id), HttpStatus.OK);
+    @GetMapping("/achievements/{id}")
+    public ResponseEntity<Achievement> findById(@PathVariable Long id) {
+        return new ResponseEntity<>(achievementService.findAchievementById(id), HttpStatus.OK);
     }
 
-    @PostMapping
-    public ResponseEntity<AchievementGroup> create(@RequestBody AchievementGroup group) {
-        return new ResponseEntity<>(achievementService.createAchivementGroup(group), HttpStatus.CREATED);
+    @PostMapping("/achievement-groups/{groupId}/achievements")
+    public ResponseEntity<Achievement> create(@RequestBody Achievement achievement,
+                                              @PathVariable Long groupId) {
+        return new ResponseEntity<>(achievementService.createAchievement(achievement, groupId), HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/{id}")
+    //lub achievementDTO bedzie posiadalo groupId // todo refactor
+
+    @DeleteMapping("/achievements/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
-        achievementService.deleteAchievementGroup(id);
+        achievementService.deleteAchievement(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
