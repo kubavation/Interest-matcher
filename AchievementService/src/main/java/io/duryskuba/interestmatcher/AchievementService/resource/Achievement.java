@@ -22,8 +22,11 @@ public class Achievement {
     private String name;
     private String description;
 
+    @ManyToOne
+    @JoinColumn(name = "achievement_group_id")
+    private AchievementGroup achievementGroup;
 
-
+    private int level;
 
 
 }
