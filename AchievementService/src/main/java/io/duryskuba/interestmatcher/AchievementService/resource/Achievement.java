@@ -28,5 +28,8 @@ public class Achievement {
 
     private int level;
 
+    private Long goal;
 
+
+    //stream listener dla grupy -> i update na kazdym achievemencie z tej grupy
 }
