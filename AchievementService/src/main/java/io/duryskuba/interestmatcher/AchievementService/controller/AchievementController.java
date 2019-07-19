@@ -7,32 +7,33 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-public class AchievementGroupController {
+public class AchievementController {
 
     private AchievementService achievementService;
 
-    public AchievementGroupController(AchievementService achievementService) {
+    public AchievementController(AchievementService achievementService) {
         this.achievementService = achievementService;
     }
 
-    @GetMapping("/achievement-group")
+    @GetMapping
     public ResponseEntity<?> findAll() {
-        return new ResponseEntity<>(achievementService.findAllAchievementGroups(), HttpStatus.OK);
+        return new ResponseEntity<>(achievementService.findAll(), HttpStatus.OK);
     }
 
-    @GetMapping("/achievement-group/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<AchievementGroup> findById(@PathVariable Long id) {
-        return new ResponseEntity<>(achievementService.findAchievementGroupById(id), HttpStatus.OK);
+        return new ResponseEntity<>(achievementService.findById(id), HttpStatus.OK);
     }
 
-    @PostMapping("/achievement-group")
+    @PostMapping
     public ResponseEntity<AchievementGroup> create(@RequestBody AchievementGroup group) {
         return new ResponseEntity<>(achievementService.createAchivementGroup(group), HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/achievement-group/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         achievementService.deleteAchievementGroup(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
 }

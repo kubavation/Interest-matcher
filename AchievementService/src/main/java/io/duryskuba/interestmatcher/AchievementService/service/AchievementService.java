@@ -35,11 +35,11 @@ public class AchievementService {
                     .ifPresent(achievementGroupRepository::delete);
     }
 
-    public Collection<AchievementGroup> findAll() {
+    public Collection<AchievementGroup> findAllAchievementGroups() {
         return achievementGroupRepository.findAll();
     }
 
-    public AchievementGroup findById(Long id) {
+    public AchievementGroup findAchievementGroupById(Long id) {
         return achievementGroupRepository.findById(id)
                     .orElseThrow(RuntimeException::new);
     }
