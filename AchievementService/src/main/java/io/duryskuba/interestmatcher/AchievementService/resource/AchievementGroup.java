@@ -3,6 +3,7 @@ package io.duryskuba.interestmatcher.AchievementService.resource;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.core.annotation.Order;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -24,6 +25,7 @@ public class AchievementGroup {
     @OneToMany(mappedBy = "achievementGroup",
                fetch = FetchType.LAZY,
                orphanRemoval = true)
+    @OrderBy(value = "level ASC")
     private Set<Achievement> achievements;
 
 }

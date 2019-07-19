@@ -6,6 +6,7 @@ import io.duryskuba.interestmatcher.AchievementService.repository.UserAchievemen
 import io.duryskuba.interestmatcher.AchievementService.resource.Achievement;
 import io.duryskuba.interestmatcher.AchievementService.resource.AchievementActionDTO;
 import io.duryskuba.interestmatcher.AchievementService.resource.AchievementGroup;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
@@ -68,16 +69,22 @@ public class AchievementService {
     }
 
     //listener for createUserQueue
-    public void initAchievementsOfUser(Long userId) {
-
-    }
-
-
-    public void todonameofmethodforincrementingachievement(AchievementActionDTO action) {
-        AchievementGroup group =
-                 findAchievementGroupById(action.getAchievementGroupId());
-
-
-    }
+//    @Async
+//    public void initAchievementsOfUser(Long userId) {
+//        findAllAchievementGroups()
+//                .stream()
+//                .map(AchievementGroup::getAchievements)
+//                    .map()
+//    }
+//
+//
+//    public void todonameofmethodforincrementingachievement(AchievementActionDTO action) {
+//        AchievementGroup group =
+//                 findAchievementGroupById(action.getAchievementGroupId());
+//
+//        group.getAchievements()
+//                .
+//
+//    }
 
 }
