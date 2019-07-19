@@ -59,6 +59,10 @@ public class HappeningService {
         return happeningRepository.save(toEntity(happeningDTO));
     }
 
+    public void deleteHappeningById(String id) {
+        happeningRepository.delete(findById(id));
+    }
+
 
     public HappeningDTO setLocationOfHappening(HappeningDTO dto) {
         LocationDTO location = webClient
@@ -144,8 +148,6 @@ public class HappeningService {
         happeningRepository.findById(happeningId)
                 .ifPresent(t -> t.setActualNumOfParticipants(t.getActualNumOfParticipants() - 1));
     }
-
-
 
 }
 

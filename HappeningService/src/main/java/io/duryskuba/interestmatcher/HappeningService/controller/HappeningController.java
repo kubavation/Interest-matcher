@@ -36,6 +36,13 @@ public class HappeningController {
         return new ResponseEntity<>(happeningService.create(happening), HttpStatus.CREATED);
     }
 
+    @DeleteMapping("/happenings/{id}")
+    public ResponseEntity<Void> delete(@PathVariable String id) {
+        happeningService.deleteHappeningById(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+
     @PutMapping("/happenings/{happeningId}/participants")
     public ResponseEntity<HappeningParticipantDTO> addParticipant(@RequestBody HappeningParticipantDTO participant,
                                                                   @PathVariable String happeningId) {
