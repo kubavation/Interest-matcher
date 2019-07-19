@@ -19,4 +19,6 @@ public class UserAchievement {
     @Enumerated(EnumType.STRING)
     private AchievementGoalStatus status;
 
+    private Long value;
+
 }

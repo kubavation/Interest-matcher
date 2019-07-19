@@ -10,6 +10,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.Set;
 
 @Service
 public class AchievementService {
@@ -78,13 +79,20 @@ public class AchievementService {
 //    }
 //
 //
-//    public void todonameofmethodforincrementingachievement(AchievementActionDTO action) {
-//        AchievementGroup group =
-//                 findAchievementGroupById(action.getAchievementGroupId());
-//
-//        group.getAchievements()
-//                .
-//
-//    }
+    public void todonameofmethodforincrementingachievement(AchievementActionDTO action) {
+        AchievementGroup group =
+                 findAchievementGroupById(action.getAchievementGroupId());
+
+        Set<Achievement> achievements = group.getAchievements();
+
+        final Long userId = action.getUserId();
+
+        for( Achievement a : achievements) {
+
+            if()
+
+        }
+
+    }
 
 }
