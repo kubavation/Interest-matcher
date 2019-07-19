@@ -4,6 +4,7 @@ import io.duryskuba.interestmatcher.AchievementService.repository.AchievementGro
 import io.duryskuba.interestmatcher.AchievementService.repository.AchievementRepository;
 import io.duryskuba.interestmatcher.AchievementService.repository.UserAchievementRepository;
 import io.duryskuba.interestmatcher.AchievementService.resource.Achievement;
+import io.duryskuba.interestmatcher.AchievementService.resource.AchievementActionDTO;
 import io.duryskuba.interestmatcher.AchievementService.resource.AchievementGroup;
 import org.springframework.stereotype.Service;
 
@@ -45,7 +46,6 @@ public class AchievementService {
                     .orElseThrow(RuntimeException::new);
     }
 
-
     public Collection<Achievement> findAllAchievements() {
         return achievementRepository.findAll();
     }
@@ -65,6 +65,19 @@ public class AchievementService {
     public void deleteAchievement(Long id) {
         achievementRepository.findById(id)
                 .ifPresent(achievementRepository::delete);
+    }
+
+    //listener for createUserQueue
+    public void initAchievementsOfUser(Long userId) {
+
+    }
+
+
+    public void todonameofmethodforincrementingachievement(AchievementActionDTO action) {
+        AchievementGroup group =
+                 findAchievementGroupById(action.getAchievementGroupId());
+
+
     }
 
 }

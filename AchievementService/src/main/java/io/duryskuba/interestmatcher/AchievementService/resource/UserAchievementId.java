@@ -14,8 +14,8 @@ import java.io.Serializable;
 @Embeddable
 public class UserAchievementId implements Serializable {
 
-    @Column(name = "ACHIEVEMENT_ID")
-    private Long achievementId;
+    @Column(name = "ACHIEVEMENT_GROUP_ID")
+    private Long achievementGroupId;
     @Column(name = "USER_ID")
     private Long userId;
 }
