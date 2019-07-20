@@ -60,6 +60,7 @@ public class AchievementService {
     public Achievement createAchievement(Achievement achievement, Long groupId) {
         AchievementGroup group = findAchievementGroupById(groupId);
         achievement.setAchievementGroup(group);
+        achievement.setLevel( getNextAchievementLevel(achievement) );
         return achievementRepository.save(achievement);
     }
 
@@ -67,8 +68,6 @@ public class AchievementService {
         achievementRepository.findById(id)
                 .ifPresent(achievementRepository::delete);
     }
-
-    //todo achievemnt utils where is squeunce of levels
 
     public void todonameofmethodforincrementingachievement(AchievementActionDTO action) {
         AchievementGroup group =
