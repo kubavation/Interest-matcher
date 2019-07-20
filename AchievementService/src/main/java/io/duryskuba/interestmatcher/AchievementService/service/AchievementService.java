@@ -16,7 +16,6 @@ import static io.duryskuba.interestmatcher.AchievementService.resource.UserAchie
 @Service
 public class AchievementService {
 
-    //todo refactor to other services
     private AchievementGroupRepository achievementGroupRepository;
     private AchievementRepository achievementRepository;
     private UserAchievementRepository userAchievementRepository;
@@ -29,8 +28,6 @@ public class AchievementService {
         this.userAchievementRepository = userAchievementRepository;
     }
 
-
-    //todo change to dto
     public AchievementGroup createAchivementGroup(AchievementGroup achievementGroup) {
         return achievementGroupRepository.save(achievementGroup);
     }
@@ -58,7 +55,6 @@ public class AchievementService {
                     .orElseThrow(RuntimeException::new);
     }
 
-    //todo refactor
     public Achievement createAchievement(Achievement achievement, Long groupId) {
         AchievementGroup group = findAchievementGroupById(groupId);
         achievement.setAchievementGroup(group);
@@ -71,16 +67,15 @@ public class AchievementService {
                 .ifPresent(achievementRepository::delete);
     }
 
-
     public void onAchievementAction(AchievementActionDTO action) {
-        for (Achievement achievement: findAchievementGroupById(action.getAchievementGroupId())
-                                                                    .getAchievements())  {
+        for (Achievement achievement:
+                findAchievementGroupById(action.getAchievementGroupId()).getAchievements())  {
+
            if( !loopOverAchievementsAndIncrementValue(achievement, action.getUserId()) )
                break;
 
         }
     }
-
 
     private boolean loopOverAchievementsAndIncrementValue(Achievement achievement,
                                                           Long userId) {
@@ -104,7 +99,7 @@ public class AchievementService {
 
     private boolean initStateOfAchievement(Achievement achievement, Long userId) {
         userAchievementRepository.save(
-                initialInstance(new UserAchievementId(achievement.getAchievementId(), userId)));
+                initialInstance( new UserAchievementId(achievement.getAchievementId(), userId)) );
         return false;
     }
 
