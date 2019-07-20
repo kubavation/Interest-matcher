@@ -71,102 +71,42 @@ public class AchievementService {
                 .ifPresent(achievementRepository::delete);
     }
 
-    public void todonameofmethodforincrementingachievement(AchievementActionDTO action) {
-        AchievementGroup group =
-                 findAchievementGroupById(action.getAchievementGroupId());
 
-        Set<Achievement> achievements = group.getAchievements();
-
-        final Long userId = action.getUserId();
-
-        for( Achievement a : achievements) {
-
-            Optional<UserAchievement> userAchievementOpt = userAchievementRepository
-                    .findById(new UserAchievementId(a.getAchievementId(), action.getUserId()));
-
-            if ( userAchievementOpt.isPresent() ) {
-
-                final UserAchievement userAchievement = userAchievementOpt.get();
-
-                if( AchievementGoalStatus.DONE.equals(userAchievement.getStatus()) )
-                    continue;
-                else {
-                    //increment value of achievement
-                    userAchievement.setValue( userAchievement.getValue() + 1);
-
-                    if( userAchievement.getValue().equals(a.getGoal()) ) {
-                        userAchievement.setStatus(AchievementGoalStatus.DONE);
-                    }
-
-                    break;
-                }
-
-            } else {
-                //init method for value of achievement
-                UserAchievement userAchievement
-                        = UserAchievement.builder()
-                            .userAchievementId(
-                                  new UserAchievementId(a.getAchievementId(), action.getUserId())
-                                )
-                            .status(AchievementGoalStatus.IN_PROGRESS)
-                            .value(1L)
-                            .build();
-
-                userAchievementRepository.save(userAchievement);
-                break;
-            }
+    public void onAchievementAction(AchievementActionDTO action) {
+        for (Achievement achievement: findAchievementGroupById(action.getAchievementGroupId())
+                                                                    .getAchievements())  {
+           if( !loopOverAchievementsAndIncrementValue(achievement, action.getUserId()) )
+               break;
 
         }
-
     }
 
 
-
-    public void todonameofmethodforincrementingachievementRefactored(AchievementActionDTO action) {
-        AchievementGroup group =
-                findAchievementGroupById(action.getAchievementGroupId());
-
-        Set<Achievement> achievements = group.getAchievements();
-
-        final Long userId = action.getUserId();
-
-        for( Achievement a : achievements) {
-
-            Optional<UserAchievement> userAchievementOpt = userAchievementRepository
-                    .findById(new UserAchievementId(a.getAchievementId(), action.getUserId()));
-
-            if ( userAchievementOpt.isPresent() ) {
-
-                final UserAchievement userAchievement = userAchievementOpt.get();
-
-                if( AchievementGoalStatus.DONE.equals(userAchievement.getStatus()) )
-                    continue;
-                else {
-                    //increment value of achievement
-                    userAchievement.setValue( userAchievement.getValue() + 1);
-
-                    if( userAchievement.getValue().equals(a.getGoal()) ) {
-                        userAchievement.setStatus(AchievementGoalStatus.DONE);
-                    }
-
-                    break;
-                }
-
-            } else {
-
-                userAchievementRepository.save(
-                    initialInstance( new UserAchievementId(a.getAchievementId(),action.getUserId()) )
-                );
-                
-                break;
-            }
-
-        }
-
+    private boolean loopOverAchievementsAndIncrementValue(Achievement achievement,
+                                                          Long userId) {
+        return userAchievementRepository
+                .findById( new UserAchievementId(achievement.getAchievementId(), userId) )
+                .map(a -> incrementAchievementValue(a, achievement))
+                .orElseGet(() -> initStateOfAchievement(achievement, userId));
     }
 
+    private boolean incrementAchievementValue(UserAchievement userAchievement, Achievement achievement) {
+        if ( AchievementGoalStatus.DONE.equals(userAchievement.getStatus()) )
+            return true;
+        else {
+            userAchievement.setValue(userAchievement.getValue() + 1);
+            if ( userAchievement.getValue().equals(achievement.getGoal()) ) {
+                userAchievement.setStatus(AchievementGoalStatus.DONE);
+            }
+            return false;
+        }
+    }
 
-
+    private boolean initStateOfAchievement(Achievement achievement, Long userId) {
+        userAchievementRepository.save(
+                initialInstance(new UserAchievementId(achievement.getAchievementId(), userId)));
+        return false;
+    }
 
     private int getNextAchievementLevel(Achievement achievement) {
         return achievement
@@ -174,6 +114,55 @@ public class AchievementService {
                     .getAchievements().size() + 1;
     }
 
+
+//    public void todonameofmethodforincrementingachievement(AchievementActionDTO action) {
+//        AchievementGroup group =
+//                 findAchievementGroupById(action.getAchievementGroupId());
+//
+//        Set<Achievement> achievements = group.getAchievements();
+//
+//        final Long userId = action.getUserId();
+//
+//        for( Achievement a : achievements) {
+//
+//            Optional<UserAchievement> userAchievementOpt = userAchievementRepository
+//                    .findById(new UserAchievementId(a.getAchievementId(), action.getUserId()));
+//
+//            if ( userAchievementOpt.isPresent() ) {
+//
+//                final UserAchievement userAchievement = userAchievementOpt.get();
+//
+//                if( AchievementGoalStatus.DONE.equals(userAchievement.getStatus()) )
+//                    continue;
+//                else {
+//                    //increment value of achievement
+//                    userAchievement.setValue( userAchievement.getValue() + 1);
+//
+//                    if( userAchievement.getValue().equals(a.getGoal()) ) {
+//                        userAchievement.setStatus(AchievementGoalStatus.DONE);
+//                    }
+//
+//                    break;
+//                }
+//
+//            } else {
+//                //init method for value of achievement
+//                UserAchievement userAchievement
+//                        = UserAchievement.builder()
+//                            .userAchievementId(
+//                                  new UserAchievementId(a.getAchievementId(), action.getUserId())
+//                                )
+//                            .status(AchievementGoalStatus.IN_PROGRESS)
+//                            .value(1L)
+//                            .build();
+//
+//                userAchievementRepository.save(userAchievement);
+//                break;
+//            }
+//
+//        }
+//
+//    }
 
 
 }
