@@ -3,13 +3,12 @@ package io.duryskuba.interestmatcher.AchievementService.service;
 import io.duryskuba.interestmatcher.AchievementService.repository.AchievementGroupRepository;
 import io.duryskuba.interestmatcher.AchievementService.repository.AchievementRepository;
 import io.duryskuba.interestmatcher.AchievementService.repository.UserAchievementRepository;
-import io.duryskuba.interestmatcher.AchievementService.resource.Achievement;
-import io.duryskuba.interestmatcher.AchievementService.resource.AchievementActionDTO;
-import io.duryskuba.interestmatcher.AchievementService.resource.AchievementGroup;
+import io.duryskuba.interestmatcher.AchievementService.resource.*;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -69,16 +68,8 @@ public class AchievementService {
                 .ifPresent(achievementRepository::delete);
     }
 
-    //listener for createUserQueue
-//    @Async
-//    public void initAchievementsOfUser(Long userId) {
-//        findAllAchievementGroups()
-//                .stream()
-//                .map(AchievementGroup::getAchievements)
-//                    .map()
-//    }
-//
-//
+    //todo achievemnt utils where is squeunce of levels
+
     public void todonameofmethodforincrementingachievement(AchievementActionDTO action) {
         AchievementGroup group =
                  findAchievementGroupById(action.getAchievementGroupId());
@@ -89,7 +80,40 @@ public class AchievementService {
 
         for( Achievement a : achievements) {
 
-            if()
+            Optional<UserAchievement> userAchievementOpt = userAchievementRepository
+                    .findById(new UserAchievementId(a.getAchievementId(), action.getUserId()));
+
+            if ( userAchievementOpt.isPresent() ) {
+
+                final UserAchievement userAchievement = userAchievementOpt.get();
+
+                if( AchievementGoalStatus.DONE.equals(userAchievement.getStatus()) )
+                    continue;
+                else {
+                    //increment value of achievement
+                    userAchievement.setValue( userAchievement.getValue() + 1);
+
+                    if( userAchievement.getValue().equals(a.getGoal()) ) {
+                        userAchievement.setStatus(AchievementGoalStatus.DONE);
+                    }
+
+                    break;
+                }
+
+            } else {
+                //init method for value of achievement
+                UserAchievement userAchievement
+                        = UserAchievement.builder()
+                            .userAchievementId(
+                                  new UserAchievementId(a.getAchievementId(), action.getUserId())
+                                )
+                            .status(AchievementGoalStatus.IN_PROGRESS)
+                            .value(1L)
+                            .build();
+
+                userAchievementRepository.save(userAchievement);
+                break;
+            }
 
         }
 
