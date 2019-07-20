@@ -124,7 +124,7 @@ public class AchievementService {
     private int getNextAchievementLevel(Achievement achievement) {
         return achievement
                 .getAchievementGroup()
-                    .getAchievements().size();
+                    .getAchievements().size() + 1;
     }
 
 
