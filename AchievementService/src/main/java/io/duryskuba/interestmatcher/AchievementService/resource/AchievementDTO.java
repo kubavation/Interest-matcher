@@ -21,7 +21,4 @@ public class AchievementDTO {
 
     private int level;
     private Long goal;
-    private Long actual;
-
-
 }

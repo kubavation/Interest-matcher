@@ -6,13 +6,13 @@ import io.duryskuba.interestmatcher.AchievementService.resource.AchievementGroup
 
 public class AchievementConverter {
 
-    public static AchievementDTO toDto(Achievement achievement, Long currentValue) {
+    //achievement status DTO ??
+    public static AchievementDTO toDto(Achievement achievement) {
         return AchievementDTO.builder()
                     .achievementGroupId(achievement.getAchievementGroup().getAchievementGroupId())
                     .achievementId(achievement.getAchievementId())
                     .description(achievement.getDescription())
                     .goal(achievement.getGoal())
-                    .actual(currentValue)
                     .groupName(achievement.getAchievementGroup().getName())
                     .name(achievement.getName())
                     .build();
