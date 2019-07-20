@@ -23,4 +23,10 @@ public class UserAchievement {
 
     private Long value;
 
+
+
+    public static UserAchievement initialInstance(UserAchievementId id) {
+        return new UserAchievement(id, AchievementGoalStatus.IN_PROGRESS, 1L);
+    }
+
 }

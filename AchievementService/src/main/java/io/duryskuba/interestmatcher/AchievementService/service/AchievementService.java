@@ -11,6 +11,8 @@ import java.util.Collection;
 import java.util.Optional;
 import java.util.Set;
 
+import static io.duryskuba.interestmatcher.AchievementService.resource.UserAchievement.initialInstance;
+
 @Service
 public class AchievementService {
 
@@ -117,6 +119,52 @@ public class AchievementService {
         }
 
     }
+
+
+
+    public void todonameofmethodforincrementingachievementRefactored(AchievementActionDTO action) {
+        AchievementGroup group =
+                findAchievementGroupById(action.getAchievementGroupId());
+
+        Set<Achievement> achievements = group.getAchievements();
+
+        final Long userId = action.getUserId();
+
+        for( Achievement a : achievements) {
+
+            Optional<UserAchievement> userAchievementOpt = userAchievementRepository
+                    .findById(new UserAchievementId(a.getAchievementId(), action.getUserId()));
+
+            if ( userAchievementOpt.isPresent() ) {
+
+                final UserAchievement userAchievement = userAchievementOpt.get();
+
+                if( AchievementGoalStatus.DONE.equals(userAchievement.getStatus()) )
+                    continue;
+                else {
+                    //increment value of achievement
+                    userAchievement.setValue( userAchievement.getValue() + 1);
+
+                    if( userAchievement.getValue().equals(a.getGoal()) ) {
+                        userAchievement.setStatus(AchievementGoalStatus.DONE);
+                    }
+
+                    break;
+                }
+
+            } else {
+
+                userAchievementRepository.save(
+                    initialInstance( new UserAchievementId(a.getAchievementId(),action.getUserId()) )
+                );
+                
+                break;
+            }
+
+        }
+
+    }
+
 
 
 
