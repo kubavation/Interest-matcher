@@ -8,6 +8,12 @@ public class UserAchievementConverter {
 
     public static UserAchievementDTO toDTO(UserAchievement userAchievement,
                                            Achievement achievement) {
-        return UserAchievementDTO.builder().build();
+        return UserAchievementDTO.builder()
+                .achievementDesc(achievement.getDescription())
+                .achievementId(achievement.getAchievementId())
+                .achievementName(achievement.getName())
+                .goal(achievement.getGoal())
+                .userId(userAchievement.getUserAchievementId().getUserId())
+                .build();
     }
 }
