@@ -1,6 +1,7 @@
 package io.duryskuba.interestmatcher.AchievementService.controller;
 
 import io.duryskuba.interestmatcher.AchievementService.resource.Achievement;
+import io.duryskuba.interestmatcher.AchievementService.resource.AchievementDTO;
 import io.duryskuba.interestmatcher.AchievementService.resource.AchievementGroup;
 import io.duryskuba.interestmatcher.AchievementService.service.AchievementService;
 import org.springframework.http.HttpStatus;
@@ -22,17 +23,14 @@ public class AchievementController {
     }
 
     @GetMapping("/achievements/{id}")
-    public ResponseEntity<Achievement> findById(@PathVariable Long id) {
+    public ResponseEntity<AchievementDTO> findById(@PathVariable Long id) {
         return new ResponseEntity<>(achievementService.findAchievementById(id), HttpStatus.OK);
     }
 
-    @PostMapping("/achievement-groups/{groupId}/achievements")
-    public ResponseEntity<Achievement> create(@RequestBody Achievement achievement,
-                                              @PathVariable Long groupId) {
-        return new ResponseEntity<>(achievementService.createAchievement(achievement, groupId), HttpStatus.CREATED);
+    @PostMapping("/achievements")
+    public ResponseEntity<AchievementDTO> create(@RequestBody AchievementDTO achievement) {
+        return new ResponseEntity<>(achievementService.createAchievement(achievement), HttpStatus.CREATED);
     }
-
-    //lub achievementDTO bedzie posiadalo groupId // todo refactor
 
     @DeleteMapping("/achievements/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {

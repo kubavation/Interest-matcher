@@ -14,6 +14,8 @@ public class UserAchievementConverter {
                 .achievementName(achievement.getName())
                 .goal(achievement.getGoal())
                 .userId(userAchievement.getUserAchievementId().getUserId())
+                .currentValue(userAchievement.getValue())
+                .level(achievement.getLevel())
                 .build();
     }
 }
