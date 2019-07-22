@@ -24,7 +24,7 @@ public class AchievementController {
 
     @GetMapping("/achievements/{id}")
     public ResponseEntity<AchievementDTO> findById(@PathVariable Long id) {
-        return new ResponseEntity<>(achievementService.findAchievementById(id), HttpStatus.OK);
+        return new ResponseEntity<>(achievementService.findAchievementByIdOrThrow(id), HttpStatus.OK);
     }
 
     @PostMapping("/achievements")

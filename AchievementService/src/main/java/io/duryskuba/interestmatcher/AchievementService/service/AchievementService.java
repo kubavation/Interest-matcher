@@ -55,24 +55,35 @@ public class AchievementService {
         return AchievementConverter.toDtoList( achievementRepository.findAll() );
     }
 
-    public Achievement findAchievementById(Long id) {
-        return achievementRepository.findById(id)
-                    .orElseThrow(RuntimeException::new);
+    public AchievementDTO findAchievementByIdOrThrow(Long id) {
+        return AchievementConverter.toDto (
+                    achievementRepository.findById(id)
+                    .orElseThrow(RuntimeException::new) );
     }
 
-    public Achievement createAchievement(AchievementDTO achievementDTO) {
-        
-        return findAchievementGroupById(achievementDTO.getAchievementGroupId())
-                .map(g -> AchievementConverter.toEntity(achievementDTO, g))
-                .map(this::setNextAvailableLevel)
-                .map(achievementRepository::save)
-                .orElseThrow(RuntimeException::new);
+    public Optional<Achievement> findAchievementById(Long id) {
+        return achievementRepository.findById(id);
+    }
+
+    public AchievementDTO createAchievement(AchievementDTO achievementDTO) {
+        return
+                AchievementConverter.toDto (
+                    findAchievementGroupById(achievementDTO.getAchievementGroupId())
+                    .map(g -> AchievementConverter.toEntity(achievementDTO, g))
+                    .map(this::setNextAvailableLevel)
+                    .map(achievementRepository::save)
+                    .orElseThrow(RuntimeException::new)
+                );
     }
 
     public void deleteAchievement(Long id) {
         achievementRepository.findById(id)
                 .ifPresent(achievementRepository::delete);
     }
+
+
+
+
 
     public void onAchievementAction(AchievementActionDTO action) {
         for (Achievement achievement:
