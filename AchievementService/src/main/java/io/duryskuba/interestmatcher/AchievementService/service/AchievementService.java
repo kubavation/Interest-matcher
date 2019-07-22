@@ -42,13 +42,17 @@ public class AchievementService {
         return achievementGroupRepository.findAll();
     }
 
-    public AchievementGroup findAchievementGroupById(Long id) {
+    public AchievementGroup findAchievementGroupByIdOrThrow(Long id) {
         return achievementGroupRepository.findById(id)
                     .orElseThrow(RuntimeException::new);
     }
 
+    public Optional<AchievementGroup> findAchievementGroupById(Long id) {
+        return achievementGroupRepository.findById(id);
+    }
+
     public Collection<AchievementDTO> findAllAchievements() {
-        return AchievementConverter.toDto(achievementRepository.findAll());
+        return AchievementConverter.toDtoList( achievementRepository.findAll() );
     }
 
     public Achievement findAchievementById(Long id) {
@@ -56,11 +60,13 @@ public class AchievementService {
                     .orElseThrow(RuntimeException::new);
     }
 
-    public Achievement createAchievement(Achievement achievement, Long groupId) {
-        AchievementGroup group = findAchievementGroupById(groupId);
-        achievement.setAchievementGroup(group);
-        achievement.setLevel( getNextAchievementLevel(achievement) );
-        return achievementRepository.save(achievement);
+    public Achievement createAchievement(AchievementDTO achievementDTO) {
+        
+        return findAchievementGroupById(achievementDTO.getAchievementGroupId())
+                .map(g -> AchievementConverter.toEntity(achievementDTO, g))
+                .map(this::setNextAvailableLevel)
+                .map(achievementRepository::save)
+                .orElseThrow(RuntimeException::new);
     }
 
     public void deleteAchievement(Long id) {
@@ -70,7 +76,7 @@ public class AchievementService {
 
     public void onAchievementAction(AchievementActionDTO action) {
         for (Achievement achievement:
-                findAchievementGroupById(action.getAchievementGroupId()).getAchievements())  {
+                findAchievementGroupByIdOrThrow(action.getAchievementGroupId()).getAchievements())  {
 
            if( !loopOverAchievementsAndIncrementValue(achievement, action.getUserId()) )
                break;
@@ -110,6 +116,10 @@ public class AchievementService {
                     .getAchievements().size() + 1;
     }
 
+    public Achievement setNextAvailableLevel(Achievement achievement) {
+        achievement.setLevel( getNextAchievementLevel(achievement) );
+        return achievement;
+    }
 
 //    public void todonameofmethodforincrementingachievement(AchievementActionDTO action) {
 //        AchievementGroup group =
