@@ -4,6 +4,7 @@ import io.duryskuba.interestmatcher.AchievementService.repository.AchievementGro
 import io.duryskuba.interestmatcher.AchievementService.repository.AchievementRepository;
 import io.duryskuba.interestmatcher.AchievementService.repository.UserAchievementRepository;
 import io.duryskuba.interestmatcher.AchievementService.resource.*;
+import io.duryskuba.interestmatcher.AchievementService.util.AchievementConverter;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -46,8 +47,8 @@ public class AchievementService {
                     .orElseThrow(RuntimeException::new);
     }
 
-    public Collection<Achievement> findAllAchievements() {
-        return achievementRepository.findAll();
+    public Collection<AchievementDTO> findAllAchievements() {
+        return AchievementConverter.toDto(achievementRepository.findAll());
     }
 
     public Achievement findAchievementById(Long id) {
