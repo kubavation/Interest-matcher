@@ -40,7 +40,7 @@ public class AchievementServiceApplication {
 						.achievementGroupId(1L)
 						.name("posty 1")
 						.description("Dodawanie postow - nowicjusz")
-						.goal(50L)
+						.goal(3L)
 						.level(1).build();
 			achievementService.createAchievement(achievementDTO1);
 
@@ -49,7 +49,7 @@ public class AchievementServiceApplication {
 					.achievementGroupId(1L)
 					.name("posty 2")
 					.description("Dodawanie postow - ekspert")
-					.goal(100L)
+					.goal(5L)
 					.level(2).build();
 			achievementService.createAchievement(achievementDTO2);
 

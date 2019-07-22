@@ -1,6 +1,7 @@
 package io.duryskuba.interestmatcher.AchievementService.controller;
 
 import io.duryskuba.interestmatcher.AchievementService.resource.Achievement;
+import io.duryskuba.interestmatcher.AchievementService.resource.AchievementActionDTO;
 import io.duryskuba.interestmatcher.AchievementService.resource.AchievementDTO;
 import io.duryskuba.interestmatcher.AchievementService.resource.AchievementGroup;
 import io.duryskuba.interestmatcher.AchievementService.service.AchievementService;
@@ -35,6 +36,19 @@ public class AchievementController {
     @DeleteMapping("/achievements/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         achievementService.deleteAchievement(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+
+    @PostMapping("/achievements/action")
+    public ResponseEntity<Void> onAchievementAction(@RequestBody AchievementActionDTO achievementAction) {
+        achievementService.onAchievementAction(achievementAction);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping("/achievements/actionv2")
+    public ResponseEntity<Void> onAchievementActionV2(@RequestBody AchievementActionDTO achievementAction) {
+        achievementService.onAchievementActionv2(achievementAction);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

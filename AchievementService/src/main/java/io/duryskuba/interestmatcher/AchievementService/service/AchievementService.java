@@ -9,6 +9,7 @@ import io.duryskuba.interestmatcher.AchievementService.util.AchievementGroupConv
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.Option;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.Set;
@@ -89,17 +90,89 @@ public class AchievementService {
     }
 
 
+    public boolean hasNextLevel(AchievementGroup group, int level) {
+        return
+                achievementRepository
+                        .findByAchievementGroup_AchievementGroupIdAndLevel(group.getAchievementGroupId(), level)
+                        .isPresent();
+    }
+
+    public void onAchievementActionv2(AchievementActionDTO action) {
+
+        final AchievementGroup group = findAchievementGroupByIdOrThrow(action.getAchievementGroupId());
+
+        boolean toBreak = false;
+        boolean first = true;
+
+        for ( Achievement a : group.getAchievements() ) {
+
+            System.out.println(a);
+
+            final UserAchievementId uaId = new UserAchievementId(a.getAchievementId(), action.getUserId());
+
+            Optional<UserAchievement> optUserAch =  userAchievementRepository.findById(uaId);
+
+            if ( !optUserAch.isPresent() ) {
+
+                initStateOfAchievement(a, action.getUserId(), first ? 1 :
+                        achievementRepository.findByAchievementGroup_AchievementGroupIdAndLevel(group.getAchievementGroupId(),
+                                a.getLevel() - 1).get().getGoal() + 1 );
+                toBreak = true;
+            } else {
+
+                final UserAchievement userAchievement = optUserAch.get();
+
+                if ( userAchievement.getStatus().equals(AchievementGoalStatus.DONE)) {
+
+                    if ( !hasNextLevel(group,a.getLevel() + 1)) {
+                        userAchievement.setValue(userAchievement.getValue() + 1);
+                        userAchievementRepository.save(userAchievement);
+
+                        toBreak = true;
+
+                    }
 
 
+                } else {
 
+                    userAchievement.setValue(userAchievement.getValue() + 1);
+
+                    if ( userAchievement.getValue().equals(a.getGoal())) {
+                        userAchievement.setStatus(AchievementGoalStatus.DONE);
+                    }
+
+                    userAchievementRepository.save(userAchievement);
+
+                    toBreak = true;
+                }
+
+
+            }
+
+            first = false;
+            if(toBreak) break;
+
+        }
+
+    }
+
+
+    //todo rabbitlistener
     public void onAchievementAction(AchievementActionDTO action) {
         for (Achievement achievement:
                 findAchievementGroupByIdOrThrow(action.getAchievementGroupId()).getAchievements())  {
+
+            System.out.println(achievement.getName());
 
            if( !loopOverAchievementsAndIncrementValue(achievement, action.getUserId()) )
                break;
 
         }
+    }
+
+
+    public void checkIfNextLevelExists(AchievementGroup achievementGroup, Long currentLevel) {
+
     }
 
     private boolean loopOverAchievementsAndIncrementValue(Achievement achievement,
@@ -118,13 +191,23 @@ public class AchievementService {
             if ( userAchievement.getValue().equals(achievement.getGoal()) ) {
                 userAchievement.setStatus(AchievementGoalStatus.DONE);
             }
+
+            achievementRepository.save(achievement);
             return false;
         }
     }
 
     private boolean initStateOfAchievement(Achievement achievement, Long userId) {
+        System.out.println("in init :(");
         userAchievementRepository.save (
                 initialInstance( new UserAchievementId(achievement.getAchievementId(), userId)) );
+        return false;
+    }
+
+    private boolean initStateOfAchievement(Achievement achievement, Long userId, Long previousLevelValue) {
+        System.out.println("in init :(");
+        userAchievementRepository.save (
+                initialInstance( new UserAchievementId(achievement.getAchievementId(), userId), previousLevelValue) );
         return false;
     }
 

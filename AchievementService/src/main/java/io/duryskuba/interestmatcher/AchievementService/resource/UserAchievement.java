@@ -29,4 +29,7 @@ public class UserAchievement {
         return new UserAchievement(id, AchievementGoalStatus.IN_PROGRESS, 1L);
     }
 
+    public static UserAchievement initialInstance(UserAchievementId id, Long value) {
+        return new UserAchievement(id, AchievementGoalStatus.IN_PROGRESS, value);
+    }
 }

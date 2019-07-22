@@ -9,7 +9,6 @@ import java.util.stream.Collectors;
 
 public class AchievementConverter {
 
-    //achievement status DTO ??
     public static AchievementDTO toDto(Achievement achievement) {
         return AchievementDTO.builder()
                     .achievementGroupId(achievement.getAchievementGroup().getAchievementGroupId())
