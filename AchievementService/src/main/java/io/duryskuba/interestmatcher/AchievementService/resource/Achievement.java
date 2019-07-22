@@ -23,9 +23,9 @@ public class Achievement {
     private String name;
     private String description;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "achievement_group_id")
-    @JsonIgnore
+   // @JsonIgnore
     private AchievementGroup achievementGroup;
 
     private int level;

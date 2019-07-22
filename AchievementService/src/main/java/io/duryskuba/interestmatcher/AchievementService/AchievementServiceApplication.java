@@ -1,6 +1,7 @@
 package io.duryskuba.interestmatcher.AchievementService;
 
 import io.duryskuba.interestmatcher.AchievementService.resource.Achievement;
+import io.duryskuba.interestmatcher.AchievementService.resource.AchievementDTO;
 import io.duryskuba.interestmatcher.AchievementService.resource.AchievementGroup;
 import io.duryskuba.interestmatcher.AchievementService.service.AchievementService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,23 @@ public class AchievementServiceApplication {
 			group.setAchievements(new ArrayList<>());
 			achievementService.createAchivementGroup(group);
 
+			AchievementDTO achievementDTO1
+					= AchievementDTO.builder()
+						.achievementGroupId(1L)
+						.name("posty 1")
+						.description("Dodawanie postow - nowicjusz")
+						.goal(50L)
+						.level(1).build();
+			achievementService.createAchievement(achievementDTO1);
+
+			AchievementDTO achievementDTO2
+					= AchievementDTO.builder()
+					.achievementGroupId(1L)
+					.name("posty 2")
+					.description("Dodawanie postow - ekspert")
+					.goal(100L)
+					.level(2).build();
+			achievementService.createAchievement(achievementDTO2);
 
 
 		};

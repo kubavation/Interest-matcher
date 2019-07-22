@@ -71,7 +71,7 @@ public class AchievementService {
                 AchievementConverter.toDto (
                     findAchievementGroupById(achievementDTO.getAchievementGroupId())
                     .map(g -> AchievementConverter.toEntity(achievementDTO, g))
-                    .map(this::setNextAvailableLevel)
+                    //.map(this::setNextAvailableLevel)
                     .map(achievementRepository::save)
                     .orElseThrow(RuntimeException::new)
                 );
