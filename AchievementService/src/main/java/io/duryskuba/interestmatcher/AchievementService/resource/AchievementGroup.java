@@ -1,5 +1,8 @@
 package io.duryskuba.interestmatcher.AchievementService.resource;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,9 +26,9 @@ public class AchievementGroup {
     private String name;
 
     @OneToMany(mappedBy = "achievementGroup",
-               fetch = FetchType.LAZY,
-               orphanRemoval = true)
+               fetch = FetchType.LAZY)
     @OrderBy(value = "level ASC")
+    @JsonIgnore //todo converting child components to DTO
     private Set<Achievement> achievements;
 
 }

@@ -22,7 +22,7 @@ public class AchievementGroupController {
 
     @GetMapping("/achievement-groups/{id}")
     public ResponseEntity<AchievementGroup> findById(@PathVariable Long id) {
-        return new ResponseEntity<>(achievementService.findAchievementGroupById(id), HttpStatus.OK);
+        return new ResponseEntity<>(achievementService.findAchievementGroupByIdOrThrow(id), HttpStatus.OK);
     }
 
     @PostMapping("/achievement-groups")

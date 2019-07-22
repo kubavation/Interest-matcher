@@ -116,7 +116,7 @@ public class AchievementService {
     }
 
     private boolean initStateOfAchievement(Achievement achievement, Long userId) {
-        userAchievementRepository.save(
+        userAchievementRepository.save (
                 initialInstance( new UserAchievementId(achievement.getAchievementId(), userId)) );
         return false;
     }
