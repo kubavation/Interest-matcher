@@ -16,6 +16,7 @@ public class AchievementConverter {
                     .achievementId(achievement.getAchievementId())
                     .description(achievement.getDescription())
                     .goal(achievement.getGoal())
+                    .level(achievement.getLevel())
                     .groupName(achievement.getAchievementGroup().getName())
                     .name(achievement.getName())
                     .build();
