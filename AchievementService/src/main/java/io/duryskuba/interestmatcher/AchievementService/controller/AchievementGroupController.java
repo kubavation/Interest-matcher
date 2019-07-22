@@ -22,13 +22,13 @@ public class AchievementGroupController {
     }
 
     @GetMapping("/achievement-groups/{id}")
-    public ResponseEntity<AchievementGroup> findById(@PathVariable Long id) {
-        return new ResponseEntity<>(achievementService.findAchievementGroupByIdOrThrow(id), HttpStatus.OK);
+    public ResponseEntity<AchievementGroupDTO> findById(@PathVariable Long id) {
+        return new ResponseEntity<>(achievementService.findAchievementGroupDtoById(id), HttpStatus.OK);
     }
 
     @PostMapping("/achievement-groups")
     public ResponseEntity<AchievementGroupDTO> create(@RequestBody AchievementGroup group) {
-        return new ResponseEntity<>(achievementService.createAchivementGroup(group), HttpStatus.CREATED);
+        return new ResponseEntity<>(achievementService.createAchievementGroup(group), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/achievement-groups/{id}")

@@ -33,7 +33,7 @@ public class AchievementServiceApplication {
 			AchievementGroup group = new AchievementGroup();
 			group.setName("Tworzenie postów");
 			group.setAchievements(new ArrayList<>());
-			achievementService.createAchivementGroup(group);
+			achievementService.createAchievementGroup(group);
 
 			AchievementDTO achievementDTO1
 					= AchievementDTO.builder()

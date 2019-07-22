@@ -30,7 +30,7 @@ public class AchievementService {
         this.userAchievementRepository = userAchievementRepository;
     }
 
-    public AchievementGroupDTO createAchivementGroup(AchievementGroup achievementGroup) {
+    public AchievementGroupDTO createAchievementGroup(AchievementGroup achievementGroup) {
         return AchievementGroupConverter.toDto( achievementGroupRepository.save(achievementGroup) );
     }
 
@@ -46,6 +46,12 @@ public class AchievementService {
     public AchievementGroup findAchievementGroupByIdOrThrow(Long id) {
         return achievementGroupRepository.findById(id)
                     .orElseThrow(RuntimeException::new);
+    }
+
+    public AchievementGroupDTO findAchievementGroupDtoById(Long id) {
+        return AchievementGroupConverter.toDto (
+                achievementGroupRepository.findById(id)
+                    .orElseThrow(RuntimeException::new) );
     }
 
     public Optional<AchievementGroup> findAchievementGroupById(Long id) {
