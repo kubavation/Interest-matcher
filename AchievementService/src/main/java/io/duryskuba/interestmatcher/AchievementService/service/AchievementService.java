@@ -5,6 +5,7 @@ import io.duryskuba.interestmatcher.AchievementService.repository.AchievementRep
 import io.duryskuba.interestmatcher.AchievementService.repository.UserAchievementRepository;
 import io.duryskuba.interestmatcher.AchievementService.resource.*;
 import io.duryskuba.interestmatcher.AchievementService.util.AchievementConverter;
+import io.duryskuba.interestmatcher.AchievementService.util.AchievementGroupConverter;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -29,8 +30,8 @@ public class AchievementService {
         this.userAchievementRepository = userAchievementRepository;
     }
 
-    public AchievementGroup createAchivementGroup(AchievementGroup achievementGroup) {
-        return achievementGroupRepository.save(achievementGroup);
+    public AchievementGroupDTO createAchivementGroup(AchievementGroup achievementGroup) {
+        return AchievementGroupConverter.toDto( achievementGroupRepository.save(achievementGroup) );
     }
 
     public void deleteAchievementGroup(Long achievementGroupId) {
@@ -38,8 +39,8 @@ public class AchievementService {
                     .ifPresent(achievementGroupRepository::delete);
     }
 
-    public Collection<AchievementGroup> findAllAchievementGroups() {
-        return achievementGroupRepository.findAll();
+    public Collection<AchievementGroupDTO> findAllAchievementGroups() {
+        return AchievementGroupConverter.toDtoCollection( achievementGroupRepository.findAll() );
     }
 
     public AchievementGroup findAchievementGroupByIdOrThrow(Long id) {

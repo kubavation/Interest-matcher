@@ -3,19 +3,19 @@ package io.duryskuba.interestmatcher.AchievementService.resource;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.core.annotation.Order;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 @Entity
 @Table(name = "ACHIEVEMENT_GROUP")
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
+@Getter
+@Setter
 public class AchievementGroup {
 
     @Id
@@ -25,10 +25,8 @@ public class AchievementGroup {
 
     private String name;
 
-    @OneToMany(mappedBy = "achievementGroup",
-               fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "achievementGroup")
     @OrderBy(value = "level ASC")
-    @JsonIgnore //todo converting child components to DTO
-    private Set<Achievement> achievements;
+    private List<Achievement> achievements;
 
 }

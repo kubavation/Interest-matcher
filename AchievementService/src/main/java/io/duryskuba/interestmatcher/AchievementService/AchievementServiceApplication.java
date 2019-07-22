@@ -10,6 +10,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.context.annotation.Bean;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+
 @EnableEurekaClient
 @SpringBootApplication
 public class AchievementServiceApplication {
@@ -28,6 +31,7 @@ public class AchievementServiceApplication {
 			System.out.println("init");
 			AchievementGroup group = new AchievementGroup();
 			group.setName("Tworzenie postów");
+			group.setAchievements(new ArrayList<>());
 			achievementService.createAchivementGroup(group);
 
 

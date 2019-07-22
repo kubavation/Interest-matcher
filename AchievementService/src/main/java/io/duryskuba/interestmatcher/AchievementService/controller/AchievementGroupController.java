@@ -1,6 +1,7 @@
 package io.duryskuba.interestmatcher.AchievementService.controller;
 
 import io.duryskuba.interestmatcher.AchievementService.resource.AchievementGroup;
+import io.duryskuba.interestmatcher.AchievementService.resource.AchievementGroupDTO;
 import io.duryskuba.interestmatcher.AchievementService.service.AchievementService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +27,7 @@ public class AchievementGroupController {
     }
 
     @PostMapping("/achievement-groups")
-    public ResponseEntity<AchievementGroup> create(@RequestBody AchievementGroup group) {
+    public ResponseEntity<AchievementGroupDTO> create(@RequestBody AchievementGroup group) {
         return new ResponseEntity<>(achievementService.createAchivementGroup(group), HttpStatus.CREATED);
     }
 
