@@ -97,6 +97,31 @@ public class AchievementService {
                         .isPresent();
     }
 
+    private boolean isLevelFirst(Achievement achievement) {
+        return achievement.getLevel() == 1;
+    }
+
+    private Long findAchievementGoalByGroupByIdAndLevel(Long groupId, int level) {
+        return
+            achievementRepository.findByAchievementGroup_AchievementGroupIdAndLevel(groupId, level)
+                        .map(Achievement::getGoal)
+                        .orElseThrow(RuntimeException::new); //todo OrElseGet 1
+
+    }
+
+    public void initializeAchievementBasedOnLevel(Achievement achievement, Long userId, Long groupId) {
+
+        if ( isLevelFirst(achievement) ) {
+            initStateOfAchievement(achievement, userId);
+        }
+        else {
+            //maybe orelseGet
+            initStateOfAchievement(achievement, userId,
+                    findAchievementGoalByGroupByIdAndLevel(groupId, achievement.getLevel() - 1));
+        }
+
+    }
+
     public void onAchievementActionv2(AchievementActionDTO action) {
 
         final AchievementGroup group = findAchievementGroupByIdOrThrow(action.getAchievementGroupId());
@@ -113,10 +138,7 @@ public class AchievementService {
             Optional<UserAchievement> optUserAch =  userAchievementRepository.findById(uaId);
 
             if ( !optUserAch.isPresent() ) {
-
-                initStateOfAchievement(a, action.getUserId(), first ? 1 :
-                        achievementRepository.findByAchievementGroup_AchievementGroupIdAndLevel(group.getAchievementGroupId(),
-                                a.getLevel() - 1).get().getGoal() + 1 );
+                initializeAchievementBasedOnLevel(a, action.getUserId(), group.getAchievementGroupId());
                 toBreak = true;
             } else {
 
@@ -171,9 +193,6 @@ public class AchievementService {
     }
 
 
-    public void checkIfNextLevelExists(AchievementGroup achievementGroup, Long currentLevel) {
-
-    }
 
     private boolean loopOverAchievementsAndIncrementValue(Achievement achievement,
                                                           Long userId) {
@@ -210,6 +229,7 @@ public class AchievementService {
                 initialInstance( new UserAchievementId(achievement.getAchievementId(), userId), previousLevelValue) );
         return false;
     }
+
 
     private int getNextAchievementLevel(Achievement achievement) {
         return achievement
