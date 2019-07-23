@@ -101,24 +101,38 @@ public class AchievementService {
         return achievement.getLevel() == 1;
     }
 
+
+
+    public void onAchievementAction(AchievementActionDTO action) {
+        final AchievementGroup group = findAchievementGroupByIdOrThrow(action.getAchievementGroupId());
+
+        for (Achievement a : group.getAchievements()) {
+
+            if (userAchievementRepository.findById(new UserAchievementId(a.getAchievementId(), action.getUserId()))
+                    .map(ua -> incrementAchievementValueBasedOnStatus(ua, a, group))
+                    .orElseGet(() ->
+                            initializeAchievementBasedOnLevel(a, action.getUserId(), group.getAchievementGroupId()))) {
+                return;
+            }
+        }
+    }
+
     private Long findAchievementGoalByGroupByIdAndLevel(Long groupId, int level) {
         return
                 achievementRepository.findByAchievementGroup_AchievementGroupIdAndLevel(groupId, level)
                         .map(Achievement::getGoal)
-                        .orElseThrow(RuntimeException::new); //todo OrElseGet 1
+                        .orElseThrow(RuntimeException::new);
 
     }
 
-    public boolean initializeAchievementBasedOnLevel(Achievement achievement, Long userId, Long groupId) {
+    private boolean initializeAchievementBasedOnLevel(Achievement achievement, Long userId, Long groupId) {
 
-        if (isLevelFirst(achievement)) {
+        if ( isLevelFirst(achievement) ) {
             initStateOfAchievement(achievement, userId);
         } else {
-            //maybe orelseGet
             initStateOfAchievement(achievement, userId,
                     findAchievementGoalByGroupByIdAndLevel(groupId, achievement.getLevel() - 1) + 1);
         }
-
         return true;
     }
 
@@ -138,7 +152,7 @@ public class AchievementService {
         userAchievementRepository.save(userAchievement);
     }
 
-    public boolean incrementAchievementValueBasedOnStatus(UserAchievement userAchievement,
+    private boolean incrementAchievementValueBasedOnStatus(UserAchievement userAchievement,
                                                           Achievement achievement, AchievementGroup group) {
 
         if ( isAchievementStatusDone(userAchievement) ) {
@@ -156,23 +170,6 @@ public class AchievementService {
         }
 
         return true;
-    }
-
-
-    public void onAchievementAction(AchievementActionDTO action) {
-
-        final AchievementGroup group = findAchievementGroupByIdOrThrow(action.getAchievementGroupId());
-
-        for (Achievement a : group.getAchievements()) {
-
-            if (userAchievementRepository.findById(new UserAchievementId(a.getAchievementId(), action.getUserId()))
-                    .map(ua -> incrementAchievementValueBasedOnStatus(ua, a, group))
-                    .orElseGet(() ->
-                            initializeAchievementBasedOnLevel(a, action.getUserId(), group.getAchievementGroupId()))) {
-                return;
-            }
-        }
-
     }
 
 
