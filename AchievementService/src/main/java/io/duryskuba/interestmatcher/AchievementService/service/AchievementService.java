@@ -90,7 +90,7 @@ public class AchievementService {
     }
 
 
-    public boolean hasNextLevel(AchievementGroup group, int level) {
+    public boolean isLevelAvailable(AchievementGroup group, int level) {
         return
                 achievementRepository
                         .findByAchievementGroup_AchievementGroupIdAndLevel(group.getAchievementGroupId(), level)
@@ -117,21 +117,57 @@ public class AchievementService {
         else {
             //maybe orelseGet
             initStateOfAchievement(achievement, userId,
-                    findAchievementGoalByGroupByIdAndLevel(groupId, achievement.getLevel() - 1) + 1);
+    findAchievementGoalByGroupByIdAndLevel(groupId, achievement.getLevel() - 1) + 1);
         }
 
     }
+
+    private boolean isAchievementStatusDone(UserAchievement userAchievement) {
+        return AchievementGoalStatus.DONE.equals(userAchievement.getStatus());
+    }
+
+    private void changeValueAndStatusOfAchievement(UserAchievement userAchievement,
+                                                   Achievement achievement) {
+
+        userAchievement.setValue( userAchievement.getValue() + 1);
+
+        if ( userAchievement.getValue().equals(achievement.getGoal()) ) {
+            userAchievement.setStatus(AchievementGoalStatus.DONE);
+        }
+
+        userAchievementRepository.save(userAchievement);
+    }
+
+    public boolean incrementAchievementValueBasedOnStatus(UserAchievement userAchievement,
+              Achievement achievement, AchievementGroup group) {
+
+        if ( isAchievementStatusDone(userAchievement) ) {
+
+            if ( !isLevelAvailable(group,achievement.getLevel() + 1) ) {
+
+                //do innej metody
+                userAchievement.setValue(userAchievement.getValue() + 1);
+                userAchievementRepository.save(userAchievement);
+
+            }
+
+            return false;
+
+        } else {
+            changeValueAndStatusOfAchievement(userAchievement, achievement);
+        }
+
+        return true;
+    }
+
 
     public void onAchievementActionv2(AchievementActionDTO action) {
 
         final AchievementGroup group = findAchievementGroupByIdOrThrow(action.getAchievementGroupId());
 
         boolean toBreak = false;
-        boolean first = true;
 
         for ( Achievement a : group.getAchievements() ) {
-
-            System.out.println(a);
 
             final UserAchievementId uaId = new UserAchievementId(a.getAchievementId(), action.getUserId());
 
@@ -142,36 +178,9 @@ public class AchievementService {
                 toBreak = true;
             } else {
 
-                final UserAchievement userAchievement = optUserAch.get();
-
-                if ( userAchievement.getStatus().equals(AchievementGoalStatus.DONE)) {
-
-                    if ( !hasNextLevel(group,a.getLevel() + 1)) {
-                        userAchievement.setValue(userAchievement.getValue() + 1);
-                        userAchievementRepository.save(userAchievement);
-
-                        toBreak = true;
-
-                    }
-
-
-                } else {
-
-                    userAchievement.setValue(userAchievement.getValue() + 1);
-
-                    if ( userAchievement.getValue().equals(a.getGoal())) {
-                        userAchievement.setStatus(AchievementGoalStatus.DONE);
-                    }
-
-                    userAchievementRepository.save(userAchievement);
-
-                    toBreak = true;
-                }
-
-
+                toBreak = incrementAchievementValueBasedOnStatus(optUserAch.get(), a, group);
             }
 
-            first = false;
             if(toBreak) break;
 
         }
@@ -293,3 +302,30 @@ public class AchievementService {
 
 
 }
+
+
+//    final UserAchievement userAchievement = optUserAch.get();
+//
+//                if ( userAchievement.getStatus().equals(AchievementGoalStatus.DONE)) {
+//
+//                        if ( !hasNextLevel(group,a.getLevel() + 1)) {
+//                        userAchievement.setValue(userAchievement.getValue() + 1);
+//                        userAchievementRepository.save(userAchievement);
+//
+//                        toBreak = true;
+//
+//                        }
+//
+//
+//                        } else {
+//
+//                        userAchievement.setValue(userAchievement.getValue() + 1);
+//
+//                        if ( userAchievement.getValue().equals(a.getGoal())) {
+//                        userAchievement.setStatus(AchievementGoalStatus.DONE);
+//                        }
+//
+//                        userAchievementRepository.save(userAchievement);
+//
+//                        toBreak = true;
+//                        }
