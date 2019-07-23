@@ -46,10 +46,5 @@ public class AchievementController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PostMapping("/achievements/actionv2")
-    public ResponseEntity<Void> onAchievementActionV2(@RequestBody AchievementActionDTO achievementAction) {
-        achievementService.onAchievementActionv2(achievementAction);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
 
 }

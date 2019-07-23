@@ -32,27 +32,27 @@ public class AchievementService {
     }
 
     public AchievementGroupDTO createAchievementGroup(AchievementGroup achievementGroup) {
-        return AchievementGroupConverter.toDto( achievementGroupRepository.save(achievementGroup) );
+        return AchievementGroupConverter.toDto(achievementGroupRepository.save(achievementGroup));
     }
 
     public void deleteAchievementGroup(Long achievementGroupId) {
         achievementGroupRepository.findById(achievementGroupId)
-                    .ifPresent(achievementGroupRepository::delete);
+                .ifPresent(achievementGroupRepository::delete);
     }
 
     public Collection<AchievementGroupDTO> findAllAchievementGroups() {
-        return AchievementGroupConverter.toDtoCollection( achievementGroupRepository.findAll() );
+        return AchievementGroupConverter.toDtoCollection(achievementGroupRepository.findAll());
     }
 
     public AchievementGroup findAchievementGroupByIdOrThrow(Long id) {
         return achievementGroupRepository.findById(id)
-                    .orElseThrow(RuntimeException::new);
+                .orElseThrow(RuntimeException::new);
     }
 
     public AchievementGroupDTO findAchievementGroupDtoById(Long id) {
-        return AchievementGroupConverter.toDto (
+        return AchievementGroupConverter.toDto(
                 achievementGroupRepository.findById(id)
-                    .orElseThrow(RuntimeException::new) );
+                        .orElseThrow(RuntimeException::new));
     }
 
     public Optional<AchievementGroup> findAchievementGroupById(Long id) {
@@ -60,13 +60,13 @@ public class AchievementService {
     }
 
     public Collection<AchievementDTO> findAllAchievements() {
-        return AchievementConverter.toDtoList( achievementRepository.findAll() );
+        return AchievementConverter.toDtoList(achievementRepository.findAll());
     }
 
     public AchievementDTO findAchievementByIdOrThrow(Long id) {
-        return AchievementConverter.toDto (
-                    achievementRepository.findById(id)
-                    .orElseThrow(RuntimeException::new) );
+        return AchievementConverter.toDto(
+                achievementRepository.findById(id)
+                        .orElseThrow(RuntimeException::new));
     }
 
     public Optional<Achievement> findAchievementById(Long id) {
@@ -75,12 +75,12 @@ public class AchievementService {
 
     public AchievementDTO createAchievement(AchievementDTO achievementDTO) {
         return
-                AchievementConverter.toDto (
-                    findAchievementGroupById(achievementDTO.getAchievementGroupId())
-                    .map(g -> AchievementConverter.toEntity(achievementDTO, g))
-                    //.map(this::setNextAvailableLevel)
-                    .map(achievementRepository::save)
-                    .orElseThrow(RuntimeException::new)
+                AchievementConverter.toDto(
+                        findAchievementGroupById(achievementDTO.getAchievementGroupId())
+                                .map(g -> AchievementConverter.toEntity(achievementDTO, g))
+                                //.map(this::setNextAvailableLevel)
+                                .map(achievementRepository::save)
+                                .orElseThrow(RuntimeException::new)
                 );
     }
 
@@ -103,7 +103,7 @@ public class AchievementService {
 
     private Long findAchievementGoalByGroupByIdAndLevel(Long groupId, int level) {
         return
-            achievementRepository.findByAchievementGroup_AchievementGroupIdAndLevel(groupId, level)
+                achievementRepository.findByAchievementGroup_AchievementGroupIdAndLevel(groupId, level)
                         .map(Achievement::getGoal)
                         .orElseThrow(RuntimeException::new); //todo OrElseGet 1
 
@@ -111,13 +111,12 @@ public class AchievementService {
 
     public boolean initializeAchievementBasedOnLevel(Achievement achievement, Long userId, Long groupId) {
 
-        if ( isLevelFirst(achievement) ) {
+        if (isLevelFirst(achievement)) {
             initStateOfAchievement(achievement, userId);
-        }
-        else {
+        } else {
             //maybe orelseGet
             initStateOfAchievement(achievement, userId,
-    findAchievementGoalByGroupByIdAndLevel(groupId, achievement.getLevel() - 1) + 1);
+                    findAchievementGoalByGroupByIdAndLevel(groupId, achievement.getLevel() - 1) + 1);
         }
 
         return true;
@@ -130,9 +129,9 @@ public class AchievementService {
     private void changeValueAndStatusOfAchievement(UserAchievement userAchievement,
                                                    Achievement achievement) {
 
-        userAchievement.setValue( userAchievement.getValue() + 1);
+        userAchievement.setValue(userAchievement.getValue() + 1);
 
-        if ( userAchievement.getValue().equals(achievement.getGoal()) ) {
+        if (userAchievement.getValue().equals(achievement.getGoal())) {
             userAchievement.setStatus(AchievementGoalStatus.DONE);
         }
 
@@ -140,16 +139,14 @@ public class AchievementService {
     }
 
     public boolean incrementAchievementValueBasedOnStatus(UserAchievement userAchievement,
-              Achievement achievement, AchievementGroup group) {
+                                                          Achievement achievement, AchievementGroup group) {
 
         if ( isAchievementStatusDone(userAchievement) ) {
 
-            if ( !isLevelAvailable(group,achievement.getLevel() + 1) ) {
+            if (!isLevelAvailable(group, achievement.getLevel() + 1)) {
 
-                //do innej metody
                 userAchievement.setValue(userAchievement.getValue() + 1);
                 userAchievementRepository.save(userAchievement);
-
             }
 
             return false;
@@ -161,24 +158,17 @@ public class AchievementService {
         return true;
     }
 
-//            if ( !optUserAch.isPresent() ) {
-//                initializeAchievementBasedOnLevel(a, action.getUserId(), group.getAchievementGroupId());
-//                toBreak = true;
-//            } else {
-//
-//                toBreak = incrementAchievementValueBasedOnStatus(optUserAch.get(), a, group);
-//            }
 
-    public void onAchievementActionv2(AchievementActionDTO action) {
+    public void onAchievementAction(AchievementActionDTO action) {
 
         final AchievementGroup group = findAchievementGroupByIdOrThrow(action.getAchievementGroupId());
 
-        for ( Achievement a : group.getAchievements() ) {
+        for (Achievement a : group.getAchievements()) {
 
-            if ( userAchievementRepository.findById( new UserAchievementId(a.getAchievementId(), action.getUserId()) )
-                    .map(ua -> incrementAchievementValueBasedOnStatus( ua, a, group ))
+            if (userAchievementRepository.findById(new UserAchievementId(a.getAchievementId(), action.getUserId()))
+                    .map(ua -> incrementAchievementValueBasedOnStatus(ua, a, group))
                     .orElseGet(() ->
-                            initializeAchievementBasedOnLevel(a ,action.getUserId(), group.getAchievementGroupId() )) ) {
+                            initializeAchievementBasedOnLevel(a, action.getUserId(), group.getAchievementGroupId()))) {
                 return;
             }
         }
@@ -186,54 +176,15 @@ public class AchievementService {
     }
 
 
-    //todo rabbitlistener
-    public void onAchievementAction(AchievementActionDTO action) {
-        for (Achievement achievement:
-                findAchievementGroupByIdOrThrow(action.getAchievementGroupId()).getAchievements())  {
-
-            System.out.println(achievement.getName());
-
-           if( !loopOverAchievementsAndIncrementValue(achievement, action.getUserId()) )
-               break;
-
-        }
-    }
-
-
-
-    private boolean loopOverAchievementsAndIncrementValue(Achievement achievement,
-                                                          Long userId) {
-        return userAchievementRepository
-                .findById( new UserAchievementId(achievement.getAchievementId(), userId) )
-                .map(a -> incrementAchievementValue(a, achievement))
-                .orElseGet(() -> initStateOfAchievement(achievement, userId));
-    }
-
-    private boolean incrementAchievementValue(UserAchievement userAchievement, Achievement achievement) {
-        if ( AchievementGoalStatus.DONE.equals(userAchievement.getStatus()) )
-            return true;
-        else {
-            userAchievement.setValue(userAchievement.getValue() + 1);
-            if ( userAchievement.getValue().equals(achievement.getGoal()) ) {
-                userAchievement.setStatus(AchievementGoalStatus.DONE);
-            }
-
-            achievementRepository.save(achievement);
-            return false;
-        }
-    }
-
     private boolean initStateOfAchievement(Achievement achievement, Long userId) {
-        System.out.println("in init :(");
-        userAchievementRepository.save (
-                initialInstance( new UserAchievementId(achievement.getAchievementId(), userId)) );
+        userAchievementRepository.save(
+                initialInstance(new UserAchievementId(achievement.getAchievementId(), userId)));
         return false;
     }
 
-    private boolean initStateOfAchievement(Achievement achievement, Long userId, Long previousLevelValue) {
-        System.out.println("in init :(");
-        userAchievementRepository.save (
-                initialInstance( new UserAchievementId(achievement.getAchievementId(), userId), previousLevelValue) );
+    private boolean initStateOfAchievement(Achievement achievement, Long userId, Long value) {
+        userAchievementRepository.save(
+                initialInstance(new UserAchievementId(achievement.getAchievementId(), userId), value));
         return false;
     }
 
@@ -241,89 +192,12 @@ public class AchievementService {
     private int getNextAchievementLevel(Achievement achievement) {
         return achievement
                 .getAchievementGroup()
-                    .getAchievements().size() + 1;
+                .getAchievements().size() + 1;
     }
 
     public Achievement setNextAvailableLevel(Achievement achievement) {
-        achievement.setLevel( getNextAchievementLevel(achievement) );
+        achievement.setLevel(getNextAchievementLevel(achievement));
         return achievement;
     }
 
-//    public void todonameofmethodforincrementingachievement(AchievementActionDTO action) {
-//        AchievementGroup group =
-//                 findAchievementGroupById(action.getAchievementGroupId());
-//
-//        Set<Achievement> achievements = group.getAchievements();
-//
-//        final Long userId = action.getUserId();
-//
-//        for( Achievement a : achievements) {
-//
-//            Optional<UserAchievement> userAchievementOpt = userAchievementRepository
-//                    .findById(new UserAchievementId(a.getAchievementId(), action.getUserId()));
-//
-//            if ( userAchievementOpt.isPresent() ) {
-//
-//                final UserAchievement userAchievement = userAchievementOpt.get();
-//
-//                if( AchievementGoalStatus.DONE.equals(userAchievement.getStatus()) )
-//                    continue;
-//                else {
-//                    //increment value of achievement
-//                    userAchievement.setValue( userAchievement.getValue() + 1);
-//
-//                    if( userAchievement.getValue().equals(a.getGoal()) ) {
-//                        userAchievement.setStatus(AchievementGoalStatus.DONE);
-//                    }
-//
-//                    break;
-//                }
-//
-//            } else {
-//                //init method for value of achievement
-//                UserAchievement userAchievement
-//                        = UserAchievement.builder()
-//                            .userAchievementId(
-//                                  new UserAchievementId(a.getAchievementId(), action.getUserId())
-//                                )
-//                            .status(AchievementGoalStatus.IN_PROGRESS)
-//                            .value(1L)
-//                            .build();
-//
-//                userAchievementRepository.save(userAchievement);
-//                break;
-//            }
-//
-//        }
-//
-//    }
-
-
 }
-
-
-//    final UserAchievement userAchievement = optUserAch.get();
-//
-//                if ( userAchievement.getStatus().equals(AchievementGoalStatus.DONE)) {
-//
-//                        if ( !hasNextLevel(group,a.getLevel() + 1)) {
-//                        userAchievement.setValue(userAchievement.getValue() + 1);
-//                        userAchievementRepository.save(userAchievement);
-//
-//                        toBreak = true;
-//
-//                        }
-//
-//
-//                        } else {
-//
-//                        userAchievement.setValue(userAchievement.getValue() + 1);
-//
-//                        if ( userAchievement.getValue().equals(a.getGoal())) {
-//                        userAchievement.setStatus(AchievementGoalStatus.DONE);
-//                        }
-//
-//                        userAchievementRepository.save(userAchievement);
-//
-//                        toBreak = true;
-//                        }
