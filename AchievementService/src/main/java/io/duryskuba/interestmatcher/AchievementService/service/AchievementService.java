@@ -109,7 +109,7 @@ public class AchievementService {
 
     }
 
-    public void initializeAchievementBasedOnLevel(Achievement achievement, Long userId, Long groupId) {
+    public boolean initializeAchievementBasedOnLevel(Achievement achievement, Long userId, Long groupId) {
 
         if ( isLevelFirst(achievement) ) {
             initStateOfAchievement(achievement, userId);
@@ -120,6 +120,7 @@ public class AchievementService {
     findAchievementGoalByGroupByIdAndLevel(groupId, achievement.getLevel() - 1) + 1);
         }
 
+        return true;
     }
 
     private boolean isAchievementStatusDone(UserAchievement userAchievement) {
@@ -160,29 +161,26 @@ public class AchievementService {
         return true;
     }
 
+//            if ( !optUserAch.isPresent() ) {
+//                initializeAchievementBasedOnLevel(a, action.getUserId(), group.getAchievementGroupId());
+//                toBreak = true;
+//            } else {
+//
+//                toBreak = incrementAchievementValueBasedOnStatus(optUserAch.get(), a, group);
+//            }
 
     public void onAchievementActionv2(AchievementActionDTO action) {
 
         final AchievementGroup group = findAchievementGroupByIdOrThrow(action.getAchievementGroupId());
 
-        boolean toBreak = false;
-
         for ( Achievement a : group.getAchievements() ) {
 
-            final UserAchievementId uaId = new UserAchievementId(a.getAchievementId(), action.getUserId());
-
-            Optional<UserAchievement> optUserAch =  userAchievementRepository.findById(uaId);
-
-            if ( !optUserAch.isPresent() ) {
-                initializeAchievementBasedOnLevel(a, action.getUserId(), group.getAchievementGroupId());
-                toBreak = true;
-            } else {
-
-                toBreak = incrementAchievementValueBasedOnStatus(optUserAch.get(), a, group);
+            if ( userAchievementRepository.findById( new UserAchievementId(a.getAchievementId(), action.getUserId()) )
+                    .map(ua -> incrementAchievementValueBasedOnStatus( ua, a, group ))
+                    .orElseGet(() ->
+                            initializeAchievementBasedOnLevel(a ,action.getUserId(), group.getAchievementGroupId() )) ) {
+                return;
             }
-
-            if(toBreak) break;
-
         }
 
     }
