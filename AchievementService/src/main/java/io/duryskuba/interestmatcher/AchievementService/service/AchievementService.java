@@ -117,7 +117,7 @@ public class AchievementService {
         else {
             //maybe orelseGet
             initStateOfAchievement(achievement, userId,
-                    findAchievementGoalByGroupByIdAndLevel(groupId, achievement.getLevel() - 1));
+                    findAchievementGoalByGroupByIdAndLevel(groupId, achievement.getLevel() - 1) + 1);
         }
 
     }
