@@ -1,5 +1,6 @@
 package io.duryskuba.interestmatcher.GroupService.resource;
 
+import io.duryskuba.interestmatcher.GroupService.enums.MemberRole;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -26,5 +27,6 @@ public class GroupMember {
     @JoinColumn(name = "GROUP_ID")
     private Group group;
 
+    @Enumerated(EnumType.STRING)
     private MemberRole role;
 }
