@@ -102,12 +102,12 @@ public class AchievementService {
     }
 
 
-
+    //listener
     public void onAchievementAction(AchievementActionDTO action) {
         final AchievementGroup group = findAchievementGroupByIdOrThrow(action.getAchievementGroupId());
 
         for (Achievement a : group.getAchievements()) {
-
+    
             if (userAchievementRepository.findById(new UserAchievementId(a.getAchievementId(), action.getUserId()))
                     .map(ua -> incrementAchievementValueBasedOnStatus(ua, a, group))
                     .orElseGet(() ->
@@ -122,17 +122,16 @@ public class AchievementService {
                 achievementRepository.findByAchievementGroup_AchievementGroupIdAndLevel(groupId, level)
                         .map(Achievement::getGoal)
                         .orElseThrow(RuntimeException::new);
-
     }
 
     private boolean initializeAchievementBasedOnLevel(Achievement achievement, Long userId, Long groupId) {
 
-        if ( isLevelFirst(achievement) ) {
+        if ( isLevelFirst(achievement) )
             initStateOfAchievement(achievement, userId);
-        } else {
+        else
             initStateOfAchievement(achievement, userId,
                     findAchievementGoalByGroupByIdAndLevel(groupId, achievement.getLevel() - 1) + 1);
-        }
+
         return true;
     }
 
@@ -151,6 +150,7 @@ public class AchievementService {
 
         userAchievementRepository.save(userAchievement);
     }
+
 
     private boolean incrementAchievementValueBasedOnStatus(UserAchievement userAchievement,
                                                           Achievement achievement, AchievementGroup group) {
