@@ -3,6 +3,7 @@ package io.duryskuba.interestmatcher.GroupService.service;
 import io.duryskuba.interestmatcher.GroupService.repository.GroupMemberRepository;
 import io.duryskuba.interestmatcher.GroupService.repository.GroupRepository;
 import io.duryskuba.interestmatcher.GroupService.repository.MemberRepository;
+import io.duryskuba.interestmatcher.GroupService.resource.Group;
 import io.duryskuba.interestmatcher.GroupService.resource.GroupMember;
 import org.springframework.stereotype.Service;
 
@@ -22,10 +23,7 @@ public class GroupService {
     }
 
 
-
-
-
-
-
-
+    public Group findGroupById(Long id) {
+        return groupRepository.findById(id);
+    }
 }
