@@ -107,7 +107,7 @@ public class AchievementService {
         final AchievementGroup group = findAchievementGroupByIdOrThrow(action.getAchievementGroupId());
 
         for (Achievement a : group.getAchievements()) {
-    
+
             if (userAchievementRepository.findById(new UserAchievementId(a.getAchievementId(), action.getUserId()))
                     .map(ua -> incrementAchievementValueBasedOnStatus(ua, a, group))
                     .orElseGet(() ->
